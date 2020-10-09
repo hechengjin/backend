@@ -32,7 +32,7 @@
               <span v-else>否</span>
             </template>
           </TableItem>
-          <TableItem title="操作" align="center" :width="200">
+          <TableItem title="操作" align="center" :width="300">
             <template slot-scope="{ data }">
               <p-del-button permission="addons.Zhibo.course_video.delete" @click="remove(datas, data)"></p-del-button>
               <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.Zhibo.course_video.update" text="编辑" @click="edit(data)"></p-button>
@@ -42,6 +42,13 @@
                 permission="addons.Zhibo.zhibo.pause"
                 text="停止直播"
                 @click="livePause(data)"
+              ></p-button>
+              <p-button
+                v-if="data.status !== 0"
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Zhibo.course_video.watch.users"
+                text="观看用户"
+                @click="watchUsers(data)"
               ></p-button>
             </template>
           </TableItem>
@@ -136,6 +143,27 @@ export default {
       R.Extentions.zhibo.Zhibo.pause({ video_id: video.id }).then(res => {
         HeyUI.$Message.success('成功');
         this.getData();
+      });
+    },
+    watchUsers(video) {
+      this.$Modal({
+        hasCloseIcon: true,
+        closeOnMask: false,
+        component: {
+          vue: resolve => {
+            require(['./watch_users'], resolve);
+          },
+          datas: {
+            course_id: video.course_id,
+            video_id: video.id
+          }
+        },
+        events: {
+          success: (modal, data) => {
+            modal.close();
+            this.getData(true);
+          }
+        }
       });
     }
   }
