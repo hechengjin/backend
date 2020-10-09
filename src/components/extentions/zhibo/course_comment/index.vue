@@ -9,18 +9,12 @@
           <Row :space="10">
             <Cell :width="6">
               <FormItem label="UID">
-                <input type="number" v-model="filter.user_id" min="0" placeholder="用户ID" />
+                <user-filter v-model="filter.user_id"></user-filter>
               </FormItem>
             </Cell>
-            <Cell :width="8">
+            <Cell :width="12">
               <FormItem label="课程">
-                <Select
-                  v-model="filter.course_id"
-                  :filterable="true"
-                  :datas="courses"
-                  keyName="id"
-                  titleName="title"
-                ></Select>
+                <Select v-model="filter.course_id" :filterable="true" :datas="courses" keyName="id" titleName="title"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -35,16 +29,8 @@
 
       <div style="mb-10">
         <p-del-button permission="addons.Zhibo.course_comment.delete.multi" @click="deleteSubmit()"></p-del-button>
-        <p-del-button
-          permission="addons.Zhibo.course_comment.check"
-          text="审核通过"
-          @click="checkSubmit(1)"
-        ></p-del-button>
-        <p-del-button
-          permission="addons.Zhibo.course_comment.check"
-          text="审核拒绝"
-          @click="checkSubmit(0)"
-        ></p-del-button>
+        <p-del-button permission="addons.Zhibo.course_comment.check" text="审核通过" @click="checkSubmit(1)"></p-del-button>
+        <p-del-button permission="addons.Zhibo.course_comment.check" text="审核拒绝" @click="checkSubmit(0)"></p-del-button>
       </div>
 
       <Table :loading="loading" :datas="datas" :checkbox="true" ref="table" class="mt-10">
@@ -52,13 +38,13 @@
         <TableItem prop="user_id" title="UID" :width="80"></TableItem>
         <TableItem title="用户" :width="120">
           <template slot-scope="{ data }">
-            <span v-if="data.user">{{data.user.nick_name}}</span>
+            <span v-if="data.user">{{ data.user.nick_name }}</span>
             <span class="red" v-else>不存在</span>
           </template>
         </TableItem>
         <TableItem title="课程">
           <template slot-scope="{ data }">
-            <span v-if="data.course">{{data.course.title}}</span>
+            <span v-if="data.course">{{ data.course.title }}</span>
             <span class="red" v-else>已删除</span>
           </template>
         </TableItem>
@@ -77,12 +63,7 @@
       </Table>
 
       <div class="mt-10">
-        <Pagination
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>
@@ -137,7 +118,7 @@ export default {
     checkSubmit(status) {
       let items = this.$refs.table.getSelection();
       if (items.length === 0) {
-        this.$Message.error('请选择需要删除的评论');
+        this.$Message.error('请选择需要操作的评论');
         return;
       }
       this.loading = true;

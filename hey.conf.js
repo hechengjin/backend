@@ -42,9 +42,6 @@ module.exports = {
         externals: {},
         plugins: [
             new CopyPlugin([
-                { from: './tinymce/zh_CN.js', to: './dist/tinymce/zh_CN.js' },
-            ]),
-            new CopyPlugin([
                 { from: './aliyun-upload-sdk-1.4.0/', to: './dist/aliyun-upload-sdk-1.4.0/' },
             ])
         ],

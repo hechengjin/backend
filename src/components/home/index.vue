@@ -36,7 +36,7 @@
             </Cell>
             <Cell class="text-center" :width="6">
               <h3>后台版本</h3>
-              <p>v3.5.1</p>
+              <p>v3.5.2</p>
             </Cell>
             <Cell class="text-center" :width="6">
               <h3>内核版本</h3>
