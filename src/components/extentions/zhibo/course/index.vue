@@ -40,13 +40,13 @@
       <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas">
           <TableItem prop="id" title="ID" :width="80"></TableItem>
-          <TableItem title="分类">
+          <TableItem title="分类" :width="100">
             <template slot-scope="{ data }">
               <span v-if="data.category">{{ data.category.name }}</span>
               <span v-else class="red">已删除</span>
             </template>
           </TableItem>
-          <TableItem title="讲师">
+          <TableItem title="讲师" :width="100">
             <template slot-scope="{ data }">
               <span v-if="data.teacher">{{ data.teacher.name }}</span>
               <span v-else class="red">已删除</span>
@@ -54,8 +54,8 @@
           </TableItem>
           <TableItem prop="title" title="课程名"></TableItem>
           <TableItem prop="charge" title="价格" unit="元" :width="80"></TableItem>
-          <TableItem prop="published_at" title="上线时间" :width="120"></TableItem>
-          <TableItem prop="views_times" title="浏览次数" :width="100" unit="次"></TableItem>
+          <TableItem prop="published_at" title="上架" :width="120"></TableItem>
+          <TableItem prop="views_times" title="浏览" :width="100" unit="次"></TableItem>
           <TableItem prop="join_user_times" title="学员" :width="100" unit="人"></TableItem>
           <TableItem title="显示" :width="50">
             <template slot-scope="{ data }">
