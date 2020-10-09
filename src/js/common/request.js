@@ -1250,7 +1250,10 @@ const Request = {
         },
         Delete(param) {
           return Ajax.delete('/backend/addons/zhibo/course/' + param.id, param);
-        }
+        },
+        Users(param) {
+          return Ajax.get('/backend/addons/zhibo/course/' + param.id + '/users', param);
+        },
       },
       CourseChapter: {
         List(param) {
