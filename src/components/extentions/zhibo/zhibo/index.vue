@@ -1,3 +1,8 @@
+<style lang="less" scoped>
+.w-400 {
+  width: 400px;
+}
+</style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
     <div class="h-panel-bar">
@@ -7,12 +12,12 @@
       <div class="float-box mb-10">
         <Form>
           <Row :space="10">
-            <Cell :width="6">
+            <Cell :width="24">
               <FormItem label="课程">
                 <Select v-model="course_id" :datas="courses" keyName="id" titleName="title" :filterable="true"></Select>
               </FormItem>
             </Cell>
-            <Cell :width="6">
+            <Cell :width="12">
               <FormItem label="课程安排">
                 <Select v-model="video_id" :datas="videos[course_id]" keyName="id" titleName="title" :filterable="true"></Select>
               </FormItem>
@@ -33,17 +38,17 @@
 
       <template v-if="push_url">
         <div class="float-box mb-10">
-          <div class="h-input-group mb-10">
+          <div class="h-input-group mb-10 w-400">
             <span class="h-input-addon">推流地址</span>
             <input type="text" v-model="push_url" />
             <Button color="primary" @click="$Clipboard({ text: push_url })">复制</Button>
           </div>
-          <div class="h-input-group mb-10">
+          <div class="h-input-group mb-10 w-400">
             <span class="h-input-addon">OBS服务器</span>
             <input type="text" v-model="obs.server" />
             <Button color="primary" @click="$Clipboard({ text: obs.server })">复制</Button>
           </div>
-          <div class="h-input-group mb-10">
+          <div class="h-input-group mb-10 w-400">
             <span class="h-input-addon">OBS串流密钥</span>
             <input type="text" v-model="obs.token" />
             <Button color="primary" @click="$Clipboard({ text: obs.token })">复制</Button>
@@ -76,10 +81,6 @@ export default {
         {
           title: '阿里云直播',
           id: 'aliyun'
-        },
-        {
-          title: '百度云直播',
-          id: 'baidu'
         }
       ],
       obs: {

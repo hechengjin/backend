@@ -9,24 +9,12 @@
           <Row :space="10">
             <Cell :width="6">
               <FormItem label="分类" prop="category_id">
-                <Select
-                  v-model="filter.category_id"
-                  :datas="categories"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="filter.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
               <FormItem label="讲师" prop="teacher_id">
-                <Select
-                  v-model="filter.teacher_id"
-                  :datas="teachers"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="filter.teacher_id" :datas="teachers" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -42,53 +30,32 @@
         </Form>
       </div>
       <div class="float-box mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.Zhibo.course_category.list"
-          text="分类"
-          @click="showCategoryPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="addons.Zhibo.course_category.list" text="分类" @click="showCategoryPage()"></p-button>
 
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.Zhibo.teacher.list"
-          text="讲师"
-          @click="showTeacherPage()"
-        ></p-button>
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.Zhibo.course_comment"
-          text="评论"
-          @click="showCourseCommentPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="addons.Zhibo.teacher.list" text="讲师" @click="showTeacherPage()"></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="addons.Zhibo.course_comment" text="评论" @click="showCourseCommentPage()"></p-button>
 
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="addons.Zhibo.course.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.Zhibo.course.store" text="添加" @click="create()"></p-button>
       </div>
       <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas">
           <TableItem prop="id" title="ID" :width="80"></TableItem>
-          <TableItem title="分类">
+          <TableItem title="分类" :width="100">
             <template slot-scope="{ data }">
-              <span v-if="data.category">{{data.category.name}}</span>
+              <span v-if="data.category">{{ data.category.name }}</span>
               <span v-else class="red">已删除</span>
             </template>
           </TableItem>
-          <TableItem title="讲师">
+          <TableItem title="讲师" :width="100">
             <template slot-scope="{ data }">
-              <span v-if="data.teacher">{{data.teacher.name}}</span>
+              <span v-if="data.teacher">{{ data.teacher.name }}</span>
               <span v-else class="red">已删除</span>
             </template>
           </TableItem>
           <TableItem prop="title" title="课程名"></TableItem>
           <TableItem prop="charge" title="价格" unit="元" :width="80"></TableItem>
-          <TableItem prop="published_at" title="上线时间" :width="120"></TableItem>
-          <TableItem prop="views_times" title="浏览次数" :width="100" unit="次"></TableItem>
+          <TableItem prop="published_at" title="上架" :width="120"></TableItem>
+          <TableItem prop="views_times" title="浏览" :width="100" unit="次"></TableItem>
           <TableItem prop="join_user_times" title="学员" :width="100" unit="人"></TableItem>
           <TableItem title="显示" :width="50">
             <template slot-scope="{ data }">
@@ -102,15 +69,10 @@
               <span v-else>否</span>
             </template>
           </TableItem>
-          <TableItem title="操作" align="center" :width="300">
+          <TableItem title="操作" align="center" :width="400">
             <template slot-scope="{ data }">
               <p-del-button permission="addons.Zhibo.course.delete" @click="remove(datas, data)"></p-del-button>
-              <p-button
-                glass="h-btn h-btn-s h-btn-primary"
-                permission="addons.Zhibo.course.update"
-                text="编辑"
-                @click="edit(data)"
-              ></p-button>
+              <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.Zhibo.course.update" text="编辑" @click="edit(data)"></p-button>
 
               <p-button
                 glass="h-btn h-btn-s h-btn-primary"
@@ -125,19 +87,20 @@
                 text="内容安排"
                 @click="goVideosPage(data)"
               ></p-button>
+
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Zhibo.course.users"
+                text="订阅用户"
+                @click="subscribeUsers(data)"
+              ></p-button>
             </template>
           </TableItem>
         </Table>
       </div>
 
       <div class="float-box mb-10">
-        <Pagination
-          class="mt-10"
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+        <Pagination class="mt-10" v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>
@@ -291,6 +254,20 @@ export default {
         component: {
           vue: resolve => {
             require(['../course_video/index'], resolve);
+          },
+          datas: {
+            course_id: item.id
+          }
+        }
+      });
+    },
+    subscribeUsers(item) {
+      this.$Modal({
+        hasCloseIcon: true,
+        closeOnMask: false,
+        component: {
+          vue: resolve => {
+            require(['./users'], resolve);
           },
           datas: {
             course_id: item.id
