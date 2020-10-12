@@ -1,80 +1,81 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">文章</span>
     </div>
     <div class="h-panel-body">
-      <Form :labelWidth="110">
-        <FormItem label="章节">
-          <template v-slot:label>章节</template>
-          <Select
-            v-model="pagination.chapter_id"
-            :filterable="true"
-            :datas="chapters"
-            keyName="id"
-            titleName="name"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(true)">搜索</Button>
-          <Button class="h-btn" @click="reset()">重置</Button>
-        </FormItem>
-      </Form>
-
-      <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="addons.meedu_books.book.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+      <div class="float-box mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="12">
+              <FormItem label="章节">
+                <Select v-model="pagination.chapter_id" :filterable="true" :datas="chapters" keyName="id" titleName="name"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="12">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">搜索</Button>
+                <Button class="h-btn" @click="reset()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem title="章节">
-          <template slot-scope="{data}">
-            <span v-if="data.chapter">{{ data.chapter.name }}</span>
-            <span class="c-red" v-else>已删除</span>
-          </template>
-        </TableItem>
-        <TableItem prop="title" title="标题"></TableItem>
-        <TableItem prop="view_times" title="浏览" unit="次"></TableItem>
-        <TableItem title="显示">
-          <template slot-scope="{data}">
-            <span>{{ data.is_show === 1 ? '是' : '否' }}</span>
-          </template>
-        </TableItem>
-        <TableItem prop="published_at" title="上架时间"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <p-del-button permission="addons.meedu_books.book.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.meedu_books.book.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
 
-            <p-button
-              glass="h-btn h-btn-primary h-btn-s"
-              permission="addons.meedu_books.book_article.comments.list"
-              text="评论"
-              @click="showCommentsPage(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.meedu_books.book.store" text="添加" @click="create()"></p-button>
+      </div>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID"></TableItem>
+          <TableItem title="章节">
+            <template slot-scope="{ data }">
+              <span v-if="data.chapter">{{ data.chapter.name }}</span>
+              <span class="c-red" v-else>已删除</span>
+            </template>
+          </TableItem>
+          <TableItem prop="title" title="标题"></TableItem>
+          <TableItem prop="view_times" title="浏览" unit="次"></TableItem>
+          <TableItem title="显示">
+            <template slot-scope="{ data }">
+              <span v-if="data.is_show === 1">是</span>
+              <span v-else class="red">否</span>
+            </template>
+          </TableItem>
+          <TableItem title="试读">
+            <template slot-scope="{ data }">
+              <span v-if="data.charge === 0" class="red">是</span>
+              <span v-else>否</span>
+            </template>
+          </TableItem>
+          <TableItem prop="published_at" title="上架时间"></TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.meedu_books.book.delete" @click="remove(datas, data)"></p-del-button>
+              <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.meedu_books.book.update" text="编辑" @click="edit(data)"></p-button>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        :size="pagination.size"
-        :cur="pagination.page"
-        :total="pagination.total"
-        @change="changePage"
-      />
+              <p-button
+                glass="h-btn h-btn-primary h-btn-s"
+                permission="addons.meedu_books.book_article.comments.list"
+                text="评论"
+                @click="showCommentsPage(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
+
+      <div class="float-box mb-10">
+        <Pagination
+          class="mt-10"
+          v-if="pagination.total > 0"
+          align="right"
+          :size="pagination.size"
+          :cur="pagination.page"
+          :total="pagination.total"
+          @change="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>
