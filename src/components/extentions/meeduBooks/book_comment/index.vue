@@ -1,60 +1,72 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
-      <span class="h-panel-title">电子书评论</span>
+      <span class="h-panel-title">评论</span>
     </div>
     <div class="h-panel-body">
-      <div style="mb-10">
-        <p-del-button
-          permission="addons.meedu_books.book.comments.checked"
-          @click="commentChecked(1)"
-          text="审核通过"
-        ></p-del-button>
-        <p-del-button
-          permission="addons.meedu_books.book.comments.checked"
-          @click="commentChecked(0)"
-          text="审核拒绝"
-        ></p-del-button>
+      <div class="float-box mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="UID">
+                <user-filter v-model="filter.user_id"></user-filter>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">过滤</Button>
+                <Button @click="reset()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
       </div>
 
-      <Table :loading="loading" :datas="datas" :checkbox="true" ref="table">
-        <TableItem title="ID" prop="id" :width="80"></TableItem>
-        <TableItem title="用户">
-          <template slot-scope="{data}">
-            <span>{{data.user.nick_name}}</span>
-          </template>
-        </TableItem>
-        <TableItem title="评论内容">
-          <template slot-scope="{data}">
-            <div v-html="data.content"></div>
-          </template>
-        </TableItem>
-        <TableItem prop="created_at" title="时间"></TableItem>
-        <TableItem title="状态">
-          <template slot-scope="{data}">
-            <span v-if="data.is_check === 1">通过</span>
-            <span v-else class="red">拒绝</span>
-          </template>
-        </TableItem>
-        <TableItem title="操作" align="center" :width="100">
-          <template slot-scope="{ data }">
-            <p-del-button
-              permission="addons.meedu_books.book.comments.delete"
-              @click="remove(datas, data)"
-            ></p-del-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <p-del-button permission="addons.meedu_books.book.comments.checked" @click="commentChecked(1)" text="审核通过"></p-del-button>
+        <p-del-button permission="addons.meedu_books.book.comments.checked" @click="commentChecked(0)" text="审核拒绝"></p-del-button>
+      </div>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        :size="pagination.size"
-        :cur="pagination.page"
-        :total="pagination.total"
-        @change="changePage"
-      />
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas" :checkbox="true" ref="table">
+          <TableItem title="ID" prop="id" :width="80"></TableItem>
+          <TableItem title="UID" prop="user_id" :width="80"></TableItem>
+          <TableItem title="用户" :width="120">
+            <template slot-scope="{ data }">
+              <span>{{ data.user.nick_name }}</span>
+            </template>
+          </TableItem>
+          <TableItem title="评论内容">
+            <template slot-scope="{ data }">
+              <div v-html="data.content"></div>
+            </template>
+          </TableItem>
+          <TableItem prop="created_at" title="时间" :width="120"></TableItem>
+          <TableItem title="状态" :width="50">
+            <template slot-scope="{ data }">
+              <span v-if="data.is_check === 1">通过</span>
+              <span v-else class="red">拒绝</span>
+            </template>
+          </TableItem>
+          <TableItem title="操作" align="center" :width="100">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.meedu_books.book.comments.delete" @click="remove(datas, data)"></p-del-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
+
+      <div class="float-box mb-10">
+        <Pagination
+          class="mt-10"
+          v-if="pagination.total > 0"
+          align="right"
+          :size="pagination.size"
+          :cur="pagination.page"
+          :total="pagination.total"
+          @change="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -69,15 +81,19 @@ export default {
         total: 0,
         bid: this.bid
       },
+      filter: {
+        user_id: null
+      },
       datas: [],
       loading: false
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
+    reset() {
+      this.filter.user_id = null;
       this.getData(true);
     },
     changePage(pagination) {
@@ -90,11 +106,11 @@ export default {
         this.pagination.page = 1;
       }
       this.loading = true;
-      R.Extentions.meeduBooks.BookComment.Index(this.pagination).then(resp => {
+      let data = this.pagination;
+      data.user_id = this.filter.user_id;
+      R.Extentions.meeduBooks.BookComment.Index(data).then(resp => {
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;
-        this.pagination.page = resp.data.data.current_page;
-        this.pagination.size = resp.data.data.per_page;
         this.loading = false;
       });
     },
