@@ -4,34 +4,31 @@
       <span class="h-panel-title">话题</span>
     </div>
     <div class="h-panel-body">
-      <Form ref="form" :labelWidth="110">
-        <FormItem>
-          <template v-slot:label>用户id</template>
-          <input type="text" v-model="filter.user_id" placeholder="用户id" />
-        </FormItem>
-        <FormItem>
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="filter.category_id"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(true)">过滤</Button>
-          <Button @click="reset()">重置</Button>
-        </FormItem>
-      </Form>
+      <div class="float-box mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="UID">
+                <user-filter v-model="filter.user_id"></user-filter>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="分类">
+                <Select v-model="filter.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">过滤</Button>
+                <Button @click="reset()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
 
-      <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.meedu_topics.category.list"
-          text="分类"
-          @click="showCategoriesPage()"
-        ></p-button>
+      <div class="float-box mb-10">
+        <p-button glass="h-btn h-btn-primary" permission="addons.meedu_topics.category.list" text="分类" @click="showCategoriesPage()"></p-button>
 
         <p-button
           glass="h-btn h-btn-primary"
@@ -41,63 +38,53 @@
           @click="create()"
         ></p-button>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem title="分类" :width="100">
-          <template slot-scope="{data}">
-            <span v-if="data.category">{{ data.category.name }}</span>
-            <span class="red" v-else>已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="用户" :width="100">
-          <template slot-scope="{data}">
-            <span v-if="data.user">{{ data.user.nick_name }}</span>
-            <span class="red" v-else>系统</span>
-          </template>
-        </TableItem>
-        <TableItem prop="title" title="标题"></TableItem>
-        <TableItem prop="charge" title="价格" :width="80"></TableItem>
-        <TableItem prop="view_times" title="浏览" :width="80"></TableItem>
-        <TableItem prop="users_count" title="付费" :width="80"></TableItem>
-        <TableItem prop="comments_count" title="评论" :width="80"></TableItem>
-        <TableItem prop="vote_count" title="点赞" :width="80"></TableItem>
-        <TableItem title="操作" align="center" :width="300">
-          <template slot-scope="{ data }">
-            <p-del-button
-              permission="addons.meedu_topics.topic.delete"
-              @click="remove(datas, data)"
-            ></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.meedu_topics.topic.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID" :width="80"></TableItem>
+          <TableItem title="分类" :width="100">
+            <template slot-scope="{ data }">
+              <span v-if="data.category">{{ data.category.name }}</span>
+              <span class="red" v-else>已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="用户" :width="100">
+            <template slot-scope="{ data }">
+              <span v-if="data.user">{{ data.user.nick_name }}</span>
+              <span class="red" v-else>系统</span>
+            </template>
+          </TableItem>
+          <TableItem prop="title" title="标题"></TableItem>
+          <TableItem prop="charge" title="价格" :width="80"></TableItem>
+          <TableItem prop="view_times" title="浏览" :width="80"></TableItem>
+          <TableItem prop="users_count" title="付费" :width="80"></TableItem>
+          <TableItem prop="comments_count" title="评论" :width="80"></TableItem>
+          <TableItem prop="vote_count" title="点赞" :width="80"></TableItem>
+          <TableItem title="操作" align="center" :width="300">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.meedu_topics.topic.delete" @click="remove(datas, data)"></p-del-button>
+              <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.meedu_topics.topic.update" text="编辑" @click="edit(data)"></p-button>
 
-            <p-button
-              glass="h-btn h-btn-primary h-btn-s"
-              permission="addons.meedu_topics.comments"
-              text="评论"
-              @click="showCommentsPage(data)"
-            ></p-button>
+              <p-button
+                glass="h-btn h-btn-primary h-btn-s"
+                permission="addons.meedu_topics.comments"
+                text="评论"
+                @click="showCommentsPage(data)"
+              ></p-button>
 
-            <p-button
-              glass="h-btn h-btn-primary h-btn-s"
-              permission="addons.meedu_topics.orders"
-              text="订单"
-              @click="showOrdersPage(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+              <p-button
+                glass="h-btn h-btn-primary h-btn-s"
+                permission="addons.meedu_topics.orders"
+                text="订单"
+                @click="showOrdersPage(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <div class="float-box mb-10">
+        <Pagination class="mt-10" v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+      </div>
     </div>
   </div>
 </template>
