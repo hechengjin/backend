@@ -35,6 +35,12 @@
             <span v-else class="red">已删除</span>
           </template>
         </TableItem>
+        <TableItem title="手机号" :width="120">
+          <template slot-scope="{ data }">
+            <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].mobile }}</span>
+            <span v-else class="red">已删除</span>
+          </template>
+        </TableItem>
         <TableItem title="视频">
           <template slot-scope="{ data }">
             <span v-if="typeof videos[data.video_id] !== 'undefined'">{{ videos[data.video_id].title }}</span>
