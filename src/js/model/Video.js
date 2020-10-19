@@ -1,5 +1,6 @@
 export default new Model({
   title: '',
+  slug: '',
   charge: 0,
   short_description: '',
   description: '',
