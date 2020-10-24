@@ -375,6 +375,9 @@ const Request = {
     },
     WatchRecords(param) {
       return Ajax.get('/video/' + param.video_id + '/watch/records', param);
+    },
+    Import(param) {
+      return Ajax.postJson('/video/import', param);
     }
   },
   CourseChapter: {
