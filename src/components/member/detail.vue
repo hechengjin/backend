@@ -25,7 +25,7 @@
           手机号：
           <copytext :copytext="user.mobile" />
         </Cell>
-        <Cell width="6">积分：{{user.credit1}}</Cell>
+        <Cell width="6">积分：{{ user.credit1 }}</Cell>
         <Cell width="6">
           锁定：
           <span v-if="user.is_lock === 1">是</span>
@@ -38,17 +38,17 @@
         </Cell>
         <Cell width="6">
           会员：
-          <span v-if="user.role">{{user.role.name}}</span>
+          <span v-if="user.role">{{ user.role.name }}</span>
           <span v-else>暂无</span>
         </Cell>
-        <Cell width="6">会员到期时间：{{user.role_expired_at || '无'}}</Cell>
+        <Cell width="6">会员到期时间：{{ user.role_expired_at || '无' }}</Cell>
         <Cell width="6">
           邀请人：
-          <span v-if="user.invitor">{{user.invitor.nick_name}}</span>
+          <span v-if="user.invitor">{{ user.invitor.nick_name }}</span>
           <span v-else>无</span>
         </Cell>
-        <Cell width="6">邀请关系过期：{{user.invite_user_expired_at || '无'}}</Cell>
-        <Cell width="6">邀请余额：{{user.invite_balance}}元</Cell>
+        <Cell width="6">邀请关系过期：{{ user.invite_user_expired_at || '无' }}</Cell>
+        <Cell width="6">邀请余额：{{ user.invite_balance }}元</Cell>
         <Cell width="6">
           设置密码：
           <span v-if="user.is_password_set === 1">已设置</span>
@@ -64,16 +64,41 @@
           <span v-if="user.is_used_promo_code === 1">已使用</span>
           <span v-else>未使用</span>
         </Cell>
-        <Cell width="6">注册IP：{{user.register_ip || '未记录'}}</Cell>
-        <Cell width="6">注册地址：{{user.register_area || '未记录'}}</Cell>
+        <Cell width="6">注册IP：{{ user.register_ip || '未记录' }}</Cell>
+        <Cell width="6">注册地址：{{ user.register_area || '未记录' }}</Cell>
+        <template v-if="user.profile">
+          <Cell width="6">真实姓名：{{ user.profile.real_name || '未记录' }}</Cell>
+          <Cell width="6">年龄：{{ user.profile.age }}岁</Cell>
+          <Cell width="6">生日：{{ user.profile.birthday || '未记录' }}</Cell>
+          <Cell width="6">住址：{{ user.profile.address || '未记录' }}</Cell>
+          <Cell width="6">性别：{{ user.profile.gender }}</Cell>
+          <Cell width="6">职业：{{ user.profile.profession }}</Cell>
+          <Cell width="6">毕业院校：{{ user.profile.graduated_school }}</Cell>
+          <Cell width="6">身份证号：{{ user.profile.id_number }}</Cell>
+          <Cell width="6" v-if="user.profile.diploma"
+            >毕业证书：<br /><img :src="user.profile.diploma" width="100" height="100" @click="$ImagePreview(user.profile.diploma)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_frontend_thumb"
+            >身份证正面照：<br /><img
+              :src="user.profile.id_frontend_thumb"
+              width="100"
+              height="100"
+              @click="$ImagePreview(user.profile.id_frontend_thumb)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_backend_thumb"
+            >身份证反面照：<br /><img
+              :src="user.profile.id_backend_thumb"
+              width="100"
+              height="100"
+              @click="$ImagePreview(user.profile.id_backend_thumb)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_hand_thumb"
+            >手持身份证照：<br /><img :src="user.profile.id_hand_thumb" width="100" height="100" @click="$ImagePreview(user.profile.id_hand_thumb)"
+          /></Cell>
+        </template>
 
         <Cell width="24" class="mt-10 mb-10">
-          <p-button
-            glass="h-btn h-btn-s h-btn-primary"
-            permission="member.credit1.change"
-            text="积分变动"
-            @click="credit1Change()"
-          ></p-button>
+          <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.credit1.change" text="积分变动" @click="credit1Change()"></p-button>
         </Cell>
       </Row>
 
@@ -88,7 +113,7 @@
           <Table :datas="userCollect" class="mb-10">
             <TableItem title="课程">
               <template slot-scope="{ data }">
-                <span v-if="userCollectMap[data.course_id]">{{userCollectMap[data.course_id].title}}</span>
+                <span v-if="userCollectMap[data.course_id]">{{ userCollectMap[data.course_id].title }}</span>
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
@@ -116,7 +141,7 @@
           <Table :datas="userHistory" class="mb-10">
             <TableItem title="课程">
               <template slot-scope="{ data }">
-                <span v-if="userHistoryMap[data.course_id]">{{userHistoryMap[data.course_id].title}}</span>
+                <span v-if="userHistoryMap[data.course_id]">{{ userHistoryMap[data.course_id].title }}</span>
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
@@ -138,7 +163,7 @@
           <Table :datas="userCourses" class="mb-10">
             <TableItem title="课程">
               <template slot-scope="{ data }">
-                <span v-if="userCoursesMap[data.course_id]">{{userCoursesMap[data.course_id].title}}</span>
+                <span v-if="userCoursesMap[data.course_id]">{{ userCoursesMap[data.course_id].title }}</span>
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
@@ -154,7 +179,7 @@
           <Table :datas="userVideos" class="mb-10">
             <TableItem title="视频">
               <template slot-scope="{ data }">
-                <span v-if="userVideosMap[data.video_id]">{{userVideosMap[data.video_id].title}}</span>
+                <span v-if="userVideosMap[data.video_id]">{{ userVideosMap[data.video_id].title }}</span>
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
@@ -170,7 +195,7 @@
           <Table :datas="userRoles" class="mb-10">
             <TableItem title="会员">
               <template slot-scope="{ data }">
-                <span v-if="data.role">{{data.role.name}}</span>
+                <span v-if="data.role">{{ data.role.name }}</span>
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
@@ -190,17 +215,14 @@
             <TableItem prop="order_id" title="订单号"></TableItem>
             <TableItem prop="charge" title="价格" unit="元"></TableItem>
             <TableItem title="状态">
-              <template slot-scope="{data}">
-                <span :class="{'red': data.status_text === '已支付'}">{{data.status_text}}</span>
+              <template slot-scope="{ data }">
+                <span :class="{ red: data.status_text === '已支付' }">{{ data.status_text }}</span>
               </template>
             </TableItem>
             <TableItem title="商品">
               <template slot-scope="{ data }">
                 <ul>
-                  <li
-                    v-for="goods in data.goods"
-                    :key="goods.id"
-                  >{{ goods.goods_text }}x{{ goods.num }}</li>
+                  <li v-for="goods in data.goods" :key="goods.id">{{ goods.goods_text }}x{{ goods.num }}</li>
                 </ul>
               </template>
             </TableItem>
@@ -218,11 +240,7 @@
             <TableItem prop="remark" title="备注"></TableItem>
             <TableItem prop="created_at" title="创建"></TableItem>
           </Table>
-          <Pagination
-            align="right"
-            v-model="paginate.credit1Records"
-            @change="paginateChange('credit1Records')"
-          />
+          <Pagination align="right" v-model="paginate.credit1Records" @change="paginateChange('credit1Records')" />
         </Cell>
       </Row>
     </div>
