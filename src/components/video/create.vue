@@ -57,6 +57,10 @@
             </Cell>
           </Row>
 
+          <FormItem label="Slug" prop="slug">
+            <input type="text" v-model="video.slug" placeholder="不清楚可不填写" />
+          </FormItem>
+
           <Row :space="10">
             <Cell :width="24">
               <FormItem label="简短介绍" prop="short_description">

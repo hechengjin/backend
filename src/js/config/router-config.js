@@ -257,6 +257,11 @@ const initRouter = () => {
         component: (resolve) => require(['components/mp_wechat/menu'], resolve),
         meta: { title: '微信公众号菜单' }
       }, {
+        path: '/CodeExchangerGoods',
+        name: 'CodeExchangerGoods',
+        component: (resolve) => require(['components/extentions/codeExchanger/goods/index'], resolve),
+        meta: { title: '兑换商品' }
+      }, {
         path: '/system-error',
         name: 'SystemError',
         component: (resolve) => require(['components/error-pages/500'], resolve),

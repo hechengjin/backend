@@ -5,24 +5,11 @@
       <span class="h-panel-title">添加课程</span>
     </div>
     <div class="h-panel-body">
-      <Form
-        ref="form"
-        mode="block"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :labelWidth="110"
-        :rules="rules"
-        :model="course"
-      >
+      <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="course">
         <Row :space="10">
           <Cell :width="6">
             <FormItem label="分类" prop="category_id">
-              <Select
-                v-model="course.category_id"
-                :datas="courseCategories"
-                keyName="id"
-                titleName="name"
-              ></Select>
+              <Select v-model="course.category_id" :datas="courseCategories" keyName="id" titleName="name"></Select>
             </FormItem>
           </Cell>
           <Cell :width="6">
@@ -59,6 +46,10 @@
             </FormItem>
           </Cell>
         </Row>
+
+        <FormItem label="Slug" prop="slug">
+          <input type="text" v-model="course.slug" placeholder="不清楚可不填写" />
+        </FormItem>
 
         <FormItem label="课程封面" prop="thumb">
           <image-upload v-model="course.thumb" name="课程封面"></image-upload>

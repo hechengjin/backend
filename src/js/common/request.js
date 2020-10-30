@@ -375,6 +375,9 @@ const Request = {
     },
     WatchRecords(param) {
       return Ajax.get('/video/' + param.video_id + '/watch/records', param);
+    },
+    Import(param) {
+      return Ajax.postJson('/video/import', param);
     }
   },
   CourseChapter: {
@@ -1466,6 +1469,39 @@ const Request = {
         },
         Delete(param) {
           return Ajax.postJson('/backend/addons/Snapshot/images/delete/multi', param);
+        },
+      }
+    },
+    CodeExchanger: {
+      Goods: {
+        Index(param) {
+          return Ajax.get('/backend/addons/CodeExchanger/goods', param);
+        },
+        Create(param) {
+          return Ajax.get('/backend/addons/CodeExchanger/goods/create', param);
+        },
+        Store(param) {
+          return Ajax.postJson('/backend/addons/CodeExchanger/goods/create', param);
+        },
+        Edit(param) {
+          return Ajax.get('/backend/addons/CodeExchanger/goods/' + param.id);
+        },
+        Update(param) {
+          return Ajax.putJson('/backend/addons/CodeExchanger/goods/' + param.id, param);
+        },
+        Delete(param) {
+          return Ajax.delete('/backend/addons/CodeExchanger/goods/' + param.id, param);
+        }
+      },
+      Codes: {
+        Index(param) {
+          return Ajax.get('/backend/addons/CodeExchanger/codes', param);
+        },
+        Generate(param) {
+          return Ajax.postJson('/backend/addons/CodeExchanger/code/generate', param);
+        },
+        DeleteMulti(param) {
+          return Ajax.postJson('/backend/addons/CodeExchanger/code/delete/multi', param);
         },
       }
     }
