@@ -1503,6 +1503,9 @@ const Request = {
         DeleteMulti(param) {
           return Ajax.postJson('/backend/addons/CodeExchanger/code/delete/multi', param);
         },
+        Export() {
+          return Ajax.get('/backend/addons/CodeExchanger/code/export');
+        },
       }
     }
   }

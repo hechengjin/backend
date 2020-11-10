@@ -84,6 +84,7 @@ export default {
       datas: [],
       loading: false,
       filter: {
+        user_id: 0,
         course_id: null,
         video_id: null
       },
