@@ -1383,6 +1383,26 @@ const Request = {
           return Ajax.delete('/backend/addons/multi_level_share/poster/' + param.id, param);
         }
       },
+      Goods: {
+        List(param) {
+          return Ajax.get('/backend/addons/multi_level_share/goods/index', param);
+        },
+        Create(param) {
+          return Ajax.get('/backend/addons/multi_level_share/goods/create', param);
+        },
+        Store(param) {
+          return Ajax.postJson('/backend/addons/multi_level_share/goods/create', param);
+        },
+        Edit(param) {
+          return Ajax.get('/backend/addons/multi_level_share/goods/' + param.id);
+        },
+        Update(param) {
+          return Ajax.putJson('/backend/addons/multi_level_share/goods/' + param.id, param);
+        },
+        Delete(param) {
+          return Ajax.delete('/backend/addons/multi_level_share/goods/' + param.id, param);
+        }
+      },
     },
     xiaoBanKe: {
       Order: {
