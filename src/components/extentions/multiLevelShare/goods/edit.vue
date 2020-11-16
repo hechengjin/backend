@@ -27,9 +27,19 @@
         </Row>
 
         <Row :space="10">
-          <Cell :width="24">
-            <FormItem prop="reward" label="奖励金额">
+          <Cell :width="8">
+            <FormItem prop="reward" label="一级奖励">
               <input type="text" v-model="goods.reward" min="0" placeholder="单位：元" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem prop="reward" label="二级奖励">
+              <input type="text" v-model="goods.reward2" min="0" placeholder="单位：元" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem prop="reward" label="三级奖励">
+              <input type="text" v-model="goods.reward3" min="0" placeholder="单位：元" />
             </FormItem>
           </Cell>
         </Row>
@@ -53,10 +63,12 @@ export default {
         goods_title: null,
         goods_thumb: null,
         goods_charge: null,
-        reward: null
+        reward: null,
+        reward2: null,
+        reward3: null
       },
       rules: {
-        required: ['goods_charge', 'goods_title', 'reward']
+        required: ['goods_charge', 'goods_title', 'reward', 'reward2', 'reward3']
       },
       goodsList: [],
       types: []

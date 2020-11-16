@@ -45,9 +45,13 @@
               <span>￥{{ data.goods_charge }}</span>
             </template>
           </TableItem>
-          <TableItem title="奖励" :width="100">
+          <TableItem title="奖励1/2/3" :width="200">
             <template slot-scope="{ data }">
               <span>￥{{ data.reward }}</span>
+              /
+              <span>￥{{ data.reward2 }}</span>
+              /
+              <span>￥{{ data.reward3 }}</span>
             </template>
           </TableItem>
           <TableItem title="操作" align="center" :width="200">
