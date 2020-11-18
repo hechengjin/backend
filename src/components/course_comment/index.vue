@@ -75,7 +75,7 @@ export default {
       loading: false,
       filter: {
         course_id: null,
-        user_id: null
+        user_id: 0
       },
       courses: [],
       users: []

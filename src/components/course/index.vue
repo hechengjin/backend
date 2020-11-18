@@ -7,21 +7,20 @@
       <div class="mb-10">
         <Form>
           <Row :space="10">
+            <Cell :width="4">
+              <FormItem label="课程ID">
+                <input type="text" v-model="cond.id" placeholder="课程ID" />
+              </FormItem>
+            </Cell>
             <Cell :width="6">
               <FormItem label="搜索">
                 <input type="text" v-model="cond.keywords" placeholder="课程标题" />
               </FormItem>
             </Cell>
-            <Cell :width="6">
+            <Cell :width="8">
               <FormItem label="分类">
                 <template v-slot:label>分类</template>
-                <Select
-                  v-model="cond.cid"
-                  :filterable="true"
-                  :datas="categories"
-                  keyName="id"
-                  titleName="name"
-                ></Select>
+                <Select v-model="cond.cid" :filterable="true" :datas="categories" keyName="id" titleName="name"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -34,60 +33,29 @@
         </Form>
       </div>
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="course.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="course.store" text="添加" @click="create()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas" @sort="sortEvt">
         <TableItem prop="id" title="CID" :sort="true" :width="80"></TableItem>
         <TableItem prop="title" title="课程"></TableItem>
         <TableItem prop="charge" title="价格" unit="元" :sort="true" :width="120"></TableItem>
         <TableItem title="订阅" :sort="true" :width="120">
-          <template slot-scope="{data}">
-            <span @click="showSubscribesPage(data)">{{data.user_count}}</span>
+          <template slot-scope="{ data }">
+            <span @click="showSubscribesPage(data)">{{ data.user_count }}</span>
           </template>
         </TableItem>
         <TableItem title="操作" align="center" :width="350">
           <template slot-scope="{ data }">
             <p-del-button permission="course.destroy" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="course.edit"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s"
-              permission="course_chapter"
-              text="章节"
-              @click="goChapter(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s"
-              permission="course_attach"
-              text="附件"
-              @click="goCourseAttach(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s"
-              permission="course.watchRecords"
-              text="观看记录"
-              @click="showWatchRecords(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="course.edit" text="编辑" @click="edit(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course_chapter" text="章节" @click="goChapter(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course_attach" text="附件" @click="goCourseAttach(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course.watchRecords" text="观看记录" @click="showWatchRecords(data)"></p-button>
           </template>
         </TableItem>
       </Table>
       <p></p>
-      <Pagination
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>
@@ -104,7 +72,8 @@ export default {
         keywords: '',
         cid: null,
         sort: 'created_at',
-        order: 'desc'
+        order: 'desc',
+        id: null
       },
       datas: [],
       loading: false,
@@ -126,6 +95,7 @@ export default {
     reset() {
       this.cond.keywords = null;
       this.cond.cid = null;
+      this.cond.id = null;
       this.getData(true);
     },
     getData(reload = false) {
