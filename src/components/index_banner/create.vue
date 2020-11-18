@@ -4,14 +4,7 @@
       <span class="h-panel-title">添加</span>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="banner"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="banner">
         <Row :space="10">
           <Cell :width="6">
             <FormItem label="Banner名" prop="name">
@@ -24,14 +17,8 @@
             </FormItem>
           </Cell>
           <Cell :width="12">
-            <FormItem label="升序" prop="course_ids">
-              <Select
-                v-model="banner.course_ids"
-                :datas="courses"
-                keyName="id"
-                titleName="title"
-                :multiple="true"
-              ></Select>
+            <FormItem label="课程" prop="course_ids">
+              <Select v-model="banner.course_ids" :datas="courses" keyName="id" titleName="title" :multiple="true"></Select>
             </FormItem>
           </Cell>
         </Row>

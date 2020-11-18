@@ -65,6 +65,7 @@
           :size="pagination.size"
           :cur="pagination.page"
           :total="pagination.total"
+          v-model="pagination"
           @change="changePage"
         />
       </div>

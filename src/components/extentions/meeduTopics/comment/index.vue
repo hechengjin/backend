@@ -23,7 +23,11 @@
       </div>
 
       <div class="float-box mb-10">
-        <Table :loading="loading" :datas="datas" ref="table">
+        <p-del-button permission="addons.meedu_topics.topic.comment.check" text="批量审核通过" @click="multiCheck(1)"></p-del-button>
+        <p-del-button permission="addons.meedu_topics.topic.comment.check" text="批量审核拒绝" @click="multiCheck(0)"></p-del-button>
+      </div>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas" :checkbox="true" ref="table">
           <TableItem prop="id" title="ID" :width="80"></TableItem>
           <TableItem title="用户">
             <template slot-scope="{ data }">
@@ -101,6 +105,22 @@ export default {
     },
     remove(data, item) {
       R.Extentions.meeduTopics.Comment.Delete({ id: item.id }).then(resp => {
+        HeyUI.$Message.success('成功');
+        this.getData();
+      });
+    },
+    multiCheck(status) {
+      let items = this.$refs.table.getSelection();
+      if (items.length === 0) {
+        this.$Message.error('请选择需要操作的数据');
+        return;
+      }
+      this.loading = true;
+      let ids = [];
+      for (let i = 0; i < items.length; i++) {
+        ids.push(items[i].id);
+      }
+      R.Extentions.meeduTopics.Comment.Check({ ids: ids, is_check: status }).then(resp => {
         HeyUI.$Message.success('成功');
         this.getData();
       });
