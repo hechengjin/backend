@@ -1,5 +1,5 @@
 <template>
-  <div class="h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">试题分类</span>
     </div>
@@ -20,10 +20,7 @@
           <TableItem prop="name" title="分类名" treeOpener></TableItem>
           <TableItem title="操作" align="center" :width="200">
             <template slot-scope="{ data }">
-              <p-del-button
-                permission="addons.Paper.question_category.delete"
-                @click="remove(datas, data)"
-              ></p-del-button>
+              <p-del-button permission="addons.Paper.question_category.delete" @click="remove(datas, data)"></p-del-button>
               <p-button
                 glass="h-btn h-btn-s h-btn-primary"
                 permission="addons.Paper.question_category.update"
@@ -46,18 +43,15 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData();
   },
   methods: {
-    init() {
-      this.getData();
-    },
     changePage() {
       this.getData();
     },
     getData() {
       this.loading = true;
-      R.Extentions.paper.QuestionCategory.List({}).then(resp => {
+      R.Extentions.paper.QuestionCategory.List().then(resp => {
         this.datas = resp.data.data.data;
         this.loading = false;
         this.$refs.table.expandAll();

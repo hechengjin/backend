@@ -21,10 +21,6 @@
           <TableItem prop="name" title="章节名"></TableItem>
           <TableItem title="操作" align="center" :width="200">
             <template slot-scope="{ data }">
-              <p-del-button
-                permission="addons.Paper.practice_chapter.delete"
-                @click="remove(datas, data)"
-              ></p-del-button>
               <p-button
                 glass="h-btn h-btn-s h-btn-primary"
                 permission="addons.Paper.practice_chapter.update"
