@@ -3,7 +3,7 @@
 <template>
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
-      <span class="h-panel-title">试题管理</span>
+      <span class="h-panel-title">添加试题</span>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
@@ -24,15 +24,7 @@
         </Form>
       </div>
       <div class="float-box mb-10">
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          icon="h-icon-plus"
-          permission="addons.Paper.practice_chapter.questions.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
-
-        <p-del-button permission="addons.Paper.practice_chapter.questions.delete" text="批量移除" @click="deleteSubmit()"></p-del-button>
+        <p-del-button permission="addons.Paper.practice_chapter.questions.store" text="添加" @click="addQuestion()"></p-del-button>
       </div>
       <div class="float-box mb-10">
         <Table ref="table" :loading="loading" :checkbox="true" :datas="datas">
@@ -84,6 +76,7 @@ export default {
         category_id: null,
         id: this.id
       },
+      questions: [],
       datas: [],
       categories: [],
       loading: false
@@ -98,6 +91,7 @@ export default {
     },
     resetFilter() {
       this.filter.category_id = null;
+      this.id = null;
       this.getData(true);
     },
     getData(reset = false) {
@@ -107,41 +101,16 @@ export default {
       }
       let data = this.pagination;
       Object.assign(data, this.filter);
-      R.Extentions.paper.PracticeChapter.Questions(data).then(resp => {
+      R.Extentions.paper.PracticeChapter.QuestionsCreate(data).then(resp => {
         this.loading = false;
 
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;
+        this.questions = resp.data.questions;
         this.categories = resp.data.categories;
       });
     },
-    create() {
-      this.$Modal({
-        hasCloseIcon: true,
-        closeOnMask: false,
-        component: {
-          vue: resolve => {
-            require(['./question_add'], resolve);
-          },
-          datas: {
-            id: this.id
-          }
-        },
-        events: {
-          success: (modal, data) => {
-            modal.close();
-            this.getData();
-          }
-        }
-      });
-    },
     addQuestion(quesiton) {
-      R.Extentions.paper.PracticeChapter.QuestionsStore({ id: this.id, qids: [quesiton.id] }).then(resp => {
-        HeyUI.$Message.success('成功');
-        this.getData();
-      });
-    },
-    deleteSubmit() {
       let items = this.$refs.table.getSelection();
       if (items.length === 0) {
         this.$Message.error('请选择需要移除的试题');
@@ -152,7 +121,7 @@ export default {
       for (let i = 0; i < items.length; i++) {
         ids.push(items[i].id);
       }
-      R.Extentions.paper.PracticeChapter.QuestionsDelete({ id: this.id, qids: ids }).then(() => {
+      R.Extentions.paper.PracticeChapter.QuestionsStore({ id: this.id, qids: ids }).then(() => {
         HeyUI.$Message.success('成功');
         this.getData();
       });

@@ -19,6 +19,7 @@
           <TableItem prop="id" title="ID" :width="80"></TableItem>
           <TableItem prop="sort" title="升序" :width="120"></TableItem>
           <TableItem prop="name" title="章节名"></TableItem>
+          <TableItem prop="question_count" title="题目数" unit="个"></TableItem>
           <TableItem title="操作" align="center" :width="200">
             <template slot-scope="{ data }">
               <p-button
