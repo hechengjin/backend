@@ -9,13 +9,7 @@
           <Row :space="10">
             <Cell :width="6">
               <FormItem label="分类">
-                <Select
-                  v-model="filer.category_id"
-                  :datas="categories"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="filer.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -56,30 +50,26 @@
         <TableItem prop="id" title="ID" :width="80" :sort="true"></TableItem>
         <TableItem title="分类" :width="120">
           <template slot-scope="{ data }">
-            <span v-if="data.category">{{data.category.name}}</span>
+            <span v-if="data.category">{{ data.category.name }}</span>
             <span v-else class="red">已删除</span>
           </template>
         </TableItem>
         <TableItem prop="name" title="练习名"></TableItem>
+        <TableItem prop="question_count" title="题目数" unit="个"></TableItem>
         <TableItem title="VIP免费" align="center" :width="80">
           <template slot-scope="{ data }">
-            <span>{{data.is_vip_free === 1 ? '是' : '否'}}</span>
+            <span>{{ data.is_vip_free === 1 ? '是' : '否' }}</span>
           </template>
         </TableItem>
         <TableItem title="价格" :width="120">
           <template slot-scope="{ data }">
             <span v-if="data.is_free === 1" class="red">免费</span>
-            <span v-else>￥{{data.charge}}</span>
+            <span v-else>￥{{ data.charge }}</span>
           </template>
         </TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Paper.practice.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.Paper.practice.update" text="编辑" @click="edit(data)"></p-button>
             <p-button
               glass="h-btn h-btn-s h-btn-primary"
               permission="addons.Paper.practice_chapter.list"
