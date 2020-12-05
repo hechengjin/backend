@@ -9,10 +9,15 @@ import routerConfig from 'js/config/router-config';
 import store from 'js/vuex/store';
 import 'js/vue/components';
 import 'js/vue/filters';
+
+// 全局组件
 import ImageUpload from './components/common/image';
 import Warn from './components/common/warn';
 import PButton from './components/common/button';
 import PDelButton from './components/common/del-button';
+import CopyText from './components/common/copytext';
+import InputDuration from './components/common/duration';
+import UserFilter from './components/common/user-filter/index';
 
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
@@ -33,6 +38,9 @@ Vue.component('ImageUpload', ImageUpload);
 Vue.component('Warn', Warn);
 Vue.component('PButton', PButton);
 Vue.component('PDelButton', PDelButton);
+Vue.component('copytext', CopyText);
+Vue.component('InputDuration', InputDuration);
+Vue.component('UserFilter', UserFilter);
 
 const router = routerConfig();
 

@@ -1,19 +1,34 @@
 <template>
-  <div style="padding: 15px;">
-    <Form v-width="400" mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="adfrom">
-      <FormItem label="Name" prop="from_name">
-        <template v-slot:label>Name</template>
-        <input type="text" v-model="adfrom.from_name" />
-      </FormItem>
-      <FormItem label="Key" prop="from_key">
-        <template v-slot:label>Key</template>
-        <input type="text" v-model="adfrom.from_key" />
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">添加</Button>
-        <Button @click="cancel">取消</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">添加</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :rules="rules"
+        :model="adfrom"
+      >
+        <Row :space="10">
+          <Cell :width="12">
+            <FormItem label="Name" prop="from_name">
+              <input type="text" v-model="adfrom.from_name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="12">
+            <FormItem label="Key" prop="from_key">
+              <input type="text" v-model="adfrom.from_key" />
+            </FormItem>
+          </Cell>
+        </Row>
+        <FormItem>
+          <Button color="primary" @click="create">添加</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>
@@ -28,23 +43,15 @@ export default {
       }
     };
   },
-  mounted() {
-    this.init();
-  },
   methods: {
-    init() {},
     create() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
-        this.$emit('success', this.adfrom);
-        this.close();
+        R.AdFrom.Store(this.adfrom).then(resp => {
+          HeyUI.$Message.success('成功');
+          this.$emit('success');
+        });
       }
-    },
-    cancel() {
-      this.close();
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };

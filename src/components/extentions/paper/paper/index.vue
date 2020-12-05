@@ -4,26 +4,33 @@
       <span class="h-panel-title">试卷</span>
     </div>
     <div class="h-panel-body">
-      <Form ref="form" :labelWidth="110">
-        <FormItem label="分类" prop="category_id">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="pagination.category_id"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(true)">过滤</Button>
-          <Button @click="resetFilter()">重置</Button>
-        </FormItem>
-      </Form>
+      <div class="float-box mb-10">
+        <Form>
+          <Row>
+            <Cell :width="6">
+              <FormItem label="分类" prop="category_id">
+                <Select
+                  v-model="pagination.category_id"
+                  :datas="categories"
+                  keyName="id"
+                  titleName="name"
+                  :filterable="true"
+                ></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">过滤</Button>
+                <Button @click="resetFilter()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
 
       <div class="mb-10">
         <p-button
-          glass="h-btn h-btn-primary"
+          glass="h-btn h-btn-s h-btn-primary"
           icon="h-icon-plus"
           permission="addons.Paper.paper.store"
           text="添加"
@@ -31,84 +38,89 @@
         ></p-button>
 
         <p-button
-          glass="h-btn h-btn-primary"
+          glass="h-btn h-btn-s h-btn-primary"
           permission="addons.Paper.paper_category.list"
-          text="试卷分类"
+          text="分类"
           @click="showCategoriesPage()"
         ></p-button>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID" :width="60"></TableItem>
-        <TableItem title="分类" :width="120">
-          <template slot-scope="{ data }">
-            <span v-if="data.category">{{data.category.name}}</span>
-            <span class="red" v-else>已删除</span>
-          </template>
-        </TableItem>
-        <TableItem prop="title" title="标题"></TableItem>
-        <TableItem title="分数/及格分">
-          <template slot-scope="{ data }">
-            <span>{{data.score}}分/{{data.pass_score}}分</span>
-          </template>
-        </TableItem>
-        <TableItem prop="expired_minutes" title="时长" unit="分钟"></TableItem>
-        <TableItem title="试题">
-          <template slot-scope="{ data }">
-            <template v-if="data.is_random !== 1">
+
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID" :width="60"></TableItem>
+          <TableItem title="分类" :width="80">
+            <template slot-scope="{ data }">
+              <span v-if="data.category">{{data.category.name}}</span>
+              <span class="red" v-else>已删除</span>
+            </template>
+          </TableItem>
+          <TableItem prop="title" title="标题"></TableItem>
+          <TableItem title="分数/及格" :width="120">
+            <template slot-scope="{ data }">
+              <span>{{data.score}}分/{{data.pass_score}}分</span>
+            </template>
+          </TableItem>
+          <TableItem prop="expired_minutes" title="时长" unit="分钟" :width="80"></TableItem>
+          <TableItem title="试题" :width="80">
+            <template slot-scope="{ data }">
+              <template v-if="data.is_random !== 1">
+                <p-button
+                  glass="h-btn h-btn-s h-btn-primary"
+                  permission="addons.Paper.paper.questions.list"
+                  text="试题"
+                  @click="showQuestion(data)"
+                ></p-button>
+              </template>
+              <span v-else>随机</span>
+            </template>
+          </TableItem>
+          <TableItem title="参与规则" :width="80">
+            <template slot-scope="{ data }">
+              <span class="blue" v-if="data.enabled_invite === 1">仅邀请</span>
+              <span class="red" v-else-if="data.is_free === 1">免费</span>
+              <span v-else-if="data.charge > 0">￥{{data.charge}}</span>
+              <span
+                v-else
+              >{{data.is_vip_free ? '会员免费' : ''}} {{data.required_courses.length > 0 ? '购买课程' : ''}}</span>
+            </template>
+          </TableItem>
+          <TableItem title="操作" align="center" :width="300">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.Paper.paper.delete" @click="remove(datas, data)"></p-del-button>
               <p-button
                 glass="h-btn h-btn-s h-btn-primary"
-                permission="addons.Paper.paper.questions.list"
-                text="试题"
-                @click="showQuestion(data)"
+                permission="addons.Paper.paper.update"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Paper.paper.users"
+                text="用户"
+                @click="showUsers(data)"
+              ></p-button>
+
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Paper.paper.userPaper"
+                text="考试记录"
+                @click="showUserPapers(data)"
               ></p-button>
             </template>
-            <span v-else>随机</span>
-          </template>
-        </TableItem>
-        <TableItem title="参与规则">
-          <template slot-scope="{ data }">
-            <span v-if="data.enabled_invite === 1">仅邀请</span>
-            <span v-else-if="data.is_free === 1">免费</span>
-            <span v-else-if="data.charge > 0">￥{{data.charge}}</span>
-            <span
-              v-else
-            >{{data.is_vip_free ? '会员免费' : ''}} {{data.required_courses.length > 0 ? '购买课程' : ''}}</span>
-          </template>
-        </TableItem>
-        <TableItem title="操作" align="center" :width="240">
-          <template slot-scope="{ data }">
-            <p-del-button permission="addons.Paper.paper.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Paper.paper.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+          </TableItem>
+        </Table>
+      </div>
 
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Paper.paper.users"
-              text="用户"
-              @click="showUsers(data)"
-            ></p-button>
-
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Paper.paper.userPaper"
-              text="考试记录"
-              @click="showUserPapers(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
-
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <div class="float-box mb-10">
+        <Pagination
+          class="mt-10"
+          v-if="pagination.total > 0"
+          align="right"
+          v-model="pagination"
+          @change="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -118,7 +130,7 @@ export default {
     return {
       pagination: {
         page: 1,
-        size: 20,
+        size: 10,
         total: 0,
         category_id: null
       },
@@ -128,12 +140,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     resetFilter() {
       this.pagination.category_id = null;
       this.getData(true);

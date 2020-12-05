@@ -1,72 +1,80 @@
 <style lang="less"></style>
 <template>
   <div class>
-    <div class="table-basic-vue frame-page h-panel">
+    <div class="h-panel w-1200">
       <div class="h-panel-bar">
-        <span class="h-panel-title">添加视频</span>
+        <span class="h-panel-title">添加</span>
       </div>
       <div class="h-panel-body">
-        <Form
-          ref="form"
-          mode="block"
-          :validOnChange="true"
-          :showErrorTip="true"
-          :labelWidth="110"
-          :rules="rules"
-          :model="video"
-        >
-          <FormItem label="所属课程" prop="course_id">
-            <template v-slot:label>所属课程</template>
-            <Select
-              v-model="video.course_id"
-              :datas="courses"
-              keyName="id"
-              titleName="title"
-              :filterable="true"
-              @change="selectCourse"
-            ></Select>
+        <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="video">
+          <Row :space="10">
+            <Cell :width="5">
+              <FormItem label="所属课程" prop="course_id">
+                <Select v-model="video.course_id" :datas="courses" keyName="id" titleName="title" :filterable="true" @change="selectCourse"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="4">
+              <FormItem label="章节" prop="chapter_id">
+                <Select v-model="video.chapter_id" :datas="chapters" keyName="id" titleName="title" :filterable="true"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="价格" prop="charge">
+                <div class="h-input-group" v-width="200">
+                  <input type="text" v-model="video.charge" />
+                  <span class="h-input-addon">元</span>
+                </div>
+              </FormItem>
+            </Cell>
+            <Cell :width="3">
+              <FormItem label="禁止购买" prop="is_ban_sell">
+                <h-switch v-model="video.is_ban_sell" :trueValue="1" :falseValue="0"></h-switch>
+              </FormItem>
+            </Cell>
+            <Cell :width="3">
+              <FormItem label="显示" prop="is_show">
+                <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
+              </FormItem>
+            </Cell>
+            <Cell :width="3">
+              <FormItem label="禁止快进" prop="ban_drag">
+                <template v-slot:label>禁止快进</template>
+                <h-switch v-model="video.ban_drag" :trueValue="1" :falseValue="0"></h-switch>
+              </FormItem>
+            </Cell>
+          </Row>
+
+          <Row :space="10">
+            <Cell :width="18">
+              <FormItem label="视频名" prop="title">
+                <input type="text" v-model="video.title" />
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="上架时间" prop="published_at">
+                <DatePicker v-model="video.published_at" type="datetime"></DatePicker>
+              </FormItem>
+            </Cell>
+          </Row>
+
+          <FormItem label="Slug" prop="slug">
+            <input type="text" v-model="video.slug" placeholder="不清楚可不填写" />
           </FormItem>
-          <FormItem label="章节" prop="chapter_id">
-            <template v-slot:label>章节</template>
-            <Select
-              v-model="video.chapter_id"
-              :datas="chapters"
-              keyName="id"
-              titleName="title"
-              :filterable="true"
-            ></Select>
-          </FormItem>
-          <FormItem label="视频名" prop="title">
-            <template v-slot:label>视频名</template>
-            <input type="text" v-model="video.title" />
-          </FormItem>
-          <FormItem label="价格" prop="charge">
-            <template v-slot:label>价格</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="video.charge" />
-              <span class="h-input-addon">元</span>
-            </div>
-          </FormItem>
-          <FormItem label="禁止单独购买" prop="is_ban_sell">
-            <template v-slot:label>禁止单独购买</template>
-            <h-switch v-model="video.is_ban_sell" :trueValue="1" :falseValue="0"></h-switch>
-          </FormItem>
-          <FormItem label="简短介绍" prop="short_description">
-            <template v-slot:label>简短介绍</template>
-            <textarea v-model="video.short_description"></textarea>
-          </FormItem>
-          <FormItem label="详细介绍" prop="description">
-            <template v-slot:label>详细介绍</template>
-            <tinymce-editor v-model="video.original_desc"></tinymce-editor>
-          </FormItem>
-          <FormItem label="上架时间" prop="published_at">
-            <template v-slot:label>上架时间</template>
-            <DatePicker v-model="video.published_at" v-width="200" type="datetime"></DatePicker>
-          </FormItem>
-          <FormItem label="是否显示" prop="is_show">
-            <template v-slot:label>是否显示</template>
-            <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
-          </FormItem>
+
+          <Row :space="10">
+            <Cell :width="24">
+              <FormItem label="简短介绍" prop="short_description">
+                <template v-slot:label>简短介绍</template>
+                <textarea v-model="video.short_description"></textarea>
+              </FormItem>
+            </Cell>
+            <Cell :width="24">
+              <FormItem label="详细介绍" prop="description">
+                <template v-slot:label>详细介绍</template>
+                <tinymce-editor v-model="video.original_desc"></tinymce-editor>
+              </FormItem>
+            </Cell>
+          </Row>
 
           <FormItem label="上传视频">
             <template v-slot:label>上传视频</template>
@@ -88,48 +96,47 @@
 
           <FormItem label="视频时长" prop="duration">
             <template v-slot:label>视频时长</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="video.duration" />
-              <span class="h-input-addon">秒</span>
-            </div>
+            <input-duration v-model="video.duration"></input-duration>
           </FormItem>
 
           <FormItem label="试看时长" prop="free_seconds">
             <template v-slot:label>试看时长</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="video.free_seconds" />
-              <span class="h-input-addon">秒</span>
-            </div>
+            <input-duration v-model="video.free_seconds"></input-duration>
           </FormItem>
 
-          <FormItem label="禁止快进" prop="ban_drag">
-            <template v-slot:label>禁止快进</template>
-            <h-switch v-model="video.ban_drag" :trueValue="1" :falseValue="0"></h-switch>
-          </FormItem>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="Web播放器" prop="player_pc">
+                <template v-slot:label>Web播放器</template>
+                <Select v-model="video.player_pc" :datas="playerPc"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="手机播放器" prop="player_h5">
+                <template v-slot:label>手机播放器</template>
+                <Select v-model="video.player_h5" :datas="playerH5"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="评论开关" prop="comment_status">
+                <template v-slot:label>评论开关</template>
+                <Select v-model="video.comment_status" :datas="commentStatus"></Select>
+              </FormItem>
+            </Cell>
+          </Row>
 
-          <FormItem label="评论开关" prop="comment_status">
-            <template v-slot:label>评论开关</template>
-            <Select v-model="video.comment_status" :datas="commentStatus"></Select>
-          </FormItem>
-
-          <FormItem label="Web播放器" prop="player_pc">
-            <template v-slot:label>Web播放器</template>
-            <Select v-model="video.player_pc" :datas="playerPc"></Select>
-          </FormItem>
-
-          <FormItem label="手机播放器" prop="player_h5">
-            <template v-slot:label>手机播放器</template>
-            <Select v-model="video.player_h5" :datas="playerH5"></Select>
-          </FormItem>
-
-          <FormItem label="SEO描述" prop="seo_description">
-            <template v-slot:label>SEO描述</template>
-            <textarea v-model="video.seo_description"></textarea>
-          </FormItem>
-          <FormItem label="SEO关键字" prop="seo_keywords">
-            <template v-slot:label>SEO关键字</template>
-            <textarea v-model="video.seo_keywords"></textarea>
-          </FormItem>
+          <Row :space="10">
+            <Cell :width="12">
+              <FormItem label="SEO描述" prop="seo_description">
+                <textarea v-model="video.seo_description" rows="2" placeholder="seo描述"></textarea>
+              </FormItem>
+            </Cell>
+            <Cell :width="12">
+              <FormItem label="SEO关键字" prop="seo_keywords">
+                <textarea v-model="video.seo_keywords" rows="2" placeholder="seo关键字"></textarea>
+              </FormItem>
+            </Cell>
+          </Row>
 
           <FormItem>
             <Button color="primary" @click="create">添加</Button>
@@ -154,7 +161,7 @@ export default {
   },
   data() {
     return {
-      video: Video.parse({}),
+      video: Video.parse({ duration: 0, free_seconds: 0 }),
       courses: [],
       chapters: [],
       tabs: ['阿里云', '腾讯云', '直链'],

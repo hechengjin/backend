@@ -1,27 +1,39 @@
 <style lang="less">
 .body {
   border: 1px solid rgb(240, 246, 255);
-}
-.mt-2 {
-  margin-top: 2px;
-}
-.left-menu-item {
-  border-bottom: 1px solid rgb(240, 246, 255);
-  cursor: pointer;
-  font-size: 1rem;
-  &.active {
-    background-color: rgb(240, 246, 255);
-    color: @primary-color;
-    border-right: 5px solid @primary-color;
+
+  .left-box {
+    border-right: 1px solid rgb(240, 246, 255);
+    max-height: 520px;
+    overflow-y: auto;
+
+    .left-menu-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &.active {
+        background-color: @primary-color;
+        color: white;
+      }
+
+      &:hover {
+        background-color: @primary-color;
+        color: white;
+      }
+
+      span {
+        display: inline-block;
+        padding: 10px 0 10px 20px;
+      }
+    }
   }
-  &:hover {
-    background-color: rgb(245, 245, 245);
-  }
-  span {
-    display: inline-block;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 10px;
+
+  .right-box {
+    max-height: 520px;
+    overflow-y: auto;
   }
 }
 </style>
@@ -35,7 +47,7 @@
         <p-button glass="h-btn h-btn-primary" permission="setting.save" text="保存" @click="save()"></p-button>
       </div>
       <Row class="body">
-        <Cell width="4" style="border-right: 1px solid rgb(238, 238, 238);">
+        <Cell width="4" class="left-box">
           <Row>
             <Cell
               v-for="(item, index) in setting"
@@ -52,6 +64,7 @@
           </Row>
         </Cell>
         <Cell
+          class="right-box"
           width="20"
           v-show="activeItem === index"
           v-for="(item, index) in setting"

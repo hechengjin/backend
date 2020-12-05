@@ -1,5 +1,5 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
     </div>
@@ -12,37 +12,65 @@
         :rules="rules"
         :model="goods"
       >
-        <FormItem prop="goods_id">
-          <template v-slot:label>课程</template>
-          <Select
-            v-model="goods.goods_id"
-            :datas="createParams.courses"
-            :filterable="true"
-            keyName="id"
-            titleName="title"
-          ></Select>
-        </FormItem>
-        <FormItem prop="charge">
-          <template v-slot:label>秒杀价格</template>
-          <input type="number" v-model="goods.charge" min="0" />
-          <warn text="单位：元"></warn>
-        </FormItem>
-        <FormItem prop="charge">
-          <template v-slot:label>秒杀数量</template>
-          <input type="number" v-model="goods.num" min="0" />
-        </FormItem>
-        <FormItem prop="charge">
-          <template v-slot:label>秒杀开始时间</template>
-          <DatePicker v-model="goods.started_at" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem prop="charge">
-          <template v-slot:label>秒杀结束时间</template>
-          <DatePicker v-model="goods.end_at" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem prop="page_title">
-          <template v-slot:label>秒杀页面标题</template>
-          <input type="text" v-model="goods.page_title" />
-        </FormItem>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem prop="goods_title" label="商品名">
+              <input type="text" v-model="goods.goods_title" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem prop="goods_charge" label="商品原价">
+              <input type="number" v-model="goods.goods_charge" min="0" />
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="24">
+            <FormItem prop="goods_thumb" label="商品封面">
+              <image-upload v-model="goods.goods_thumb" name="商品封面"></image-upload>
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="24">
+            <FormItem prop="desc" label="详细介绍">
+              <tinymce-editor v-model="goods.desc"></tinymce-editor>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem prop="charge" label="秒杀价格">
+              <input type="number" v-model="goods.charge" min="0" />
+              <warn text="单位：元，只能设置为整数。"></warn>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem prop="num" label="秒杀数量">
+              <input type="number" v-model="goods.num" min="0" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem prop="started_at" label="开始时间">
+              <DatePicker v-model="goods.started_at" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem prop="end_at" label="结束时间">
+              <DatePicker v-model="goods.end_at" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem prop="page_title" label="秒杀页面标题">
+              <input type="text" v-model="goods.page_title" />
+            </FormItem>
+          </Cell>
+        </Row>
 
         <FormItem>
           <Button color="primary" @click="create">保存</Button>
@@ -52,8 +80,11 @@
   </div>
 </template>
 <script>
+import TinymceEditor from '@/components/common/tinymce';
+
 export default {
   props: ['id'],
+  components: { TinymceEditor },
   data() {
     return {
       goods: {
@@ -66,12 +97,26 @@ export default {
         num: null,
         started_at: null,
         end_at: null,
-        page_title: null
+        page_title: null,
+        desc: null
       },
       rules: {
-        required: ['goods_id', 'num', 'charge', 'started_at', 'end_at', 'page_title']
+        required: [
+          'goods_id',
+          'goods_type',
+          'goods_title',
+          'goods_thumb',
+          'goods_charge',
+          'desc',
+          'num',
+          'charge',
+          'started_at',
+          'end_at',
+          'page_title'
+        ]
       },
-      createParams: {}
+      goodsList: [],
+      types: []
     };
   },
   mounted() {
@@ -81,20 +126,13 @@ export default {
     init() {
       R.Extentions.miaoSha.Goods.Edit({ id: this.id }).then(res => {
         this.goods = res.data;
-      });
-      R.Extentions.miaoSha.Goods.Create().then(res => {
-        this.createParams = res.data;
+        this.goods.goods_charge = this.goods.original_charge;
       });
     },
     create() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
         let data = this.goods;
-        let course = this.createParams.courses[this.goods.goods_id];
-        data.goods_type = 'course';
-        data.goods_title = course.title;
-        data.goods_thumb = course.thumb;
-        data.goods_charge = course.charge * 100;
         this.$emit('success', data);
       }
     }

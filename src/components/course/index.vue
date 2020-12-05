@@ -3,80 +3,59 @@
     <div class="h-panel-bar">
       <span class="h-panel-title">课程</span>
     </div>
-    <div class="h-panel-bar">
-      <Form :labelWidth="110">
-        <FormItem label="关键字搜索">
-          <input type="text" v-model="cond.keywords" placeholder="课程标题" />
-        </FormItem>
-        <FormItem label="分类">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="cond.cid"
-            :filterable="true"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button class="h-btn h-btn-primary" @click="getData(true)">搜索</Button>
-          <Button class="h-btn" @click="reset()">重置</Button>
-        </FormItem>
-      </Form>
-    </div>
     <div class="h-panel-body">
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="course.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <Form>
+          <Row :space="10">
+            <Cell :width="4">
+              <FormItem label="课程ID">
+                <input type="text" v-model="cond.id" placeholder="课程ID" />
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="搜索">
+                <input type="text" v-model="cond.keywords" placeholder="课程标题" />
+              </FormItem>
+            </Cell>
+            <Cell :width="8">
+              <FormItem label="分类">
+                <template v-slot:label>分类</template>
+                <Select v-model="cond.cid" :filterable="true" :datas="categories" keyName="id" titleName="name"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button class="h-btn h-btn-primary" @click="getData(true)">搜索</Button>
+                <Button class="h-btn" @click="reset()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
+      <div class="mb-10">
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="course.store" text="添加" @click="create()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas" @sort="sortEvt">
-        <TableItem prop="id" title="ID" :sort="true" :width="80"></TableItem>
+        <TableItem prop="id" title="CID" :sort="true" :width="80"></TableItem>
         <TableItem prop="title" title="课程"></TableItem>
-        <TableItem prop="charge" title="价格" unit="元" :sort="true" :width="80"></TableItem>
-        <TableItem prop="published_at" title="上线" :sort="true"></TableItem>
-        <TableItem title="订阅" prop="user_count" unit="人" :sort="true" :width="80"></TableItem>
-        <TableItem title="操作" align="center" :width="300">
+        <TableItem prop="charge" title="价格" unit="元" :sort="true" :width="120"></TableItem>
+        <TableItem title="订阅" :sort="true" :width="120">
+          <template slot-scope="{ data }">
+            <span @click="showSubscribesPage(data)">{{ data.user_count }}</span>
+          </template>
+        </TableItem>
+        <TableItem title="操作" align="center" :width="350">
           <template slot-scope="{ data }">
             <p-del-button permission="course.destroy" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="course.edit"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="course_chapter"
-              text="章节"
-              @click="goChapter(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="course_attach"
-              text="附件"
-              @click="goCourseAttach(data)"
-            ></p-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="course.subscribe_users"
-              text="订阅"
-              @click="showSubscribeUsers(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="course.edit" text="编辑" @click="edit(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course_chapter" text="章节" @click="goChapter(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course_attach" text="附件" @click="goCourseAttach(data)"></p-button>
+            <p-button glass="h-btn h-btn-s" permission="course.watchRecords" text="观看记录" @click="showWatchRecords(data)"></p-button>
           </template>
         </TableItem>
       </Table>
       <p></p>
-      <Pagination
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>
@@ -93,7 +72,8 @@ export default {
         keywords: '',
         cid: null,
         sort: 'created_at',
-        order: 'desc'
+        order: 'desc',
+        id: null
       },
       datas: [],
       loading: false,
@@ -101,12 +81,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     changePage() {
       this.getData();
     },
@@ -116,8 +93,9 @@ export default {
       this.getData();
     },
     reset() {
-      this.cond.keywords = '';
+      this.cond.keywords = null;
       this.cond.cid = null;
+      this.cond.id = null;
       this.getData(true);
     },
     getData(reload = false) {
@@ -182,7 +160,7 @@ export default {
         hasCloseIcon: true,
         component: {
           vue: resolve => {
-            require(['../course_chapter/index'], resolve);
+            require(['./chapter/index'], resolve);
           },
           datas: {
             cid: item.id
@@ -204,13 +182,27 @@ export default {
         }
       });
     },
-    showSubscribeUsers(item) {
+    showWatchRecords(item) {
       this.$Modal({
         closeOnMask: false,
         hasCloseIcon: true,
         component: {
           vue: resolve => {
-            require(['./subscribe_users'], resolve);
+            require(['./watch_records'], resolve);
+          },
+          datas: {
+            id: item.id
+          }
+        }
+      });
+    },
+    showSubscribesPage(item) {
+      this.$Modal({
+        closeOnMask: false,
+        hasCloseIcon: true,
+        component: {
+          vue: resolve => {
+            require(['./subscribe/index'], resolve);
           },
           datas: {
             id: item.id

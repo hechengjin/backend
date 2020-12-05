@@ -1,46 +1,67 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">团购订单</span>
     </div>
     <div class="h-panel-body">
-      <Form :labelWidth="110">
-        <FormItem>
-          <template v-slot:label>课程</template>
-          <Select
-            v-model="pagination.course_id"
-            :filterable="true"
-            :datas="courses"
-            keyName="id"
-            titleName="title"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <template v-slot:label>状态</template>
-          <Select v-model="pagination.status" :datas="status" keyName="id" titleName="title"></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(false)">搜索</Button>
-          <Button class="h-btn" @click="reset">重置</Button>
-        </FormItem>
+      <Form>
+        <Row :space="10">
+          <Cell :width="8">
+            <FormItem label="关键字">
+              <input type="text" v-model="filter.keywords" placeholder="请输入商品名关键字" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem label="用户ID">
+              <input type="text" v-model="filter.user_id" placeholder="用户ID" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem label="状态">
+              <Select v-model="filter.status" :datas="status" keyName="id" titleName="title"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem>
+              <Button color="primary" @click="getData">搜索</Button>
+              <Button class="h-btn" @click="reset">重置</Button>
+            </FormItem>
+          </Cell>
+        </Row>
       </Form>
 
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem title="商品">
+        <TableItem prop="id" title="ID" :width="80"></TableItem>
+        <TableItem title="GID" :width="80">
           <template slot-scope="{ data }">
-            <span v-if="data.goods">{{data.goods.course.title}}</span>
-            <span style="color:red" v-else>已删除</span>
+            <span v-if="data.goods">{{data.goods.other_id}}</span>
+            <span class="red" v-else>已删除</span>
           </template>
         </TableItem>
-        <TableItem title="用户">
-          <template slot-scope="{ data }">{{data.user.nick_name}}</template>
+        <TableItem prop="user_id" title="UID" :width="80"></TableItem>
+        <TableItem title="商品">
+          <template slot-scope="{ data }">
+            <span v-if="data.goods">{{data.goods.goods_title}}</span>
+            <span class="red" v-else>已删除</span>
+          </template>
         </TableItem>
-        <TableItem title="价格">
-          <template slot-scope="{ data }">{{data.charge}}元</template>
+        <TableItem title="用户" :width="150">
+          <template slot-scope="{ data }">
+            <span v-if="data.user">{{data.user.nick_name}}</span>
+            <span class="red" v-else>不存在</span>
+          </template>
         </TableItem>
-        <TableItem title="状态">
-          <template slot-scope="{ data }">{{data.status_text}}</template>
+        <TableItem title="支付" :width="80">
+          <template slot-scope="{ data }">￥{{data.charge}}</template>
+        </TableItem>
+        <TableItem title="状态" :width="80">
+          <template slot-scope="{ data }">
+            <span v-if="data.status_text === '已支付'">已支付</span>
+            <span v-else class="red">未支付</span>
+          </template>
+        </TableItem>
+        <TableItem title="时间" :width="120">
+          <template slot-scope="{ data }">{{data.created_at}}</template>
         </TableItem>
       </Table>
 
@@ -61,13 +82,10 @@ export default {
       pagination: {
         page: 1,
         size: 10,
-        total: 0,
-        status: null,
-        course_id: null
+        total: 0
       },
       datas: [],
       loading: false,
-      courses: [],
       status: [
         {
           id: null,
@@ -81,34 +99,37 @@ export default {
           id: 1,
           title: '已支付'
         }
-      ]
+      ],
+      filter: {
+        keywords: null,
+        status: null,
+        user_id: null
+      }
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     changePage() {
       this.getData(false);
     },
     reset() {
+      this.filter.keywords = null;
+      this.filter.status = null;
+      this.filter.user_id = null;
       this.getData(true);
     },
     getData(reload = false) {
       if (reload) {
         this.pagination.page = 1;
-        this.pagination.status = null;
-        this.pagination.course_id = null;
       }
       this.loading = true;
-      R.Extentions.tuanGou.Orders.Index(this.pagination).then(resp => {
+      let data = Object.assign(this.pagination, this.filter);
+      R.Extentions.tuanGou.Orders.Index(data).then(resp => {
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;
         this.loading = false;
-        this.courses = resp.data.courses;
       });
     }
   }

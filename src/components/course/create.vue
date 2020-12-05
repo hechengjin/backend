@@ -1,75 +1,73 @@
 <style lang="less"></style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加课程</span>
     </div>
     <div class="h-panel-body">
-      <Form
-        ref="form"
-        mode="block"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :labelWidth="110"
-        :rules="rules"
-        :model="course"
-      >
-        <FormItem label="分类" prop="category_id">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="course.category_id"
-            :datas="courseCategories"
-            keyName="id"
-            titleName="name"
-          ></Select>
+      <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="course">
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="分类" prop="category_id">
+              <Select v-model="course.category_id" :datas="courseCategories" keyName="id" titleName="name"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <input type="number" v-model="course.charge" placeholder="单位：元" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="上架时间" prop="published_at">
+              <DatePicker v-model="course.published_at" v-width="200" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="3">
+            <FormItem label="显示" prop="is_show">
+              <h-switch v-model="course.is_show" :trueValue="1" :falseValue="-1"></h-switch>
+            </FormItem>
+          </Cell>
+          <Cell :width="3">
+            <FormItem label="推荐" prop="is_rec">
+              <h-switch v-model="course.is_rec" :trueValue="1" :falseValue="0"></h-switch>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="18">
+            <FormItem label="课程名" prop="title">
+              <input type="text" v-model="course.title" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="评论开关" prop="comment_status">
+              <Select v-model="course.comment_status" :datas="commentStatus"></Select>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <FormItem label="Slug" prop="slug">
+          <input type="text" v-model="course.slug" placeholder="不清楚可不填写" />
         </FormItem>
+
         <FormItem label="课程封面" prop="thumb">
-          <template v-slot:label>课程封面</template>
           <image-upload v-model="course.thumb" name="课程封面"></image-upload>
         </FormItem>
-        <FormItem label="课程名" prop="title">
-          <template v-slot:label>课程名</template>
-          <input type="text" v-model="course.title" />
-        </FormItem>
-        <FormItem label="价格" prop="charge">
-          <template v-slot:label>价格</template>
-          <div class="h-input-group" v-width="200">
-            <input type="text" v-model="course.charge" />
-            <span class="h-input-addon">元</span>
-          </div>
-        </FormItem>
+
         <FormItem label="简短介绍" prop="short_description">
-          <template v-slot:label>简短介绍</template>
-          <textarea v-model="course.short_description"></textarea>
+          <textarea v-model="course.short_description" rows="2"></textarea>
         </FormItem>
-        <FormItem label="详细介绍" prop="description">
-          <template v-slot:label>详细介绍</template>
+
+        <FormItem label="详细介绍" prop="original_desc">
           <tinymce-editor v-model="course.original_desc"></tinymce-editor>
-        </FormItem>
-        <FormItem label="上架时间" prop="published_at">
-          <template v-slot:label>上架时间</template>
-          <DatePicker v-model="course.published_at" v-width="200" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem label="显示" prop="is_show">
-          <template v-slot:label>显示</template>
-          <h-switch v-model="course.is_show" :trueValue="1" :falseValue="-1"></h-switch>
-        </FormItem>
-        <FormItem label="推荐" prop="is_rec">
-          <template v-slot:label>推荐</template>
-          <h-switch v-model="course.is_rec" :trueValue="1" :falseValue="0"></h-switch>
-        </FormItem>
-        <FormItem label="评论开关" prop="comment_status">
-          <template v-slot:label>评论开关</template>
-          <Select v-model="course.comment_status" :datas="commentStatus"></Select>
         </FormItem>
 
         <FormItem label="SEO描述" prop="seo_description">
-          <template v-slot:label>SEO描述</template>
-          <textarea v-model="course.seo_description"></textarea>
+          <textarea v-model="course.seo_description" rows="2"></textarea>
         </FormItem>
         <FormItem label="SEO关键字" prop="seo_keywords">
-          <template v-slot:label>SEO关键字</template>
-          <textarea v-model="course.seo_keywords"></textarea>
+          <textarea v-model="course.seo_keywords" rows="1"></textarea>
         </FormItem>
 
         <FormItem>
@@ -90,20 +88,31 @@ export default {
     return {
       course: Course.parse({}),
       rules: {
-        required: ['category_id', 'thumb', 'title', 'charge', 'short_description', 'published_at', 'is_show', 'is_rec', 'comment_status']
+        required: [
+          'category_id',
+          'thumb',
+          'title',
+          'charge',
+          'short_description',
+          'published_at',
+          'is_show',
+          'is_rec',
+          'comment_status',
+          'original_desc'
+        ]
       },
       courseCategories: [],
       commentStatus: [
         {
-          title: '禁止评论',
+          title: '关闭评论',
           key: 0
         },
         {
-          title: '所有人',
+          title: '所有人均可评论',
           key: 1
         },
         {
-          title: '仅订阅',
+          title: '订阅后可评论',
           key: 2
         }
       ]

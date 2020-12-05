@@ -1,27 +1,28 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="600"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :rules="rules"
-      :model="announcement"
-    >
-      <FormItem label="标题" prop="title">
-        <template v-slot:label>标题</template>
-        <input type="text" v-model="announcement.title" />
-      </FormItem>
-      <FormItem label="内容" prop="content">
-        <template v-slot:label>内容</template>
-        <tinymce-editor v-model="announcement.announcement"></tinymce-editor>
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">保存</Button>
-        <Button @click="cancel">取消</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">编辑</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :rules="rules"
+        :model="announcement"
+      >
+        <FormItem label="标题" prop="title">
+          <input type="text" v-model="announcement.title" />
+        </FormItem>
+        <FormItem label="内容" prop="content">
+          <tinymce-editor v-model="announcement.announcement"></tinymce-editor>
+        </FormItem>
+        <FormItem>
+          <Button color="primary" @click="create">保存</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>
@@ -50,15 +51,11 @@ export default {
     create() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
-        this.$emit('success', this.announcement);
-        this.close();
+        R.Announcement.Update(this.announcement).then(resp => {
+          HeyUI.$Message.success('成功');
+          this.$emit('success');
+        });
       }
-    },
-    cancel() {
-      this.close();
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };

@@ -232,6 +232,41 @@ const initRouter = () => {
         component: (resolve) => require(['components/extentions/zhibo/zhibo/index'], resolve),
         meta: { title: '开播' }
       }, {
+        path: '/K12/XiaoBanKe',
+        name: 'XiaoBanKe',
+        component: (resolve) => require(['components/extentions/xiaoBanKe/course/index'], resolve),
+        meta: { title: '大小班' }
+      }, {
+        path: '/MultiLevelSharePoster',
+        name: 'MultiLevelSharePoster',
+        component: (resolve) => require(['components/extentions/multiLevelShare/poster/index'], resolve),
+        meta: { title: '海报 - 三级分销' }
+      }, {
+        path: '/MultiLevelShareGoods',
+        name: 'MultiLevelShareGoods',
+        component: (resolve) => require(['components/extentions/multiLevelShare/goods/index'], resolve),
+        meta: { title: '分销商品 - 三级分销' }
+      }, {
+        path: '/Snapshot/images',
+        name: 'SnapshotImages',
+        component: (resolve) => require(['components/extentions/snapshot/index'], resolve),
+        meta: { title: '照片 - 随机拍照' }
+      }, {
+        path: '/mpWechatMessageReply',
+        name: 'mpWechatMessageReply',
+        component: (resolve) => require(['components/mp_wechat_message_reply/index'], resolve),
+        meta: { title: '微信公众号消息回复' }
+      }, {
+        path: '/mpWechatMenu',
+        name: 'mpWechatMenu',
+        component: (resolve) => require(['components/mp_wechat/menu'], resolve),
+        meta: { title: '微信公众号菜单' }
+      }, {
+        path: '/CodeExchangerGoods',
+        name: 'CodeExchangerGoods',
+        component: (resolve) => require(['components/extentions/codeExchanger/goods/index'], resolve),
+        meta: { title: '兑换商品' }
+      }, {
         path: '/system-error',
         name: 'SystemError',
         component: (resolve) => require(['components/error-pages/500'], resolve),

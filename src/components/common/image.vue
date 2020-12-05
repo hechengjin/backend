@@ -9,7 +9,7 @@
     flex: 1;
     input {
       width: 100%;
-      height: auto;
+      height: @input-height;
       float: left;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
@@ -21,19 +21,19 @@
     height: auto;
 
     button {
-      display: inline-block;
-      background-color: #000;
+      display: block;
+      width: auto;
+      height: @input-height;
+      float: left;
+      background-color: @primary-color;
       color: white;
       border: 0;
       border-radius: 0;
-      width: auto;
-      height: 29px;
       padding-left: 10px;
       padding-right: 10px;
-      float: left;
       cursor: pointer;
 
-      &.image-download-button {
+      &.last {
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
       }
@@ -50,12 +50,17 @@
       <div class="buttons">
         <button
           @click="selectImage"
-          :class="{'image-download-button': image === null || image.length === 0}"
+          :class="{'image-download-button': image === null || image.length === 0, 'last': !image}"
         >
           <i class="h-icon-upload"></i>
           本地上传
         </button>
-        <button @click="downloadImage" class="image-download-button" v-if="image">
+        <button
+          @click="downloadImage"
+          class="image-download-button"
+          :class="{'last' : image}"
+          v-if="image"
+        >
           <i class="h-icon-inbox"></i> 下载到本地
         </button>
       </div>

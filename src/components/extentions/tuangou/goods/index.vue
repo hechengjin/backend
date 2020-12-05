@@ -1,30 +1,40 @@
 <style lang="less" scoped>
-.red {
-  color: red;
+.original-charge {
+  text-decoration: line-through;
 }
 </style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
     <div class="h-panel-bar">
-      <span class="h-panel-title">团购商品</span>
+      <span class="h-panel-title">团购</span>
     </div>
     <div class="h-panel-body">
-      <Form :labelWidth="110">
-        <FormItem>
-          <template v-slot:label>课程</template>
-          <Select
-            v-model="filter.goods_id"
-            :filterable="true"
-            :datas="courses"
-            keyName="id"
-            titleName="title"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(true)">搜索</Button>
-          <Button class="h-btn" @click="reset">重置</Button>
-        </FormItem>
-      </Form>
+      <div class="mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="关键字">
+                <input type="text" v-model="filter.keywords" placeholder="关键字搜索" />
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="商品类型">
+                <Select
+                  v-model="filter.type"
+                  :filterable="true"
+                  :datas="types"
+                  keyName="value"
+                  titleName="name"
+                ></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <Button color="primary" @click="getData(true)">搜索</Button>
+              <Button @click="reset">重置</Button>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
 
       <div class="mb-10">
         <p-button
@@ -50,19 +60,25 @@
         ></p-button>
       </div>
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem title="课程">
+        <TableItem prop="id" title="ID" :width="80"></TableItem>
+        <TableItem prop="other_id" title="GID" :width="80"></TableItem>
+        <TableItem prop="goods_type_text" title="类型" :width="80"></TableItem>
+        <TableItem prop="goods_title" title="商品"></TableItem>
+        <TableItem title="价格" :width="150">
           <template slot-scope="{ data }">
-            <span v-if="data.course">{{data.course.title}}</span>
-            <span v-else class="red">已删除</span>
+            <span>￥{{data.charge}}</span>
+            /
+            <span class="original-charge">￥{{data.original_charge}}</span>
           </template>
         </TableItem>
-        <TableItem prop="charge" title="团购价" unit="元"></TableItem>
-        <TableItem prop="original_charge" title="原价" unit="元"></TableItem>
-        <TableItem prop="people_num" title="团购人数" unit="人"></TableItem>
-        <TableItem prop="time_limit" title="有效天数" unit="天"></TableItem>
-        <TableItem prop="started_at" title="开始"></TableItem>
-        <TableItem prop="ended_at" title="结束"></TableItem>
+        <TableItem prop="people_num" title="人数" unit="人" :width="80"></TableItem>
+        <TableItem title="时间" :width="200">
+          <template slot-scope="{ data }">
+            <span>{{data.started_at}}</span>
+            -
+            <span>{{data.ended_at}}</span>
+          </template>
+        </TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <p-del-button permission="addons.TuanGou.goods.delete" @click="remove(datas, data)"></p-del-button>
@@ -106,8 +122,10 @@ export default {
       loading: false,
       courses: [],
       filter: {
-        goods_id: null
-      }
+        type: null,
+        keywords: null
+      },
+      types: []
     };
   },
   mounted() {
@@ -115,10 +133,9 @@ export default {
   },
   methods: {
     reset() {
-      this.filter = {
-        goods_id: null
-      };
-      this.getData();
+      this.filter.type = null;
+      this.filter.keywords = null;
+      this.getData(true);
     },
     changePage() {
       this.getData();
@@ -128,12 +145,11 @@ export default {
         this.pagination.page = 1;
       }
       this.loading = true;
-      let data = this.pagination;
-      data.goods_id = this.filter.goods_id;
+      let data = Object.assign(this.filter, this.pagination);
       R.Extentions.tuanGou.Goods.List(data).then(resp => {
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;
-        this.courses = resp.data.courses;
+        this.types = resp.data.types;
         this.loading = false;
       });
     },

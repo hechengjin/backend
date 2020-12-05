@@ -1,6 +1,6 @@
 .font-size(@var, @size) {
   .font@{var} {
-    font-size: @size !important;
+    font-size: @size  !important;
   }
 }
 
@@ -22,6 +22,7 @@
   position: relative;
   margin-bottom: 2px;
   min-height: 50px;
+
   .h-tabs-default {
     min-height: 47px;
   }
@@ -37,6 +38,7 @@
   background: rgba(0, 0, 0, 0.04);
   border-radius: 2px;
   color: rgba(0, 0, 0, 0.65);
+
   .h-select-value-single,
   .h-select-placeholder {
     height: 32px;
@@ -49,11 +51,11 @@
   background-color: fade(@primary-color, 5%);
   border-radius: 2px;
 
-  > div {
+  >div {
     position: relative;
     padding: 20px 22px;
 
-    > p {
+    >p {
       margin: 0;
       line-height: 22px;
       text-align: center;
@@ -97,6 +99,7 @@
 
     &:hover,
     &.h-tabs-selected {
+
       .code,
       .name {
         color: @primary-color;
@@ -111,13 +114,13 @@
   }
 
   &.last-float-right {
-    > div:nth-last-child(2) {
+    >div:nth-last-child(2) {
       &:after {
         content: none;
       }
     }
 
-    > div:last-child {
+    >div:last-child {
       float: right;
 
       &:after {
@@ -146,9 +149,11 @@
   border-bottom: 1px solid #eeeeee;
   padding: 0 25px;
   font-size: 18px;
-  > .h-tabs-item {
+
+  >.h-tabs-item {
     padding: 24px 0px;
-    + div {
+
+    +div {
       margin-left: 30px;
     }
   }
@@ -156,7 +161,7 @@
 
 .frame-page,
 .frame-flex-page {
-  margin: 30px;
+  margin: 15px;
   .clearfix;
 
   &.frame-flex-page {
@@ -188,6 +193,7 @@
 .error-page {
   height: calc(~'100vh - @{layout-header-height} -100px');
   text-align: center;
+
   .background-image {
     height: 35vh;
     background-size: contain;
@@ -195,6 +201,7 @@
     background-position: center;
     margin: 18vh auto 50px;
   }
+
   p {
     font-size: 22px;
     color: #3788ee;
@@ -220,30 +227,63 @@
 .mb-10 {
   margin-bottom: 10px;
 }
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
 .mt-10 {
   margin-top: 10px;
 }
+
 .pt-15 {
   padding-top: 15px;
   padding-right: 15px;
 }
+
 .ml-20 {
   margin-left: 20px;
 }
+
 .mr-20 {
   margin-right: 20px;
 }
+
 .my-20 {
   margin-left: 20px;
   margin-right: 20px;
 }
+
 .mx-20 {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .m-20 {
   margin: 20px;
 }
+
 .p-20 {
   padding: 20px;
+}
+
+.alert {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  background-color: @yellow-color;
+  border-radius: 2px;
+  color: white;
+}
+
+.float-box {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
+.grey {
+  color: grey;
 }

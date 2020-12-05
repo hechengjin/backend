@@ -4,54 +4,62 @@
       <span class="h-panel-title">优惠码</span>
     </div>
     <div class="h-panel-body">
-      <Form :labelWidth="110">
-        <FormItem label="搜索">
-          <input type="text" v-model="filter.key" placeholder="搜索" />
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData(true)">搜索</Button>
-          <Button @click="reset">重置</Button>
-        </FormItem>
-      </Form>
-      <div class="mb-10">
-        <p-del-button permission="promoCode.destroy.multi" @click="deleteSubmit()"></p-del-button>
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          icon="h-icon-plus"
-          permission="promoCode.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
-
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          permission="addons.promo_code_multi_import.import"
-          text="视频批量导入"
-          @click="showImportPage()"
-        ></p-button>
-
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          permission="addons.promo_code_multi_import.generate"
-          text="批量生成"
-          @click="showGeneratePage()"
-        ></p-button>
+      <div class="float-box">
+        <Form>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="搜索">
+                <input type="text" v-model="filter.key" placeholder="支持优惠码模糊搜索" />
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="UID">
+                <user-filter v-model="filter.user_id"></user-filter>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">搜索</Button>
+                <Button @click="reset">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
       </div>
-      <Table :loading="loading" :datas="datas" :checkbox="true" ref="table" class="mb-10">
-        <TableItem prop="code" title="优惠码"></TableItem>
-        <TableItem prop="invited_user_reward" title="优惠金额" unit="元"></TableItem>
-        <TableItem prop="invite_user_reward" title="所属用户奖励" unit="元"></TableItem>
-        <TableItem prop="use_times" title="次数限制" unit="次"></TableItem>
-        <TableItem prop="used_times" title="已使用次数" unit="次"></TableItem>
-        <TableItem prop="expired_at" title="过期时间"></TableItem>
-      </Table>
-      <div class="mt-10">
-        <Pagination
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+      <div class="float-box mt-10">
+        <div class="alert">优惠码的 U 前缀是用户专属邀请码预留的，请勿在自定义优惠码中使用！</div>
+      </div>
+      <div class="float-box mt-10">
+        <p-del-button permission="promoCode.destroy.multi" @click="deleteSubmit()"></p-del-button>
+        <p-button glass="h-btn h-btn-primary h-btn-s" icon="h-icon-plus" permission="promoCode.store" text="添加" @click="create()"></p-button>
+
+        <p-button glass="h-btn h-btn-primary h-btn-s" permission="promoCode.import" text="批量导入" @click="showImportPage()"></p-button>
+
+        <p-button glass="h-btn h-btn-primary h-btn-s" permission="promoCode.generator" text="批量生成" @click="showGeneratePage()"></p-button>
+      </div>
+      <div class="float-box mt-10">
+        <Table :loading="loading" :datas="datas" :checkbox="true" ref="table" @sort="sortEvt">
+          <TableItem prop="id" :sort="true" title="ID" :width="80"></TableItem>
+          <TableItem title="优惠码">
+            <template slot-scope="{ data }">
+              <copytext :copytext="data.code" />
+            </template>
+          </TableItem>
+          <TableItem prop="invited_user_reward" :sort="true" title="抵扣" unit="元" :width="80"></TableItem>
+          <TableItem prop="invite_user_reward" :sort="true" title="奖励" unit="元" :width="80"></TableItem>
+          <TableItem title="可使用次数" :sort="true" :width="100">
+            <template slot-scope="{ data }">
+              <span v-if="data.use_times === 0 || data.use_times === null" class="red">不限制</span>
+              <span v-else>{{ data.use_times }}次</span>
+            </template>
+          </TableItem>
+          <TableItem prop="used_times" :sort="true" title="已使用次数" unit="次" :width="100"></TableItem>
+          <TableItem prop="created_at" :sort="true" title="创建时间" :width="120"></TableItem>
+          <TableItem prop="expired_at" :sort="true" title="过期时间" :width="120"></TableItem>
+        </Table>
+      </div>
+      <div class="float-box mt-10 mb-10">
+        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>
@@ -62,13 +70,16 @@ export default {
     return {
       pagination: {
         page: 1,
-        size: 20,
+        size: 10,
         total: 0
       },
       datas: [],
       loading: false,
       filter: {
-        key: null
+        key: null,
+        user_id: null,
+        sort: 'id',
+        order: 'desc'
       }
     };
   },
@@ -78,7 +89,15 @@ export default {
   methods: {
     reset() {
       this.filter.key = null;
+      this.filter.user_id = null;
+      this.filter.sort = 'id';
+      this.filter.order = 'desc';
       this.getData(true);
+    },
+    sortEvt(sort) {
+      this.filter.sort = sort.prop;
+      this.filter.order = sort.type;
+      this.getData();
     },
     changePage() {
       this.getData();
@@ -89,7 +108,7 @@ export default {
       }
       this.loading = true;
       let data = this.pagination;
-      data.key = this.filter.key;
+      Object.assign(data, this.filter);
       R.PromoCode.List(data).then(resp => {
         this.datas = resp.data.data;
         this.pagination.total = resp.data.total;
@@ -140,7 +159,7 @@ export default {
         closeOnMask: false,
         component: {
           vue: resolve => {
-            require(['@/components/extentions/promoCodeImport/import'], resolve);
+            require(['./import'], resolve);
           }
         }
       });
@@ -151,7 +170,7 @@ export default {
         closeOnMask: false,
         component: {
           vue: resolve => {
-            require(['@/components/extentions/promoCodeImport/generate'], resolve);
+            require(['./generator'], resolve);
           }
         },
         events: {

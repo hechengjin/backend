@@ -1,224 +1,249 @@
 <style lang="less" scoped>
-.container {
-  width: 1123px;
-  height: auto;
-  float: left;
-  padding: 15px 30px;
-}
 .base-info {
   width: 100%;
   height: auto;
   float: left;
   line-height: 36px;
 }
-
-.red {
-  color: red;
-}
 </style>
 <template>
-  <div class="container">
-    <h2 class="mb-10">用户基本信息</h2>
-    <Row class="base-info mb-10" v-if="user">
-      <Cell width="6">ID：{{user.id}}</Cell>
-      <Cell width="6">昵称：{{user.nick_name}}</Cell>
-      <Cell width="6">手机号：{{user.mobile}}</Cell>
-      <Cell width="6">积分：{{user.credit1}}</Cell>
-      <Cell width="6">
-        锁定：
-        <span v-if="user.is_lock === 1">是</span>
-        <span v-else>否</span>
-      </Cell>
-      <Cell width="6">
-        激活：
-        <span v-if="user.is_active === 1">是</span>
-        <span v-else>否</span>
-      </Cell>
-      <Cell width="6">
-        会员：
-        <span v-if="user.role">{{user.role.name}}</span>
-        <span v-else>暂无</span>
-      </Cell>
-      <Cell width="6">会员到期时间：{{user.role_expired_at || '无'}}</Cell>
-      <Cell width="6">
-        邀请人：
-        <span v-if="user.invitor">{{user.invitor.nick_name}}</span>
-        <span v-else>无</span>
-      </Cell>
-      <Cell width="6">邀请关系过期：{{user.invite_user_expired_at || '无'}}</Cell>
-      <Cell width="6">邀请余额：{{user.invite_balance}}元</Cell>
-      <Cell width="6">
-        设置密码：
-        <span v-if="user.is_password_set === 1">已设置</span>
-        <span v-else>未设置</span>
-      </Cell>
-      <Cell width="6">
-        设置昵称：
-        <span v-if="user.is_set_nickname === 1">已设置</span>
-        <span v-else>未设置</span>
-      </Cell>
-      <Cell width="6">
-        用户邀请码：
-        <span v-if="user.is_used_promo_code === 1">已使用</span>
-        <span v-else>未使用</span>
-      </Cell>
-      <Cell width="6">注册IP：{{user.register_ip || '未记录'}}</Cell>
-      <Cell width="6">注册地址：{{user.register_area || '未记录'}}</Cell>
+  <div class="h-panel w-1200">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">用户详情</span>
+    </div>
+    <div class="h-panel-body">
+      <Row class="base-info mb-10" v-if="user">
+        <Cell width="6">
+          ID：
+          <copytext :copytext="user.id" />
+        </Cell>
+        <Cell width="6">
+          昵称：
+          <copytext :copytext="user.nick_name" />
+        </Cell>
+        <Cell width="6">
+          手机号：
+          <copytext :copytext="user.mobile" />
+        </Cell>
+        <Cell width="6">积分：{{ user.credit1 }}</Cell>
+        <Cell width="6">
+          锁定：
+          <span v-if="user.is_lock === 1">是</span>
+          <span v-else>否</span>
+        </Cell>
+        <Cell width="6">
+          激活：
+          <span v-if="user.is_active === 1">是</span>
+          <span v-else>否</span>
+        </Cell>
+        <Cell width="6">
+          会员：
+          <span v-if="user.role">{{ user.role.name }}</span>
+          <span v-else>暂无</span>
+        </Cell>
+        <Cell width="6">会员到期时间：{{ user.role_expired_at || '无' }}</Cell>
+        <Cell width="6">
+          邀请人：
+          <span v-if="user.invitor">{{ user.invitor.nick_name }}</span>
+          <span v-else>无</span>
+        </Cell>
+        <Cell width="6">邀请关系过期：{{ user.invite_user_expired_at || '无' }}</Cell>
+        <Cell width="6">邀请余额：{{ user.invite_balance }}元</Cell>
+        <Cell width="6">
+          设置密码：
+          <span v-if="user.is_password_set === 1">已设置</span>
+          <span v-else>未设置</span>
+        </Cell>
+        <Cell width="6">
+          设置昵称：
+          <span v-if="user.is_set_nickname === 1">已设置</span>
+          <span v-else>未设置</span>
+        </Cell>
+        <Cell width="6">
+          用户邀请码：
+          <span v-if="user.is_used_promo_code === 1">已使用</span>
+          <span v-else>未使用</span>
+        </Cell>
+        <Cell width="6">注册IP：{{ user.register_ip || '未记录' }}</Cell>
+        <Cell width="6">注册地址：{{ user.register_area || '未记录' }}</Cell>
+        <template v-if="user.profile">
+          <Cell width="6">真实姓名：{{ user.profile.real_name || '未记录' }}</Cell>
+          <Cell width="6">年龄：{{ user.profile.age }}岁</Cell>
+          <Cell width="6">生日：{{ user.profile.birthday || '未记录' }}</Cell>
+          <Cell width="6">住址：{{ user.profile.address || '未记录' }}</Cell>
+          <Cell width="6">性别：{{ user.profile.gender }}</Cell>
+          <Cell width="6">职业：{{ user.profile.profession }}</Cell>
+          <Cell width="6">毕业院校：{{ user.profile.graduated_school }}</Cell>
+          <Cell width="6">身份证号：{{ user.profile.id_number }}</Cell>
+          <Cell width="6" v-if="user.profile.diploma"
+            >毕业证书：<br /><img :src="user.profile.diploma" width="100" height="100" @click="$ImagePreview(user.profile.diploma)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_frontend_thumb"
+            >身份证正面照：<br /><img
+              :src="user.profile.id_frontend_thumb"
+              width="100"
+              height="100"
+              @click="$ImagePreview(user.profile.id_frontend_thumb)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_backend_thumb"
+            >身份证反面照：<br /><img
+              :src="user.profile.id_backend_thumb"
+              width="100"
+              height="100"
+              @click="$ImagePreview(user.profile.id_backend_thumb)"
+          /></Cell>
+          <Cell width="6" v-if="user.profile.id_hand_thumb"
+            >手持身份证照：<br /><img :src="user.profile.id_hand_thumb" width="100" height="100" @click="$ImagePreview(user.profile.id_hand_thumb)"
+          /></Cell>
+        </template>
 
-      <Cell width="24" class="mt-10 mb-10">
-        <p-button
-          glass="h-btn h-btn-s h-btn-primary"
-          permission="member.credit1.change"
-          text="积分变动"
-          @click="credit1Change()"
-        ></p-button>
-      </Cell>
-    </Row>
+        <Cell width="24" class="mt-10 mb-10">
+          <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.credit1.change" text="积分变动" @click="credit1Change()"></p-button>
+        </Cell>
+      </Row>
 
-    <h2 class="mb-10">详细记录</h2>
-    <Row class="mb-10">
-      <Cell width="24">
-        <Tabs :datas="tabs" v-model="selectTab" @change="tabChange"></Tabs>
-      </Cell>
-    </Row>
+      <Row class="mb-10">
+        <Cell width="24">
+          <Tabs :datas="tabs" v-model="selectTab" @change="tabChange"></Tabs>
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'collect'">
-      <Cell width="24">
-        <Table :datas="userCollect" class="mb-10">
-          <TableItem title="课程">
-            <template slot-scope="{ data }">
-              <span v-if="userCollectMap[data.course_id]">{{userCollectMap[data.course_id].title}}</span>
-              <span class="red" v-else>已删除</span>
-            </template>
-          </TableItem>
-          <TableItem prop="created_at" title="时间"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.collect" @change="paginateChange('collect')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'collect'">
+        <Cell width="24">
+          <Table :datas="userCollect" class="mb-10">
+            <TableItem title="课程">
+              <template slot-scope="{ data }">
+                <span v-if="userCollectMap[data.course_id]">{{ userCollectMap[data.course_id].title }}</span>
+                <span class="red" v-else>已删除</span>
+              </template>
+            </TableItem>
+            <TableItem prop="created_at" title="时间"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.collect" @change="paginateChange('collect')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'invite'">
-      <Cell width="24">
-        <Table :datas="userInvite" class="mb-10">
-          <TableItem prop="id" title="ID"></TableItem>
-          <TableItem prop="nick_name" title="昵称"></TableItem>
-          <TableItem prop="mobile" title="手机号"></TableItem>
-          <TableItem prop="invite_user_expired_at" title="维系过期时间"></TableItem>
-          <TableItem prop="created_at" title="注册时间"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.invite" @change="paginateChange('invite')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'invite'">
+        <Cell width="24">
+          <Table :datas="userInvite" class="mb-10">
+            <TableItem prop="id" title="ID"></TableItem>
+            <TableItem prop="nick_name" title="昵称"></TableItem>
+            <TableItem prop="mobile" title="手机号"></TableItem>
+            <TableItem prop="invite_user_expired_at" title="维系过期时间"></TableItem>
+            <TableItem prop="created_at" title="注册时间"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.invite" @change="paginateChange('invite')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'history'">
-      <Cell width="24">
-        <Table :datas="userHistory" class="mb-10">
-          <TableItem title="课程">
-            <template slot-scope="{ data }">
-              <span v-if="userHistoryMap[data.course_id]">{{userHistoryMap[data.course_id].title}}</span>
-              <span class="red" v-else>已删除</span>
-            </template>
-          </TableItem>
-          <TableItem title="看完">
-            <template slot-scope="{ data }">
-              <span v-if="data.is_watched">是</span>
-              <span v-else>否</span>
-            </template>
-          </TableItem>
-          <TableItem prop="watched_at" title="看完的时间"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.history" @change="paginateChange('history')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'history'">
+        <Cell width="24">
+          <Table :datas="userHistory" class="mb-10">
+            <TableItem title="课程">
+              <template slot-scope="{ data }">
+                <span v-if="userHistoryMap[data.course_id]">{{ userHistoryMap[data.course_id].title }}</span>
+                <span class="red" v-else>已删除</span>
+              </template>
+            </TableItem>
+            <TableItem prop="created_at" title="开始时间"></TableItem>
+            <TableItem prop="watched_at" title="看完的时间"></TableItem>
+            <TableItem title="看完">
+              <template slot-scope="{ data }">
+                <span v-if="data.is_watched" class="red">是</span>
+                <span v-else>否</span>
+              </template>
+            </TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.history" @change="paginateChange('history')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'courses'">
-      <Cell width="24">
-        <Table :datas="userCourses" class="mb-10">
-          <TableItem title="课程">
-            <template slot-scope="{ data }">
-              <span v-if="userCoursesMap[data.course_id]">{{userCoursesMap[data.course_id].title}}</span>
-              <span class="red" v-else>已删除</span>
-            </template>
-          </TableItem>
-          <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-          <TableItem prop="created_at" title="购买时间"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.courses" @change="paginateChange('courses')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'courses'">
+        <Cell width="24">
+          <Table :datas="userCourses" class="mb-10">
+            <TableItem title="课程">
+              <template slot-scope="{ data }">
+                <span v-if="userCoursesMap[data.course_id]">{{ userCoursesMap[data.course_id].title }}</span>
+                <span class="red" v-else>已删除</span>
+              </template>
+            </TableItem>
+            <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
+            <TableItem prop="created_at" title="购买时间"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.courses" @change="paginateChange('courses')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'videos'">
-      <Cell width="24">
-        <Table :datas="userVideos" class="mb-10">
-          <TableItem title="视频">
-            <template slot-scope="{ data }">
-              <span v-if="userVideosMap[data.video_id]">{{userVideosMap[data.video_id].title}}</span>
-              <span class="red" v-else>已删除</span>
-            </template>
-          </TableItem>
-          <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-          <TableItem prop="created_at" title="购买时间"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.videos" @change="paginateChange('videos')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'videos'">
+        <Cell width="24">
+          <Table :datas="userVideos" class="mb-10">
+            <TableItem title="视频">
+              <template slot-scope="{ data }">
+                <span v-if="userVideosMap[data.video_id]">{{ userVideosMap[data.video_id].title }}</span>
+                <span class="red" v-else>已删除</span>
+              </template>
+            </TableItem>
+            <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
+            <TableItem prop="created_at" title="购买时间"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.videos" @change="paginateChange('videos')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'roles'">
-      <Cell width="24">
-        <Table :datas="userRoles" class="mb-10">
-          <TableItem title="会员">
-            <template slot-scope="{ data }">
-              <span v-if="data.role">{{data.role.name}}</span>
-              <span class="red" v-else>已删除</span>
-            </template>
-          </TableItem>
-          <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-          <TableItem prop="created_at" title="购买时间"></TableItem>
-          <TableItem prop="started_at" title="开始"></TableItem>
-          <TableItem prop="expired_at" title="结束"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.roles" @change="paginateChange('roles')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'roles'">
+        <Cell width="24">
+          <Table :datas="userRoles" class="mb-10">
+            <TableItem title="会员">
+              <template slot-scope="{ data }">
+                <span v-if="data.role">{{ data.role.name }}</span>
+                <span class="red" v-else>已删除</span>
+              </template>
+            </TableItem>
+            <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
+            <TableItem prop="created_at" title="购买时间"></TableItem>
+            <TableItem prop="started_at" title="开始"></TableItem>
+            <TableItem prop="expired_at" title="结束"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.roles" @change="paginateChange('roles')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'orders'">
-      <Cell width="24">
-        <Table :datas="userOrders" class="mb-10">
-          <TableItem prop="id" title="ID"></TableItem>
-          <TableItem prop="order_id" title="订单号"></TableItem>
-          <TableItem prop="charge" title="价格" unit="元"></TableItem>
-          <TableItem prop="status_text" title="状态"></TableItem>
-          <TableItem title="商品">
-            <template slot-scope="{ data }">
-              <ul>
-                <li
-                  v-for="goods in data.goods"
-                  :key="goods.id"
-                >{{ goods.goods_text }}x{{ goods.num }}</li>
-              </ul>
-            </template>
-          </TableItem>
-          <TableItem prop="created_at" title="创建"></TableItem>
-        </Table>
-        <Pagination align="right" v-model="paginate.orders" @change="paginateChange('orders')" />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'orders'">
+        <Cell width="24">
+          <Table :datas="userOrders" class="mb-10">
+            <TableItem prop="id" title="ID"></TableItem>
+            <TableItem prop="order_id" title="订单号"></TableItem>
+            <TableItem prop="charge" title="价格" unit="元"></TableItem>
+            <TableItem title="状态">
+              <template slot-scope="{ data }">
+                <span :class="{ red: data.status_text === '已支付' }">{{ data.status_text }}</span>
+              </template>
+            </TableItem>
+            <TableItem title="商品">
+              <template slot-scope="{ data }">
+                <ul>
+                  <li v-for="goods in data.goods" :key="goods.id">{{ goods.goods_text }}x{{ goods.num }}</li>
+                </ul>
+              </template>
+            </TableItem>
+            <TableItem prop="created_at" title="创建"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.orders" @change="paginateChange('orders')" />
+        </Cell>
+      </Row>
 
-    <Row v-show="selectTab === 'credit1Records'">
-      <Cell width="24">
-        <Table :datas="userCredit1Records" class="mb-10">
-          <TableItem prop="id" title="ID"></TableItem>
-          <TableItem prop="sum" title="积分"></TableItem>
-          <TableItem prop="remark" title="备注"></TableItem>
-          <TableItem prop="created_at" title="创建"></TableItem>
-        </Table>
-        <Pagination
-          align="right"
-          v-model="paginate.credit1Records"
-          @change="paginateChange('credit1Records')"
-        />
-      </Cell>
-    </Row>
+      <Row v-show="selectTab === 'credit1Records'">
+        <Cell width="24">
+          <Table :datas="userCredit1Records" class="mb-10">
+            <TableItem prop="id" title="ID"></TableItem>
+            <TableItem prop="sum" title="积分"></TableItem>
+            <TableItem prop="remark" title="备注"></TableItem>
+            <TableItem prop="created_at" title="创建"></TableItem>
+          </Table>
+          <Pagination align="right" v-model="paginate.credit1Records" @change="paginateChange('credit1Records')" />
+        </Cell>
+      </Row>
+    </div>
   </div>
 </template>
 <script>
@@ -228,9 +253,9 @@ export default {
     return {
       user: null,
       tabs: {
-        courses: '订阅课程',
-        videos: '订阅视频',
-        roles: '订阅会员',
+        courses: '课程订阅',
+        videos: '视频订阅',
+        roles: '会员订阅',
         orders: '订单',
         collect: '收藏',
         history: '观看历史',

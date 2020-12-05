@@ -7,7 +7,7 @@
 }
 .text {
   border: 1px solid #ccc;
-  height: 300px;
+  height: 144px;
 }
 </style>
 <template>

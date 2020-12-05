@@ -1,34 +1,48 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :rules="rules"
-      :model="slider"
-    >
-      <FormItem label="平台" prop="platform">
-        <template v-slot:label>平台</template>
-        <Select v-model="slider.platform" :datas="platforms" keyName="id" titleName="title"></Select>
-      </FormItem>
-      <FormItem label="封面" prop="thumb">
-        <template v-slot:label>封面</template>
-        <image-upload v-model="slider.thumb" name="封面"></image-upload>
-      </FormItem>
-      <FormItem label="URL" prop="url">
-        <template v-slot:label>URL</template>
-        <input type="text" v-model="slider.url" />
-      </FormItem>
-      <FormItem label="升序" prop="sort">
-        <template v-slot:label>升序</template>
-        <input type="number" v-model="slider.sort" />
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">添加</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">添加</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :rules="rules"
+        :model="slider"
+      >
+        <Row :space="10">
+          <Cell :width="8">
+            <FormItem label="平台" prop="platform">
+              <Select v-model="slider.platform" :datas="platforms" keyName="id" titleName="title"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem label="URL" prop="url">
+              <input type="text" v-model="slider.url" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem label="升序" prop="sort">
+              <input type="number" v-model="slider.sort" />
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="24">
+            <FormItem label="封面" prop="thumb">
+              <image-upload v-model="slider.thumb" name="封面"></image-upload>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <FormItem>
+          <Button color="primary" @click="create">添加</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>

@@ -20,10 +20,10 @@ export default {
       data: this.value,
       id: 'tinymce' + Math.ceil(Math.random() * 100),
       config: {
-        height: '400px',
+        height: '144px',
         language: 'zh_CN',
         convert_urls: false,
-        language_url: window.location.protocol + '//' + window.location.host + window.location.pathname + '/dist/tinymce/zh_CN.js',
+        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n@19.2.11/langs/zh_CN.js',
         automatic_uploads: true,
         images_upload_handler: (blobInfo, success, failure) => {
           // 图片异步上传处理函数

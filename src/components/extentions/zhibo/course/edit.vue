@@ -1,6 +1,6 @@
 <style lang="less"></style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加课程</span>
     </div>
@@ -13,61 +13,74 @@
         :rules="rules"
         :model="course"
       >
-        <FormItem label="分类" prop="category_id">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="course.category_id"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="讲师" prop="teacher_id">
-          <template v-slot:label>讲师</template>
-          <Select
-            v-model="course.teacher_id"
-            :datas="teachers"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="课程标题" prop="title">
-          <template v-slot:label>课程标题</template>
-          <input type="text" v-model="course.title" />
-        </FormItem>
-        <FormItem label="课程封面" prop="thumb">
-          <template v-slot:label>课程封面</template>
-          <image-upload v-model="course.thumb" name="课程封面"></image-upload>
-        </FormItem>
-        <FormItem label="价格" prop="charge">
-          <template v-slot:label>价格</template>
-          <div class="h-input-group" v-width="200">
-            <input type="text" v-model="course.charge" />
-            <span class="h-input-addon">元</span>
-          </div>
-        </FormItem>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="分类" prop="category_id">
+              <Select
+                v-model="course.category_id"
+                :datas="categories"
+                keyName="id"
+                titleName="name"
+                :filterable="true"
+              ></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="讲师" prop="teacher_id">
+              <Select
+                v-model="course.teacher_id"
+                :datas="teachers"
+                keyName="id"
+                titleName="name"
+                :filterable="true"
+              ></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="12">
+            <FormItem label="课程标题" prop="title">
+              <input type="text" v-model="course.title" />
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="24">
+            <FormItem label="课程封面" prop="thumb">
+              <image-upload v-model="course.thumb" name="课程封面"></image-upload>
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <input type="number" v-model="course.charge" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="上架时间" prop="published_at">
+              <DatePicker v-model="course.published_at" v-width="200" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="会员免费" prop="vip_can_view">
+              <h-switch v-model="course.vip_can_view" :trueValue="1" :falseValue="0"></h-switch>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="显示" prop="is_show">
+              <h-switch v-model="course.is_show" :trueValue="1" :falseValue="0"></h-switch>
+            </FormItem>
+          </Cell>
+        </Row>
+
         <FormItem label="简短介绍" prop="short_description">
-          <template v-slot:label>简短介绍</template>
-          <textarea v-model="course.short_description"></textarea>
+          <textarea v-model="course.short_description" rows="2"></textarea>
         </FormItem>
         <FormItem label="详细介绍" prop="description">
-          <template v-slot:label>详细介绍</template>
           <tinymce-editor v-model="course.original_desc"></tinymce-editor>
         </FormItem>
-        <FormItem label="上架时间" prop="published_at">
-          <template v-slot:label>上架时间</template>
-          <DatePicker v-model="course.published_at" v-width="200" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem label="会员免费" prop="vip_can_view">
-          <template v-slot:label>会员免费</template>
-          <h-switch v-model="course.vip_can_view" :trueValue="1" :falseValue="0"></h-switch>
-        </FormItem>
-        <FormItem label="是否显示" prop="is_show">
-          <template v-slot:label>是否显示</template>
-          <h-switch v-model="course.is_show" :trueValue="1" :falseValue="0"></h-switch>
-        </FormItem>
+
         <FormItem>
           <Button color="primary" @click="create">保存</Button>
         </FormItem>

@@ -1,6 +1,7 @@
 export default new Model({
   category_id: 0,
   title: '',
+  slug: '',
   thumb: '',
   charge: 0,
   short_description: '',

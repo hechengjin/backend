@@ -1,23 +1,28 @@
 <style lang="less"></style>
 <template>
-  <div style="width: 700px;">
-    <div class="table-basic-vue frame-page h-panel">
-      <div class="h-panel-bar">
-        <span class="h-panel-title">用户注册统计</span>
-      </div>
-      <div class="h-panel-body">
+  <div class="h-panel w-1200">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">每日会员注册统计</span>
+    </div>
+    <div class="h-panel-body">
+      <div class="float-box mb-10">
         <Form :labelWidth="110">
-          <FormItem label="时间范围">
-            <DateRangePicker v-model="daterange"></DateRangePicker>
-          </FormItem>
-          <FormItem>
-            <Button color="primary" @click="getData(true)">过滤</Button>
-            <Button @click="close">关闭</Button>
-          </FormItem>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="时间范围">
+                <DateRangePicker v-model="daterange"></DateRangePicker>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData(true)">过滤</Button>
+              </FormItem>
+            </Cell>
+          </Row>
         </Form>
-        <div>
-          <line-chart :height="200" :chart-data="data"></line-chart>
-        </div>
+      </div>
+      <div class="float-box mb-10">
+        <line-chart :height="200" :chart-data="data"></line-chart>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
-      <span class="h-panel-title">编辑练习</span>
+      <span class="h-panel-title">编辑</span>
     </div>
     <div class="h-panel-body">
       <Form
@@ -11,46 +11,51 @@
         :showErrorTip="true"
         :rules="rules"
         :model="practice"
-        v-width="500"
       >
-        <FormItem label="分类" prop="category_id">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="practice.category_id"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-          <warn text="注意，这里只能选择二级分类，一级分类无法选择。"></warn>
-        </FormItem>
-        <FormItem label="练习名" prop="name">
-          <template v-slot:label>标题</template>
-          <input type="text" v-model="practice.name" />
-        </FormItem>
-        <FormItem label="封面" prop="thumb">
-          <template v-slot:label>封面</template>
-          <image-upload v-model="practice.thumb" name="封面"></image-upload>
-        </FormItem>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="分类" prop="category_id">
+              <Select
+                v-model="practice.category_id"
+                :datas="categories"
+                keyName="id"
+                titleName="name"
+                :filterable="true"
+              ></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="18">
+            <FormItem label="练习名" prop="name">
+              <input type="text" v-model="practice.name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="封面" prop="thumb">
+              <image-upload v-model="practice.thumb" name="封面"></image-upload>
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="免费" prop="is_free">
+              <h-switch v-model="practice.is_free" :trueValue="1" :falseValue="0"></h-switch>
+              <warn text="所有人都可以参与考试。"></warn>
+            </FormItem>
+          </Cell>
+        </Row>
 
-        <FormItem label="免费" prop="is_free">
-          <template v-slot:label>免费</template>
-          <h-switch v-model="practice.is_free" :trueValue="1" :falseValue="0"></h-switch>
-          <warn text="配置该选项的话所有人都可以参与考试。"></warn>
-        </FormItem>
-        <template v-if="practice.is_free === 0">
-          <FormItem label="会员免费" prop="is_vip_free">
-            <template v-slot:label>会员免费</template>
-            <h-switch v-model="practice.is_vip_free" :trueValue="1" :falseValue="0"></h-switch>
-            <warn text="配置该选项的话购买VIP会员的用户都可以参与考试。"></warn>
-          </FormItem>
-
-          <FormItem label="价格" prop="charge">
-            <template v-slot:label>价格</template>
-            <input type="number" v-model="practice.charge" />
-            <warn text="价格大于0的话，用户可以购买此练习；价格等于0的话无法购买。"></warn>
-          </FormItem>
-        </template>
+        <Row :space="10" v-if="practice.is_free === 0">
+          <Cell :width="6">
+            <FormItem label="会员免费" prop="is_vip_free">
+              <h-switch v-model="practice.is_vip_free" :trueValue="1" :falseValue="0"></h-switch>
+              <warn text="购买VIP会员的用户都可以参与考试。"></warn>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <input type="number" v-model="practice.charge" />
+              <warn text="价格大于0的话用户可以购买此练习参与练习"></warn>
+            </FormItem>
+          </Cell>
+        </Row>
 
         <FormItem>
           <Button color="primary" @click="create">保存</Button>

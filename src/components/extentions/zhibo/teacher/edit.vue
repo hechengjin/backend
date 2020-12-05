@@ -1,34 +1,42 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :rules="rules"
-      :model="teacher"
-    >
-      <FormItem label="讲师名" prop="name">
-        <template v-slot:label>讲师名</template>
-        <input type="text" v-model="teacher.name" />
-      </FormItem>
-      <FormItem label="头像" prop="avatar">
-        <template v-slot:label>头像</template>
-        <image-upload v-model="teacher.avatar" name="头像"></image-upload>
-      </FormItem>
-      <FormItem label="简介" prop="short_desc">
-        <template v-slot:label>简介</template>
-        <textarea v-model="teacher.short_desc"></textarea>
-      </FormItem>
-      <FormItem label="密码" prop="password">
-        <template v-slot:label>密码</template>
-        <input type="text" v-model="teacher.password" />
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">保存</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">编辑</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :rules="rules"
+        :model="teacher"
+      >
+        <Row :space="10">
+          <Cell :width="8">
+            <FormItem label="讲师名" prop="name">
+              <input type="text" v-model="teacher.name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="8">
+            <FormItem label="密码" prop="password">
+              <input type="text" v-model="teacher.password" />
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <FormItem label="头像" prop="avatar">
+          <image-upload v-model="teacher.avatar" name="头像"></image-upload>
+        </FormItem>
+        <FormItem label="简介" prop="short_desc">
+          <textarea v-model="teacher.short_desc" rows="3"></textarea>
+        </FormItem>
+
+        <FormItem>
+          <Button color="primary" @click="create">保存</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>

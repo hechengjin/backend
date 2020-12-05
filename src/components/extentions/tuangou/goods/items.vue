@@ -7,13 +7,13 @@
 }
 </style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">团列表</span>
     </div>
     <div class="h-panel-body">
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
+        <TableItem prop="id" title="ID" :width="80"></TableItem>
         <TableItem title="团长">
           <template slot-scope="{ data }">
             <span>{{data.create_user_name}}</span>
@@ -21,20 +21,19 @@
         </TableItem>
         <TableItem title="成员">
           <template slot-scope="{ data }">
-            <div v-for="user in data.users" :key="user.id">
-              <span>{{user.user.nick_name}}</span>
-            </div>
+            <span>{{data.users.length}}人</span>
           </template>
         </TableItem>
-        <TableItem prop="status_text" title="状态"></TableItem>
-        <TableItem prop="people_num" title="团购人数" unit="人"></TableItem>
-        <TableItem title="还需人数">
+        <TableItem prop="status_text" title="状态" :width="80"></TableItem>
+        <TableItem title="人数" :width="200">
           <template slot-scope="{ data }">
-            <span>{{data.over_people_num}}人</span>
+            <span>{{data.people_num - data.over_people_num}}</span>
+            /
+            <span>{{data.people_num}}</span>
           </template>
         </TableItem>
-        <TableItem prop="expired_at" title="结束时间"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
+        <TableItem prop="expired_at" title="过期" :width="120"></TableItem>
+        <TableItem title="操作" align="center" :width="100">
           <template slot-scope="{ data }">
             <p-del-button
               permission="addons.TuanGou.goods.complete"
@@ -90,8 +89,6 @@ export default {
       R.Extentions.tuanGou.Goods.Items(data).then(resp => {
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;
-        this.pagination.page = resp.data.data.current_page;
-        this.pagination.size = resp.data.data.per_page;
         this.loading = false;
       });
     },

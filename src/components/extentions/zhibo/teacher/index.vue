@@ -1,10 +1,10 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">讲师</span>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <p-button
           glass="h-btn h-btn-primary"
           icon="h-icon-plus"
@@ -13,41 +13,42 @@
           @click="create()"
         ></p-button>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem prop="name" title="姓名"></TableItem>
-        <TableItem title="头像" :width="100">
-          <template slot-scope="{ data }">
-            <img :src="data.avatar" width="60" height="60" />
-          </template>
-        </TableItem>
-        <TableItem prop="short_desc" title="简介"></TableItem>
-        <TableItem prop="courses_count" title="课程" unit="个"></TableItem>
-        <TableItem title="账号">
-          <template slot-scope="{ data }">
-            <span>{{data.username}}/{{data.password}}</span>
-          </template>
-        </TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <p-del-button permission="addons.Zhibo.teacher.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Zhibo.teacher.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="TID" :width="80"></TableItem>
+          <TableItem prop="name" title="姓名" :width="120"></TableItem>
+          <TableItem prop="short_desc" title="简介"></TableItem>
+          <TableItem prop="courses_count" title="课程" unit="个"></TableItem>
+          <TableItem title="账号">
+            <template slot-scope="{ data }">
+              <copytext :copytext="data.username" />
+              <span class="grey">/</span>
+              <copytext :copytext="data.password" />
+            </template>
+          </TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.Zhibo.teacher.delete" @click="remove(datas, data)"></p-del-button>
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Zhibo.teacher.update"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <div class="float-box mb-10">
+        <Pagination
+          class="mt-10"
+          v-if="pagination.total > 0"
+          align="right"
+          v-model="pagination"
+          @change="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>

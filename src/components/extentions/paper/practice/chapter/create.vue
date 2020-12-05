@@ -1,27 +1,35 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :rules="rules"
-      :model="chapter"
-    >
-      <FormItem label="升序" prop="sort">
-        <template v-slot:label>升序</template>
-        <input type="number" v-model="chapter.sort" />
-      </FormItem>
-      <FormItem label="章节名" prop="name">
-        <template v-slot:label>章节名</template>
-        <input type="text" v-model="chapter.name" />
-      </FormItem>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">添加</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :rules="rules"
+        :model="chapter"
+      >
+        <Row :space="10">
+          <Cell :width="12">
+            <FormItem label="章节名" prop="name">
+              <input type="text" v-model="chapter.name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="12">
+            <FormItem label="升序" prop="sort">
+              <input type="number" v-model="chapter.sort" />
+            </FormItem>
+          </Cell>
+        </Row>
 
-      <FormItem>
-        <Button color="primary" @click="create">添加</Button>
-      </FormItem>
-    </Form>
+        <FormItem>
+          <Button color="primary" @click="create">添加</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>

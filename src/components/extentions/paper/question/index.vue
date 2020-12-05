@@ -4,107 +4,116 @@
       <span class="h-panel-title">试题</span>
     </div>
     <div class="h-panel-body">
-      <Form ref="form" :labelWidth="110">
-        <FormItem label="分类" prop="category_id">
-          <template v-slot:label>分类</template>
-          <Select
-            v-model="filter.category_id"
-            :datas="categories"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="类型">
-          <Select
-            v-model="filter.type"
-            :datas="types"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="难度">
-          <Select
-            v-model="filter.level"
-            :datas="levels"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData()">过滤</Button>
-          <Button @click="resetFilter()">重置</Button>
-        </FormItem>
-      </Form>
+      <div class="float-box mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="6">
+              <FormItem label="分类">
+                <Select
+                  v-model="filter.category_id"
+                  :datas="categories"
+                  keyName="id"
+                  titleName="name"
+                  :filterable="true"
+                ></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="类型">
+                <Select
+                  v-model="filter.type"
+                  :datas="types"
+                  keyName="id"
+                  titleName="name"
+                  :filterable="true"
+                ></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem label="难度">
+                <Select
+                  v-model="filter.level"
+                  :datas="levels"
+                  keyName="id"
+                  titleName="name"
+                  :filterable="true"
+                ></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="6">
+              <FormItem>
+                <Button color="primary" @click="getData()">过滤</Button>
+                <Button @click="resetFilter()">重置</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
 
-      <div style="margin-bottom: 15px;">
+      <div class="float-box mb-10">
         <p-button
-          glass="h-btn h-btn-primary"
+          glass="h-btn h-btn-primary h-btn-s"
           permission="addons.Paper.question.store"
           text="添加"
           @click="create()"
         ></p-button>
 
         <p-button
-          glass="h-btn h-btn-primary"
+          glass="h-btn h-btn-primary h-btn-s"
           permission="addons.Paper.question.import.csv"
           text="导入"
           @click="importFile()"
         ></p-button>
 
         <p-button
-          glass="h-btn h-btn-primary"
+          glass="h-btn h-btn-primary h-btn-s"
           permission="addons.Paper.question_category.list"
           text="试题分类"
           @click="showCategoriesPage()"
         ></p-button>
-      </div>
 
-      <div class="mt-10 mb-10">
         <p-del-button permission="addons.Paper.question.delete" text="批量删除" @click="deleteSubmit"></p-del-button>
       </div>
 
-      <Table :loading="loading" :checkbox="true" :datas="datas" ref="table">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem title="分类">
-          <template slot-scope="{ data }">
-            <span>{{data.category ? data.category.name : ''}}</span>
-          </template>
-        </TableItem>
-        <TableItem prop="type_text" title="类型"></TableItem>
-        <TableItem prop="level_text" title="难度"></TableItem>
-        <TableItem prop="score" title="分数" unit="分"></TableItem>
-        <TableItem title="问题" :width="300">
-          <template slot-scope="{ data }">
-            Q:
-            <div v-html="data.content"></div>A:
-            <div>
-              <span v-if="data.type !==5">{{data.answer}}</span>
-              <span v-else>{{data.answer === 1 ? '正确': '错误'}}</span>
-            </div>
-          </template>
-        </TableItem>
-        <TableItem title="操作" align="center" :width="100">
-          <template slot-scope="{ data }">
-            <p-button
-              glass="h-btn h-btn-primary"
-              permission="addons.Paper.question.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :checkbox="true" :datas="datas" ref="table">
+          <TableItem prop="id" title="ID" :width="80"></TableItem>
+          <TableItem title="分类" :width="80">
+            <template slot-scope="{ data }">
+              <span v-if="data.category">{{data.category.name}}</span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem prop="type_text" title="类型" :width="80"></TableItem>
+          <TableItem prop="level_text" title="难度" :width="80"></TableItem>
+          <TableItem prop="score" title="分数" unit="分" :width="80"></TableItem>
+          <TableItem title="问题">
+            <template slot-scope="{ data }">
+              <div v-html="data.content"></div>
+            </template>
+          </TableItem>
+          <TableItem title="操作" align="center" :width="100">
+            <template slot-scope="{ data }">
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Paper.question.update"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <div class="float-box mb-10">
+        <Pagination
+          class="mt-10"
+          v-if="pagination.total > 0"
+          align="right"
+          v-model="pagination"
+          @change="changePage"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -131,12 +140,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     resetFilter() {
       this.filter.level = null;
       this.filter.type = null;
@@ -152,9 +158,7 @@ export default {
       }
       this.loading = true;
       let data = this.pagination;
-      data.level = this.filter.level;
-      data.type = this.filter.type;
-      data.category_id = this.filter.category_id;
+      Object.assign(data, this.filter);
       R.Extentions.paper.Question.List(data).then(resp => {
         this.datas = resp.data.data.data;
         this.pagination.total = resp.data.data.total;

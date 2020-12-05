@@ -1,31 +1,41 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :labelWidth="110"
-      :rules="rules"
-      :model="link"
-    >
-      <FormItem label="链接名" prop="name">
-        <template v-slot:label>链接名</template>
-        <input type="text" v-model="link.name" />
-      </FormItem>
-      <FormItem label="URL" prop="url">
-        <template v-slot:label>URL</template>
-        <input type="text" v-model="link.url" />
-      </FormItem>
-      <FormItem label="升序" prop="sort">
-        <template v-slot:label>升序</template>
-        <input type="number" v-model="link.sort" />
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">保存</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">编辑</span>
+    </div>
+    <div class="h-panel-body">
+      <Form
+        mode="block"
+        ref="form"
+        :validOnChange="true"
+        :showErrorTip="true"
+        :labelWidth="110"
+        :rules="rules"
+        :model="link"
+      >
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="链接名" prop="name">
+              <input type="text" v-model="link.name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="12">
+            <FormItem label="URL" prop="url">
+              <input type="text" v-model="link.url" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="升序" prop="sort">
+              <input type="number" v-model="link.sort" />
+            </FormItem>
+          </Cell>
+        </Row>
+
+        <FormItem>
+          <Button color="primary" @click="create">保存</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>
@@ -53,7 +63,10 @@ export default {
     create() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
-        this.$emit('success', this.link);
+        R.Link.Update(this.link).then(resp => {
+          HeyUI.$Message.success('成功');
+          this.$emit('success');
+        });
       }
     }
   }

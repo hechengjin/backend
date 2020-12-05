@@ -1,6 +1,6 @@
 <style lang="less"></style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加</span>
     </div>
@@ -13,38 +13,49 @@
         :rules="rules"
         :model="video"
       >
-        <FormItem label="课程" prop="course_id">
-          <template v-slot:label>课程</template>
-          <Select
-            v-model="video.course_id"
-            :datas="courses"
-            keyName="id"
-            titleName="title"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="章节" prop="chapter_id">
-          <template v-slot:label>章节</template>
-          <Select
-            v-model="video.chapter_id"
-            :datas="chapters[video.course_id]"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="标题" prop="title">
-          <template v-slot:label>标题</template>
-          <input type="text" v-model="video.title" />
-        </FormItem>
-        <FormItem label="直播时间" prop="published_at">
-          <template v-slot:label>直播时间</template>
-          <DatePicker v-model="video.published_at" v-width="200" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem label="是否显示" prop="is_show">
-          <template v-slot:label>是否显示</template>
-          <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
-        </FormItem>
+        <Row>
+          <Cell :width="24">
+            <FormItem label="标题" prop="title">
+              <input type="text" v-model="video.title" />
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="课程" prop="course_id">
+              <Select
+                v-model="video.course_id"
+                :datas="courses"
+                keyName="id"
+                titleName="title"
+                :filterable="true"
+              ></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="章节" prop="chapter_id">
+              <Select
+                v-model="video.chapter_id"
+                :datas="chapters[video.course_id]"
+                keyName="id"
+                titleName="name"
+                :filterable="true"
+              ></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="直播时间" prop="published_at">
+              <DatePicker v-model="video.published_at" v-width="200" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="2"></Cell>
+          <Cell :width="4">
+            <FormItem label="是否显示" prop="is_show">
+              <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
+            </FormItem>
+          </Cell>
+        </Row>
+
         <FormItem>
           <Button color="primary" @click="create">添加</Button>
         </FormItem>

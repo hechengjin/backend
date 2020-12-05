@@ -4,7 +4,7 @@
       <span class="h-panel-title">管理员</span>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <p-button
           glass="h-btn h-btn-primary"
           icon="h-icon-plus"
@@ -13,28 +13,35 @@
           @click="create()"
         ></p-button>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem prop="name" title="姓名"></TableItem>
-        <TableItem prop="email" title="邮箱"></TableItem>
-        <TableItem prop="created_at" title="创建时间"></TableItem>
-        <TableItem :render="logShow" title="最近日志"></TableItem>
-        <TableItem title="禁止登录">
-          <template slot-scope="{ data }">{{data.is_ban_login === 1 ? '是' : '否'}}</template>
-        </TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <p-del-button permission="administrator.destroy" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="administrator.edit"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
-      <div class="mt-10">
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID" :width="80"></TableItem>
+          <TableItem prop="name" title="姓名" :width="120"></TableItem>
+          <TableItem prop="email" title="邮箱" :width="200"></TableItem>
+          <TableItem title="登录日志">
+            <template slot-scope="{data}">
+              <span>{{data.last_login_date}}</span>
+              <span class="grey">/</span>
+              <span>{{data.last_login_ip}}</span>
+            </template>
+          </TableItem>
+          <TableItem title="禁止登录" :width="60">
+            <template slot-scope="{ data }">{{data.is_ban_login === 1 ? '是' : '否'}}</template>
+          </TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <p-del-button permission="administrator.destroy" @click="remove(datas, data)"></p-del-button>
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="administrator.edit"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
+      <div class="float-box mb-10">
         <Pagination
           v-if="pagination.total > 0"
           align="right"
@@ -51,7 +58,7 @@ export default {
     return {
       pagination: {
         page: 1,
-        size: 20,
+        size: 10,
         total: 0
       },
       datas: [],
@@ -59,12 +66,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     changePage() {
       this.getData();
     },
@@ -76,8 +80,6 @@ export default {
       R.Administrator.List(this.pagination).then(resp => {
         this.datas = resp.data.data;
         this.pagination.total = resp.data.total;
-        this.pagination.page = resp.data.current_page;
-        this.pagination.size = resp.data.per_page;
         this.loading = false;
       });
     },
@@ -104,7 +106,7 @@ export default {
     remove(data, item) {
       R.Administrator.Delete({ id: item.id }).then(resp => {
         HeyUI.$Message.success('成功');
-        this.getData(true);
+        this.getData();
       });
     },
     edit(item) {
@@ -124,14 +126,11 @@ export default {
             R.Administrator.Update(data).then(resp => {
               modal.close();
               HeyUI.$Message.success('成功');
-              this.getData(true);
+              this.getData();
             });
           }
         }
       });
-    },
-    logShow(item) {
-      return item.last_login_date + '|' + item.last_login_ip;
     }
   }
 };

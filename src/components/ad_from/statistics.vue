@@ -1,17 +1,11 @@
-<style lang="less"></style>
 <template>
-  <div style="width: 700px;">
-    <div class="table-basic-vue frame-page h-panel">
-      <div class="h-panel-bar">
-        <span class="h-panel-title">数据统计</span>
-      </div>
-      <div class="h-panel-body">
-        <div>
-          <line-chart :height="200" :chart-data="data"></line-chart>
-        </div>
-        <div class="mt-10">
-          <Button @click="close">关闭</Button>
-        </div>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">统计</span>
+    </div>
+    <div class="h-panel-body">
+      <div class="float-box" v-if="data">
+        <line-chart :height="200" :chart-data="data"></line-chart>
       </div>
     </div>
   </div>
@@ -48,9 +42,6 @@ export default {
         };
         this.data = data;
       });
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };

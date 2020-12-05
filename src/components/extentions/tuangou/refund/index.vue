@@ -4,7 +4,7 @@
 }
 </style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">退款订单</span>
     </div>
@@ -63,7 +63,7 @@ export default {
     return {
       pagination: {
         page: 1,
-        size: 20,
+        size: 10,
         total: 0
       },
       datas: [],

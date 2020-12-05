@@ -1,50 +1,50 @@
 <style lang="less"></style>
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="video"
-      >
-        <FormItem label="课程" prop="course_id">
-          <template v-slot:label>课程</template>
-          <Select
-            v-model="video.course_id"
-            :datas="courses"
-            keyName="id"
-            titleName="title"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="章节" prop="chapter_id">
-          <template v-slot:label>章节</template>
-          <Select
-            v-model="video.chapter_id"
-            :datas="chapters[video.course_id]"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem label="标题" prop="title">
-          <template v-slot:label>标题</template>
-          <input type="text" v-model="video.title" />
-        </FormItem>
-        <FormItem label="直播时间" prop="published_at">
-          <template v-slot:label>直播时间</template>
-          <DatePicker v-model="video.published_at" v-width="200" type="datetime"></DatePicker>
-        </FormItem>
-        <FormItem label="是否显示" prop="is_show">
-          <template v-slot:label>是否显示</template>
-          <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
-        </FormItem>
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="video">
+        <Row>
+          <Cell :width="24">
+            <FormItem label="标题" prop="title">
+              <input type="text" v-model="video.title" />
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="课程" prop="course_id">
+              <Select v-model="video.course_id" :datas="courses" keyName="id" titleName="title" :filterable="true"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="章节" prop="chapter_id">
+              <Select v-model="video.chapter_id" :datas="chapters[video.course_id]" keyName="id" titleName="name" :filterable="true"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="直播时间" prop="published_at">
+              <DatePicker v-model="video.published_at" v-width="200" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="2"></Cell>
+          <Cell :width="4">
+            <FormItem label="是否显示" prop="is_show">
+              <h-switch v-model="video.is_show" :trueValue="1" :falseValue="0"></h-switch>
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="腾讯云回放视频id" prop="tencent_video_id" v-if="video.service === 'tencent'">
+              <input type="text" v-model="video.tencent_video_id" />
+            </FormItem>
+            <FormItem label="阿里云回放视频id" prop="aliyun_video_id" v-else-if="video.service === 'aliyun'">
+              <input type="text" v-model="video.aliyun_video_id" />
+            </FormItem>
+          </Cell>
+        </Row>
+
         <FormItem>
           <Button color="primary" @click="create">保存</Button>
         </FormItem>
@@ -62,7 +62,9 @@ export default {
         chapter_id: null,
         title: '',
         published_at: '',
-        is_show: 1
+        is_show: 1,
+        tencent_video_id: null,
+        aliyun_video_id: null
       },
       rules: {
         required: ['course_id', 'chapter_id', 'title', 'published_at', 'is_show']

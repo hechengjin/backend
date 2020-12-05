@@ -1,10 +1,10 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
-      <span class="h-panel-title">课程分类</span>
+      <span class="h-panel-title">分类</span>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <p-button
           glass="h-btn h-btn-primary"
           icon="h-icon-plus"
@@ -13,21 +13,23 @@
           @click="create()"
         ></p-button>
       </div>
-      <Table ref="table" :loading="loading" :datas="datas">
-        <TableItem prop="name" title="分类名"></TableItem>
-        <TableItem prop="sort" title="升序"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <p-del-button permission="addons.Wenda.category.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Wenda.category.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <Table ref="table" :loading="loading" :datas="datas">
+          <TableItem prop="name" title="分类名"></TableItem>
+          <TableItem prop="sort" title="升序"></TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.Wenda.category.delete" @click="remove(datas, data)"></p-del-button>
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="addons.Wenda.category.update"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
     </div>
   </div>
 </template>

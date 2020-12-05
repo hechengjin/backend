@@ -5,7 +5,7 @@
       <span class="h-panel-title">公告</span>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <p-button
           glass="h-btn h-btn-primary"
           icon="h-icon-plus"
@@ -14,24 +14,28 @@
           @click="create()"
         ></p-button>
       </div>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="title" title="标题"></TableItem>
-        <TableItem prop="view_times" title="浏览次数"></TableItem>
-        <TableItem prop="updated_at" title="最后编辑时间"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{data}">
-            <p-del-button permission="announcement.destroy" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="announcement.edit"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-            <button class="h-btn h-btn-s" @click="showContent(data)">查看内容</button>
-          </template>
-        </TableItem>
-      </Table>
-      <div class="mt-10">
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID" :width="80"></TableItem>
+          <TableItem prop="title" title="标题"></TableItem>
+          <TableItem prop="view_times" title="浏览次数" :width="100"></TableItem>
+          <TableItem prop="updated_at" title="最后编辑时间" :width="120"></TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{data}">
+              <p-del-button permission="announcement.destroy" @click="remove(datas, data)"></p-del-button>
+              <p-button
+                glass="h-btn h-btn-s h-btn-primary"
+                permission="announcement.edit"
+                text="编辑"
+                @click="edit(data)"
+              ></p-button>
+              <button class="h-btn h-btn-s" @click="showContent(data)">查看内容</button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
+
+      <div class="float-box mb-10">
         <Pagination
           v-if="pagination.total>0"
           align="right"
@@ -48,7 +52,7 @@ export default {
     return {
       pagination: {
         page: 1,
-        size: 20,
+        size: 10,
         total: 0
       },
       datas: [],
@@ -56,12 +60,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     changePage() {
       this.getData();
     },
@@ -73,13 +74,12 @@ export default {
       R.Announcement.List(this.pagination).then(resp => {
         this.datas = resp.data.data;
         this.pagination.total = resp.data.total;
-        this.pagination.page = resp.data.current_page;
-        this.pagination.size = resp.data.per_page;
         this.loading = false;
       });
     },
     create() {
       this.$Modal({
+        hasCloseIcon: true,
         closeOnMask: false,
         component: {
           vue: resolve => {
@@ -88,10 +88,8 @@ export default {
         },
         events: {
           success: (modal, data) => {
-            R.Announcement.Store(data).then(resp => {
-              HeyUI.$Message.success('成功');
-              this.getData(true);
-            });
+            modal.close();
+            this.getData(true);
           }
         }
       });
@@ -99,11 +97,12 @@ export default {
     remove(data, item) {
       R.Announcement.Delete({ id: item.id }).then(resp => {
         HeyUI.$Message.success('成功');
-        this.getData(true);
+        this.getData();
       });
     },
     edit(item) {
       this.$Modal({
+        hasCloseIcon: true,
         closeOnMask: false,
         component: {
           vue: resolve => {
@@ -115,10 +114,8 @@ export default {
         },
         events: {
           success: (modal, data) => {
-            R.Announcement.Update(data).then(resp => {
-              HeyUI.$Message.success('成功');
-              this.getData(true);
-            });
+            modal.close();
+            this.getData();
           }
         }
       });

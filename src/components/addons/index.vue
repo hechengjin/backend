@@ -91,8 +91,8 @@ export default {
       loading: false,
       token: '',
       tabs: {
-        repository: '插件市场',
-        local: '本地插件'
+        repository: '插件商城',
+        local: '已安装'
       },
       tab: 'repository',
       repositoryPaginate: {

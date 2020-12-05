@@ -1,24 +1,27 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="h-panel w-800">
     <div class="h-panel-bar">
-      <span class="h-panel-title">试卷分类</span>
+      <span class="h-panel-title">分类</span>
     </div>
     <div class="h-panel-body">
-      <p>
+      <div class="float-box mb-10">
         <Button color="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
-      </p>
-      <Table ref="table" :loading="loading" :datas="datas">
-        <TableItem prop="name" title="分类名" treeOpener></TableItem>
-        <TableItem prop="sort" title="升序"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <Poptip content="确认删除？" @confirm="remove(datas, data)">
-              <button class="h-btn h-btn-s h-btn-red">删除</button>
-            </Poptip>
-            <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
-          </template>
-        </TableItem>
-      </Table>
+      </div>
+      <div class="float-box mb-10">
+        <Table ref="table" :loading="loading" :datas="datas">
+          <TableItem prop="id" title="ID" :width="80"></TableItem>
+          <TableItem prop="sort" title="升序" :width="80"></TableItem>
+          <TableItem prop="name" title="分类名" treeOpener></TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <Poptip content="确认删除？" @confirm="remove(datas, data)">
+                <button class="h-btn h-btn-s h-btn-red">删除</button>
+              </Poptip>
+              <button class="h-btn h-btn-s h-btn-primary" @click="edit(data)">编辑</button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
     </div>
   </div>
 </template>
@@ -31,12 +34,9 @@ export default {
     };
   },
   mounted() {
-    this.init();
+    this.getData();
   },
   methods: {
-    init() {
-      this.getData();
-    },
     changePage() {
       this.getData();
     },

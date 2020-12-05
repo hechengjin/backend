@@ -1,11 +1,12 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">评论</span>
     </div>
     <div class="h-panel-body">
       <Table ref="table" :loading="loading" :datas="datas">
         <TableItem prop="id" title="ID" :width="80"></TableItem>
+        <TableItem prop="user_id" title="UID" :width="80"></TableItem>
         <TableItem title="用户" :width="120">
           <template slot-scope="{ data }">
             <span>{{data.user.nick_name}}</span>

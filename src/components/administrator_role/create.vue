@@ -1,41 +1,80 @@
-<style lang="less"></style>
+<style lang="less">
+.permissions-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .permission-item {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 10px;
+
+    .title {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .content {
+      width: 100%;
+      height: auto;
+      float: left;
+
+      .h-checkbox {
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+</style>
 <template>
-  <div style="padding: 20px">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :labelWidth="110"
-      :rules="rules"
-      :model="role"
-    >
-      <FormItem label="权限" prop="permission_ids">
-        <template v-slot:label>权限</template>
-        <Select
-          v-model="role.permission_ids"
-          :datas="permissions"
-          :filterable="true"
-          :multiple="true"
-        ></Select>
-      </FormItem>
-      <FormItem label="角色名" prop="display_name">
-        <template v-slot:label>角色名</template>
-        <input type="text" v-model="role.display_name" />
-      </FormItem>
-      <FormItem label="Slug" prop="slug">
-        <template v-slot:label>Slug</template>
-        <input type="text" v-model="role.slug" />
-      </FormItem>
-      <FormItem label="描述" prop="description">
-        <template v-slot:label>描述</template>
-        <input type="text" v-model="role.description" />
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="create">创建</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-1000">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">添加</span>
+    </div>
+    <div class="h-panel-body">
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="role">
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="角色名" prop="display_name">
+              <input type="text" v-model="role.display_name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="Slug" prop="slug">
+              <input type="text" v-model="role.slug" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="描述" prop="description">
+              <input type="text" v-model="role.description" />
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="24">
+            <div class="permissions-box">
+              <div class="permission-item" v-for="(items, title) in permissions" :key="title">
+                <div class="title">{{ title }}</div>
+                <div class="content">
+                  <Checkbox v-model="role.permission_ids" :value="item.id" v-for="item in items" :key="item.id">{{ item.display_name }}</Checkbox>
+                </div>
+              </div>
+            </div>
+          </Cell>
+        </Row>
+
+        <FormItem>
+          <Button color="primary" @click="create">创建</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>
@@ -58,20 +97,7 @@ export default {
     init() {
       R.AdministratorRole.Create().then(res => {
         let data = res.data.permissions;
-        let permissions = [];
-        for (let key in data) {
-          permissions.push({
-            title: key,
-            isLabel: true
-          });
-          data[key].forEach(item => {
-            permissions.push({
-              title: item.display_name,
-              key: item.id
-            });
-          });
-        }
-        this.permissions = permissions;
+        this.permissions = data;
       });
     },
     create() {

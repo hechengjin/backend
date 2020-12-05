@@ -1,44 +1,46 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel" style="width: 1200px">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
-      <span class="h-panel-title">添加文章</span>
+      <span class="h-panel-title">添加</span>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="article"
-      >
-        <FormItem label="章节" prop="book_cid">
-          <template v-slot:label>章节</template>
-          <Select v-model="article.book_cid" :datas="cs" keyName="id" titleName="name"></Select>
-        </FormItem>
-        <FormItem label="标题" prop="title">
-          <template v-slot:label>标题</template>
-          <input type="text" v-model="article.title" />
-        </FormItem>
-        <FormItem label="价格" prop="charge">
-          <template v-slot:label>价格</template>
-          <div class="h-input-group" v-width="200">
-            <input type="text" v-model="article.charge" />
-            <span class="h-input-addon">元</span>
-          </div>
-          <warn text="价格为0即视为试看，可免费阅读"></warn>
-        </FormItem>
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="article">
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="章节" prop="book_cid">
+              <Select v-model="article.book_cid" :datas="cs" keyName="id" titleName="name"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="18">
+            <FormItem label="标题" prop="title">
+              <input type="text" v-model="article.title" placeholder="请输入标题" />
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <div class="h-input-group" v-width="100">
+                <input type="text" v-model="article.charge" />
+                <span class="h-input-addon">元</span>
+              </div>
+              <warn text="价格为0即视为试看，可免费阅读"></warn>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="显示" prop="is_show">
+              <h-switch v-model="article.is_show"></h-switch>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="上架时间" prop="published_at">
+              <DatePicker v-model="article.published_at" v-width="200" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+        </Row>
+
         <FormItem label="内容" prop="original_content">
-          <template v-slot:label>内容</template>
           <mk-editor v-model="article.original_content"></mk-editor>
-        </FormItem>
-        <FormItem label="显示" prop="is_show">
-          <template v-slot:label>显示</template>
-          <h-switch v-model="article.is_show"></h-switch>
-        </FormItem>
-        <FormItem label="上架时间" prop="published_at">
-          <template v-slot:label>上架时间</template>
-          <DatePicker v-model="article.published_at" v-width="200" type="datetime"></DatePicker>
         </FormItem>
 
         <FormItem>
