@@ -2,16 +2,13 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="slider"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="slider">
         <Row :space="10">
           <Cell :width="8">
             <FormItem label="平台" prop="platform">
@@ -33,14 +30,10 @@
         <Row :space="10">
           <Cell :width="24">
             <FormItem label="封面" prop="thumb">
-              <image-upload v-model="slider.thumb" name="封面"></image-upload>
+              <image-upload v-model="slider.thumb" name="封面" help="长宽比3:1，建议尺寸：1200x400像素"></image-upload>
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">添加</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

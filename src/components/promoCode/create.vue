@@ -2,16 +2,13 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">创建</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="PromoCode"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="PromoCode">
         <Row :space="10">
           <Cell :width="6">
             <FormItem label="优惠码" prop="code">
@@ -31,11 +28,6 @@
           <Cell :width="6">
             <FormItem label="可使用次数" prop="use_times">
               <input type="number" v-model="PromoCode.use_times" placeholder="0=不限制" />
-            </FormItem>
-          </Cell>
-          <Cell :width="6">
-            <FormItem>
-              <Button color="primary" @click="create">添加</Button>
             </FormItem>
           </Cell>
         </Row>
@@ -59,7 +51,10 @@ export default {
     create() {
       let validResult = this.$refs.form.valid();
       if (validResult.result) {
-        this.$emit('success', this.PromoCode);
+        R.PromoCode.Create(this.PromoCode).then(resp => {
+          HeyUI.$Message.success('成功');
+          this.$emit('success');
+        });
       }
     }
   }

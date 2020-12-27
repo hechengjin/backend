@@ -2,14 +2,17 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">回答</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Table ref="table" :loading="loading" :datas="datas">
         <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem prop="user_id" title="UID" :width="80"></TableItem>
+        <TableItem prop="user_id" title="用户ID" :width="80"></TableItem>
         <TableItem title="用户" :width="120">
           <template slot-scope="{ data }">
-            <span>{{data.user.nick_name}}</span>
+            <span>{{ data.user.nick_name }}</span>
           </template>
         </TableItem>
         <TableItem prop="vote_count" title="点赞" unit="次" :width="80"></TableItem>

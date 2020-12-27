@@ -2,14 +2,15 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">标签</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="update">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form mode="block" ref="form">
         <FormItem label="标签">
           <TagInput v-model="user.tags" :limit="5" :wordlimit="20"></TagInput>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="update">保存</Button>
         </FormItem>
       </Form>
     </div>

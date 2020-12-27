@@ -36,7 +36,7 @@
             </Cell>
             <Cell class="text-center" :width="6">
               <h3>后台版本</h3>
-              <p>v3.6.7</p>
+              <p>v3.7</p>
             </Cell>
             <Cell class="text-center" :width="6">
               <h3>内核版本</h3>
@@ -77,7 +77,6 @@ export default {
       R.Dashboard.index().then(resp => {
         this.index = resp.data;
       });
-      R.Dashboard.check().then(resp => {});
     },
     getSystemInfo() {
       R.Dashboard.systemInfo().then(resp => {

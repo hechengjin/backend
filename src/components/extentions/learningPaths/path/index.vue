@@ -5,48 +5,30 @@
     </div>
     <div class="h-panel-body">
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="addons.learnPaths.path.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.learnPaths.path.store" text="添加" @click="create()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas">
         <TableItem prop="name" title="路径名"></TableItem>
-        <TableItem prop="desc" title="简介"></TableItem>
-        <TableItem title="价格">
-          <template slot-scope="{data}">
-            <span>￥{{data.charge}}</span> /
-            <span style="text-decoration: line-through">￥{{data.original_charge}}</span>
+        <TableItem title="价格" :width="150">
+          <template slot-scope="{ data }">
+            <span>￥{{ data.charge }}</span> /
+            <span style="text-decoration: line-through">￥{{ data.original_charge }}</span>
           </template>
         </TableItem>
-        <TableItem title="显示">
-          <template slot-scope="{data}">
+        <TableItem title="显示" :width="100">
+          <template slot-scope="{ data }">
             <span>{{ data.is_show === 1 ? '是' : '否' }}</span>
           </template>
         </TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <p-del-button permission="addons.learnPaths.path.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-primary h-btn-s"
-              permission="addons.learnPaths.path.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-primary h-btn-s" permission="addons.learnPaths.path.update" text="编辑" @click="edit(data)"></p-button>
           </template>
         </TableItem>
       </Table>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>

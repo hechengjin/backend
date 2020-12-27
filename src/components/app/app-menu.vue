@@ -3,6 +3,8 @@
   .h-menu {
     font-size: 14px;
     .h-menu-li-selected {
+      font-weight: 600;
+
       .h-menu-show:after {
         width: 4px;
       }
@@ -31,14 +33,13 @@
 <template>
   <div class="app-menu">
     <appLogo></appLogo>
-    <Menu
-      :datas="menus"
-      :inlineCollapsed="siderCollapsed"
-      @click="trigger"
-      ref="menu"
-      :className="`h-menu-${theme}`"
-    ></Menu>
+    <Menu :datas="menus" :inlineCollapsed="siderCollapsed" @click="trigger" ref="menu" :className="`h-menu-${theme}`"></Menu>
     <div class="app-menu-mask" @click="hideMenu"></div>
+
+    <!-- 下面的图片引用是为了统计meedu的使用数量，无其他意义，可删除 -->
+    <div style="display: none">
+      <img src="https://meedu.vip/api/v1/stat" />
+    </div>
   </div>
 </template>
 <script>

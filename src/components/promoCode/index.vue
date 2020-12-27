@@ -4,7 +4,7 @@
       <span class="h-panel-title">优惠码</span>
     </div>
     <div class="h-panel-body">
-      <div class="float-box">
+      <div class="float-box mb-10">
         <Form>
           <Row :space="10">
             <Cell :width="6">
@@ -26,18 +26,18 @@
           </Row>
         </Form>
       </div>
-      <div class="float-box mt-10">
-        <div class="alert">优惠码的 U 前缀是用户专属邀请码预留的，请勿在自定义优惠码中使用！</div>
+      <div class="float-box mb-10">
+        <div class="alert">优惠码的 <b>U</b> 前缀是用户专属邀请码预留的，请勿在自定义优惠码中使用！</div>
       </div>
-      <div class="float-box mt-10">
-        <p-del-button permission="promoCode.destroy.multi" @click="deleteSubmit()"></p-del-button>
+      <div class="float-box mb-10">
+        <p-del-button text="批量删除" permission="promoCode.destroy.multi" @click="deleteSubmit()"></p-del-button>
         <p-button glass="h-btn h-btn-primary h-btn-s" icon="h-icon-plus" permission="promoCode.store" text="添加" @click="create()"></p-button>
 
         <p-button glass="h-btn h-btn-primary h-btn-s" permission="promoCode.import" text="批量导入" @click="showImportPage()"></p-button>
 
         <p-button glass="h-btn h-btn-primary h-btn-s" permission="promoCode.generator" text="批量生成" @click="showGeneratePage()"></p-button>
       </div>
-      <div class="float-box mt-10">
+      <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas" :checkbox="true" ref="table" @sort="sortEvt">
           <TableItem prop="id" :sort="true" title="ID" :width="80"></TableItem>
           <TableItem title="优惠码">
@@ -47,19 +47,27 @@
           </TableItem>
           <TableItem prop="invited_user_reward" :sort="true" title="抵扣" unit="元" :width="80"></TableItem>
           <TableItem prop="invite_user_reward" :sort="true" title="奖励" unit="元" :width="80"></TableItem>
-          <TableItem title="可使用次数" :sort="true" :width="100">
+          <TableItem title="可使用" :width="100">
             <template slot-scope="{ data }">
               <span v-if="data.use_times === 0 || data.use_times === null" class="red">不限制</span>
               <span v-else>{{ data.use_times }}次</span>
             </template>
           </TableItem>
-          <TableItem prop="used_times" :sort="true" title="已使用次数" unit="次" :width="100"></TableItem>
-          <TableItem prop="created_at" :sort="true" title="创建时间" :width="120"></TableItem>
-          <TableItem prop="expired_at" :sort="true" title="过期时间" :width="120"></TableItem>
+          <TableItem prop="used_times" :sort="true" title="已使用" unit="次" :width="100"></TableItem>
+          <TableItem title="创建时间" :width="120">
+            <template slot-scope="{ data }">
+              <date-text :date="data.created_at"></date-text>
+            </template>
+          </TableItem>
+          <TableItem title="过期时间" :width="120">
+            <template slot-scope="{ data }">
+              <date-text :date="data.expired_at"></date-text>
+            </template>
+          </TableItem>
         </Table>
       </div>
-      <div class="float-box mt-10 mb-10">
-        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+      <div class="float-box mb-10">
+        <Pagination align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>
@@ -129,10 +137,7 @@ export default {
         events: {
           success: (modal, data) => {
             modal.close();
-            R.PromoCode.Create(data).then(resp => {
-              HeyUI.$Message.success('成功');
-              this.getData(true);
-            });
+            this.getData(true);
           }
         }
       });

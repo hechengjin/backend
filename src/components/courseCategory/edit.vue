@@ -1,21 +1,16 @@
 <style lang="less"></style>
 <template>
   <div class>
-    <div class="h-panel">
+    <div class="h-panel w-800">
       <div class="h-panel-bar">
-        <span class="h-panel-title">编辑课程分类</span>
+        <span class="h-panel-title">编辑</span>
+        <div class="h-panel-right">
+          <Button color="primary" @click="create">保存</Button>
+          <Button @click="$emit('close')" :text="true">取消</Button>
+        </div>
       </div>
       <div class="h-panel-body">
-        <Form
-          v-width="400"
-          mode="block"
-          ref="form"
-          :validOnChange="true"
-          :showErrorTip="true"
-          :labelWidth="110"
-          :rules="rules"
-          :model="category"
-        >
+        <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="category">
           <FormItem label="升序" prop="sort">
             <template v-slot:label>升序</template>
             <input type="number" v-model="category.sort" />
@@ -28,23 +23,22 @@
             <template v-slot:label>显示</template>
             <h-switch v-model="category.is_show" :trueValue="1" :falseValue="0"></h-switch>
           </FormItem>
-          <FormItem>
-            <Button color="primary" @click="create">保存</Button>
-            <Button @click="close()">取消</Button>
-          </FormItem>
         </Form>
       </div>
     </div>
   </div>
 </template>
 <script>
-import CourseCategory from 'model/CourseCategory';
-
 export default {
   props: ['id'],
   data() {
     return {
-      category: CourseCategory.parse({}),
+      category: {
+        sort: 0,
+        name: '',
+        parent_id: 0,
+        is_show: 0
+      },
       rules: {
         required: ['sort', 'name', 'is_show']
       }
@@ -64,9 +58,6 @@ export default {
       if (validResult.result) {
         this.$emit('success', this.category);
       }
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };

@@ -37,7 +37,7 @@
       <div class="float-box">
         <Table :loading="loading" :datas="datas">
           <TableItem prop="id" title="ID" :width="80"></TableItem>
-          <TableItem prop="goods_id" title="GID" :width="80"></TableItem>
+          <TableItem prop="goods_id" title="商品ID" :width="80"></TableItem>
           <TableItem prop="goods_type_text" title="类型" :width="80"></TableItem>
           <TableItem prop="goods_title" title="商品"></TableItem>
           <TableItem title="价格" :width="150">
@@ -64,7 +64,7 @@
       </div>
 
       <div class="float-box mb-10">
-        <Pagination class="mt-10" v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+        <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

@@ -2,16 +2,13 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="message"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="message">
         <FormItem label="消息类型" prop="type">
           <Select v-model="message.type" :datas="types" keyName="id" titleName="name"></Select>
         </FormItem>
@@ -33,10 +30,6 @@
 
         <FormItem label="回复内容" prop="reply_content">
           <textarea v-model="message.reply_content" rows="3" placeholder="回复内容"></textarea>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

@@ -1,17 +1,14 @@
 <template>
-  <div class="h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="teacher"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="teacher">
         <Row :space="10">
           <Cell :width="8">
             <FormItem label="讲师名" prop="name">
@@ -30,10 +27,6 @@
         </FormItem>
         <FormItem label="简介" prop="short_desc">
           <textarea v-model="teacher.short_desc" rows="3"></textarea>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

@@ -3,12 +3,9 @@
   width: 100%;
   height: auto;
   float: left;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
-  background-color: rgba(0, 0, 0, 0.02);
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.02);
   }
 
   .body {
@@ -37,7 +34,6 @@
     height: auto;
     float: left;
     padding-left: 30px;
-    background-color: rgba(0, 0, 0, 0.05);
 
     .children-nav-item {
       width: 100%;
@@ -48,6 +44,10 @@
       padding-left: 15px;
       padding-right: 15px;
       line-height: 3rem;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
 
       .name {
         flex: 1;
@@ -61,6 +61,32 @@
     }
   }
 }
+
+.nav-panel {
+  width: 100%;
+  height: auto;
+  float: left;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+  .panel-title {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding-left: 20px;
+    line-height: 50px;
+    font-size: 15px;
+    color: #333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+  }
+  .panel-body {
+    width: 100%;
+    height: auto;
+    float: left;
+    padding: 20px;
+  }
+}
 </style>
 <template>
   <div class="table-basic-vue frame-page h-panel">
@@ -69,30 +95,53 @@
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
-        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="nav.store" text="添加" @click="create()"></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="nav.store" text="添加" @click="create()"></p-button>
       </div>
+
       <div class="float-box mb-10">
-        <div class="nav-item" v-for="nav in datas" :key="nav.id">
-          <div class="body">
-            <div class="name">{{ nav.platform }} - {{ nav.name }}</div>
-            <div class="option">
-              <p-del-button permission="nav.destroy" @click="remove(nav)"></p-del-button>
-              <p-button glass="h-btn h-btn-s h-btn-primary" permission="nav.edit" text="编辑" @click="edit(nav)"></p-button>
-            </div>
-          </div>
-          <div class="children">
-            <div class="children-nav-item" v-for="childrenNav in nav.children" :key="childrenNav.id">
-              <div class="name">{{ childrenNav.name }}</div>
-              <div class="option">
-                <p-del-button permission="nav.destroy" @click="remove(childrenNav)"></p-del-button>
-                <p-button glass="h-btn h-btn-s h-btn-primary" permission="nav.edit" text="编辑" @click="edit(childrenNav)"></p-button>
+        <Row :space="10">
+          <Cell :width="12">
+            <div class="pc-box nav-panel">
+              <div class="panel-title">PC导航</div>
+              <div class="panel-body">
+                <div class="nav-item" v-for="nav in pcList" :key="nav.id">
+                  <div class="body">
+                    <div class="name">{{ nav.name }}</div>
+                    <div class="option">
+                      <p-del-button permission="nav.destroy" @click="remove(nav)"></p-del-button>
+                      <p-button glass="h-btn h-btn-s h-btn-primary" permission="nav.edit" text="编辑" @click="edit(nav)"></p-button>
+                    </div>
+                  </div>
+                  <div class="children">
+                    <div class="children-nav-item" v-for="childrenNav in nav.children" :key="childrenNav.id">
+                      <div class="name">{{ childrenNav.name }}</div>
+                      <div class="option">
+                        <p-del-button permission="nav.destroy" @click="remove(childrenNav)"></p-del-button>
+                        <p-button glass="h-btn h-btn-s h-btn-primary" permission="nav.edit" text="编辑" @click="edit(childrenNav)"></p-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="float-box mb-10">
-        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+          </Cell>
+          <Cell :width="12">
+            <div class="h5-box nav-panel">
+              <div class="panel-title">H5导航</div>
+              <div class="panel-body">
+                <div class="nav-item" v-for="nav in h5List" :key="nav.id">
+                  <div class="body">
+                    <div class="name">{{ nav.name }}</div>
+                    <div class="option">
+                      <p-del-button permission="nav.destroy" @click="remove(nav)"></p-del-button>
+                      <p-button glass="h-btn h-btn-s h-btn-primary" permission="nav.edit" text="编辑" @click="edit(nav)"></p-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Cell>
+        </Row>
       </div>
     </div>
   </div>
@@ -101,33 +150,41 @@
 export default {
   data() {
     return {
-      pagination: {
-        page: 1,
-        size: 10,
-        total: 0
-      },
       datas: [],
       loading: false
     };
   },
+  computed: {
+    pcList() {
+      let list = [];
+      for (let i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].platform === 'PC') {
+          list.push(this.datas[i]);
+        }
+      }
+      return list;
+    },
+    h5List() {
+      let list = [];
+      for (let i = 0; i < this.datas.length; i++) {
+        if (this.datas[i].platform === 'h5') {
+          list.push(this.datas[i]);
+        }
+      }
+      return list;
+    }
+  },
   mounted() {
-    this.init();
+    this.getData(true);
   },
   methods: {
-    init() {
-      this.getData(true);
-    },
     changePage() {
       this.getData();
     },
-    getData(reload = false) {
-      if (reload) {
-        this.pagination.page = 1;
-      }
+    getData() {
       this.loading = true;
-      R.Nav.List(this.pagination).then(resp => {
-        this.datas = resp.data.data;
-        this.pagination.total = resp.data.total;
+      R.Nav.List().then(resp => {
+        this.datas = resp.data;
         this.loading = false;
       });
     },

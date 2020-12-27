@@ -1,34 +1,28 @@
 <template>
-  <div style="padding: 15px;">
-    <Form
-      v-width="400"
-      mode="block"
-      ref="form"
-      :validOnChange="true"
-      :showErrorTip="true"
-      :rules="rules"
-      :model="poster"
-    >
-      <FormItem label="升序" prop="sort">
-        <template v-slot:label>升序</template>
-        <input type="number" v-model="poster.sort" />
-      </FormItem>
-      <FormItem label="海报名" prop="name">
-        <template v-slot:label>海报名</template>
-        <input type="text" v-model="poster.name" />
-      </FormItem>
-      <FormItem label="海报" prop="thumb">
-        <template v-slot:label>海报</template>
-        <image-upload v-model="poster.thumb" name="海报"></image-upload>
-      </FormItem>
-      <FormItem label="参数" prop="config">
-        <template v-slot:label>参数</template>
-        <textarea v-model="poster.config" rows="3"></textarea>
-      </FormItem>
-      <FormItem>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
         <Button color="primary" @click="create">保存</Button>
-      </FormItem>
-    </Form>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
+    </div>
+    <div class="h-panel-body">
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="poster">
+        <FormItem label="升序" prop="sort">
+          <input type="number" v-model="poster.sort" />
+        </FormItem>
+        <FormItem label="海报名" prop="name">
+          <input type="text" v-model="poster.name" />
+        </FormItem>
+        <FormItem label="海报" prop="thumb">
+          <image-upload v-model="poster.thumb" name="海报"></image-upload>
+        </FormItem>
+        <FormItem label="参数" prop="config">
+          <textarea v-model="poster.config" rows="3"></textarea>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>

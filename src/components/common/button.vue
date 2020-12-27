@@ -1,5 +1,5 @@
 <template>
-  <Button :class="glass" :icon="icon" v-if="inPermission" @click="$emit('click')">{{text}}</Button>
+  <Button :class="glass" :icon="icon" v-if="inPermission" @click="$emit('click')">{{ text }}</Button>
 </template>
 <script>
 export default {

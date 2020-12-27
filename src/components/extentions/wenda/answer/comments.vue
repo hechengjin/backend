@@ -2,14 +2,17 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">评论</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Table ref="table" :loading="loading" :datas="datas">
         <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem prop="user_id" title="UID" :width="80"></TableItem>
+        <TableItem prop="user_id" title="用户ID" :width="80"></TableItem>
         <TableItem title="用户" :width="120">
           <template slot-scope="{ data }">
-            <span>{{data.user.nick_name}}</span>
+            <span>{{ data.user.nick_name }}</span>
           </template>
         </TableItem>
         <TableItem title="内容">
@@ -19,10 +22,7 @@
         </TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
-            <p-del-button
-              permission="addons.Wenda.question.answers.comments.delete"
-              @click="remove(data)"
-            ></p-del-button>
+            <p-del-button permission="addons.Wenda.question.answers.comments.delete" @click="remove(data)"></p-del-button>
           </template>
         </TableItem>
       </Table>

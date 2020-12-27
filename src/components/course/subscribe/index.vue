@@ -2,9 +2,12 @@
   <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">订阅记录</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <Form>
           <Row :space="10">
             <Cell :width="6">
@@ -26,28 +29,34 @@
           </Row>
         </Form>
       </div>
-      <div class="mb-10">
-        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="course.subscribe.create" text="添加" @click="create()"></p-button>
+      <div class="float-box mb-10">
+        <p-button glass="h-btn h-btn-primary" permission="course.subscribe.create" text="添加" @click="create()"></p-button>
       </div>
-      <Table :loading="loading" :datas="data">
-        <TableItem title="CID" prop="course_id" :width="80"></TableItem>
-        <TableItem title="UID" prop="user_id" :width="80"></TableItem>
-        <TableItem title="用户" :width="120">
-          <template slot-scope="{ data }">
-            <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].nick_name }}</span>
-            <span v-else class="red">已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="订阅时间" prop="created_at" :width="120"></TableItem>
-        <TableItem title="操作" :width="120">
-          <template slot-scope="{ data }">
-            <p-del-button permission="course.subscribe.delete" @click="remove(data)"></p-del-button>
-          </template>
-        </TableItem>
-      </Table>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="data">
+          <TableItem title="课程ID" prop="course_id" :width="120"></TableItem>
+          <TableItem title="用户ID" prop="user_id" :width="120"></TableItem>
+          <TableItem title="用户" :width="150">
+            <template slot-scope="{ data }">
+              <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].nick_name }}</span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="订阅时间" :width="120">
+            <template slot-scope="{ data }">
+              <date-text :date="data.created_at"></date-text>
+            </template>
+          </TableItem>
+          <TableItem title="操作" :width="120">
+            <template slot-scope="{ data }">
+              <p-del-button permission="course.subscribe.delete" @click="remove(data)"></p-del-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
 
-      <div class="mt-10">
-        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+      <div class="float-box mt-10">
+        <Pagination align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

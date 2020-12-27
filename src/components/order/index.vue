@@ -39,7 +39,7 @@
 
       <Table :loading="loading" :datas="datas" :stripe="true">
         <TableItem prop="id" title="ID" :width="100"></TableItem>
-        <TableItem prop="user_id" title="UID" :width="100"></TableItem>
+        <TableItem prop="user_id" title="用户ID" :width="100"></TableItem>
         <TableItem title="用户" :width="120">
           <template slot-scope="{ data }">
             <span v-if="users[data.user_id]">{{ users[data.user_id].nick_name }}</span>
@@ -69,8 +69,12 @@
             </ul>
           </template>
         </TableItem>
-        <TableItem prop="created_at" title="时间" :width="120"></TableItem>
-        <TableItem :width="200" title="操作" align="center">
+        <TableItem title="时间" :width="120">
+          <template slot-scope="{ data }">
+            <date-text :date="data.created_at"></date-text>
+          </template>
+        </TableItem>
+        <TableItem :width="240" title="操作" align="center">
           <template slot-scope="{ data }">
             <p-del-button
               permission="order.finish"

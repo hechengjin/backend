@@ -2,6 +2,10 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">导入试题</span>
+      <div class="h-panel-right">
+        <Button @click="submitImport" color="primary">导入</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
@@ -16,7 +20,6 @@
       </div>
       <div class="float-box mb-10">
         <input type="file" ref="file" />
-        <Button @click="submitImport" color="primary">导入</Button>
       </div>
     </div>
   </div>

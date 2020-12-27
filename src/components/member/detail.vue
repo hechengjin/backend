@@ -10,6 +10,9 @@
   <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">用户详情</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Row class="base-info mb-10" v-if="user">
@@ -117,7 +120,11 @@
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
-            <TableItem prop="created_at" title="时间"></TableItem>
+            <TableItem title="时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.collect" @change="paginateChange('collect')" />
         </Cell>
@@ -129,8 +136,16 @@
             <TableItem prop="id" title="ID"></TableItem>
             <TableItem prop="nick_name" title="昵称"></TableItem>
             <TableItem prop="mobile" title="手机号"></TableItem>
-            <TableItem prop="invite_user_expired_at" title="维系过期时间"></TableItem>
-            <TableItem prop="created_at" title="注册时间"></TableItem>
+            <TableItem title="过期时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.invite_user_expired_at"></date-text>
+              </template>
+            </TableItem>
+            <TableItem title="注册时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.invite" @change="paginateChange('invite')" />
         </Cell>
@@ -145,9 +160,17 @@
                 <span class="red" v-else>已删除</span>
               </template>
             </TableItem>
-            <TableItem prop="created_at" title="开始时间"></TableItem>
-            <TableItem prop="watched_at" title="看完的时间"></TableItem>
-            <TableItem title="看完">
+            <TableItem title="开始时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
+            <TableItem title="看完的时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.watched_at"></date-text>
+              </template>
+            </TableItem>
+            <TableItem title="看完" :width="100">
               <template slot-scope="{ data }">
                 <span v-if="data.is_watched" class="red">是</span>
                 <span v-else>否</span>
@@ -168,7 +191,11 @@
               </template>
             </TableItem>
             <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-            <TableItem prop="created_at" title="购买时间"></TableItem>
+            <TableItem title="购买时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.courses" @change="paginateChange('courses')" />
         </Cell>
@@ -184,7 +211,11 @@
               </template>
             </TableItem>
             <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-            <TableItem prop="created_at" title="购买时间"></TableItem>
+            <TableItem title="购买时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.videos" @change="paginateChange('videos')" />
         </Cell>
@@ -200,9 +231,21 @@
               </template>
             </TableItem>
             <TableItem prop="charge" title="购买价格" unit="元"></TableItem>
-            <TableItem prop="created_at" title="购买时间"></TableItem>
-            <TableItem prop="started_at" title="开始"></TableItem>
-            <TableItem prop="expired_at" title="结束"></TableItem>
+            <TableItem title="购买时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
+            <TableItem title="开始" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.started_at"></date-text>
+              </template>
+            </TableItem>
+            <TableItem title="结束" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.expired_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.roles" @change="paginateChange('roles')" />
         </Cell>
@@ -226,7 +269,11 @@
                 </ul>
               </template>
             </TableItem>
-            <TableItem prop="created_at" title="创建"></TableItem>
+            <TableItem title="时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.orders" @change="paginateChange('orders')" />
         </Cell>
@@ -238,7 +285,11 @@
             <TableItem prop="id" title="ID"></TableItem>
             <TableItem prop="sum" title="积分"></TableItem>
             <TableItem prop="remark" title="备注"></TableItem>
-            <TableItem prop="created_at" title="创建"></TableItem>
+            <TableItem title="时间" :width="120">
+              <template slot-scope="{ data }">
+                <date-text :date="data.created_at"></date-text>
+              </template>
+            </TableItem>
           </Table>
           <Pagination align="right" v-model="paginate.credit1Records" @change="paginateChange('credit1Records')" />
         </Cell>

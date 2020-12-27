@@ -1,7 +1,11 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-800">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="goods">
@@ -34,10 +38,6 @@
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">添加</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

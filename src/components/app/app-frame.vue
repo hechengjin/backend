@@ -2,18 +2,13 @@
 </style>
 <template>
   <div>
-    <Layout
-      class="app-frame"
-      v-if="!loading"
-      :siderCollapsed="siderCollapsed"
-      :siderFixed="layoutConfig.siderFixed"
-    >
+    <Layout class="app-frame" v-if="!loading" :siderCollapsed="siderCollapsed" :siderFixed="layoutConfig.siderFixed">
       <Sider :theme="layoutConfig.siderTheme">
         <appMenu :theme="layoutConfig.siderTheme"></appMenu>
       </Sider>
       <Layout :headerFixed="layoutConfig.headerFixed">
         <HHeader theme="white">
-          <appHead @openSetting="openSetting=true" :layoutConfig="layoutConfig"></appHead>
+          <appHead @openSetting="openSetting = true" :layoutConfig="layoutConfig"></appHead>
         </HHeader>
         <SysTabs v-if="layoutConfig.showSystab" homePage="Home"></SysTabs>
         <Content>
@@ -49,7 +44,7 @@ export default {
       loading: true,
       openSetting: false,
       layoutConfig: {
-        siderTheme: 'white',
+        siderTheme: 'dark',
         showSystab: false,
         headerFixed: true,
         siderFixed: true

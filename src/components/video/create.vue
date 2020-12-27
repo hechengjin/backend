@@ -1,9 +1,32 @@
-<style lang="less"></style>
+<style lang="less" scoped>
+.upload-video-box {
+  width: 100%;
+  height: auto;
+  float: left;
+
+  .tabs {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 15px;
+  }
+
+  .body {
+    width: 100%;
+    height: auto;
+    float: left;
+  }
+}
+</style>
 <template>
   <div class>
     <div class="h-panel w-1200">
       <div class="h-panel-bar">
         <span class="h-panel-title">添加</span>
+        <div class="h-panel-right">
+          <Button color="primary" @click="create">添加</Button>
+          <Button @click="$emit('close')" :text="true">取消</Button>
+        </div>
       </div>
       <div class="h-panel-body">
         <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="video">
@@ -52,14 +75,13 @@
             </Cell>
             <Cell :width="6">
               <FormItem label="上架时间" prop="published_at">
+                <template v-slot:label>上架时间 <help-icon text="该字段决定前台视频排序，时间越早越靠前" /></template>
                 <DatePicker v-model="video.published_at" type="datetime"></DatePicker>
               </FormItem>
             </Cell>
           </Row>
 
-          <FormItem label="Slug" prop="slug">
-            <input type="text" v-model="video.slug" placeholder="不清楚可不填写" />
-          </FormItem>
+
 
           <Row :space="10">
             <Cell :width="24">
@@ -77,32 +99,32 @@
           </Row>
 
           <FormItem label="上传视频">
-            <template v-slot:label>上传视频</template>
-            <Tabs :datas="tabs" v-model="tab"></Tabs>
+            <div class="upload-video-box">
+              <div class="tabs">
+                <Button class="h-btn" :class="{ 'h-btn-primary': item === tab }" v-for="item in tabs" :key="item" @click="switchTab(item)">{{
+                  item
+                }}</Button>
+              </div>
+              <div class="body">
+                <aliyun-video v-show="tab === '阿里云点播'" v-model="video.aliyun_video_id"></aliyun-video>
+                <tencent-video v-show="tab === '腾讯云点播'" v-model="video.tencent_video_id"></tencent-video>
+                <input type="text" v-show="tab === 'URL地址'" placeholder="视频URL地址（以mp4,m3u8等格式结尾的链接）" v-model="video.url" />
+              </div>
+            </div>
           </FormItem>
 
-          <FormItem label="阿里云视频ID" prop="aliyun_video_id" v-show="tab === '阿里云'">
-            <template v-slot:label>阿里云视频ID</template>
-            <aliyun-video v-model="video.aliyun_video_id"></aliyun-video>
-          </FormItem>
-          <FormItem label="腾讯云视频ID" prop="tencent_video_id" v-show="tab === '腾讯云'">
-            <template v-slot:label>腾讯云视频ID</template>
-            <tencent-video v-model="video.tencent_video_id"></tencent-video>
-          </FormItem>
-          <FormItem label="视频URL地址（以mp4,m3u8等格式结尾的链接）" prop="url" v-show="tab === '直链'">
-            <template v-slot:label>视频URL地址（以mp4,m3u8等格式结尾的链接）</template>
-            <input type="text" v-model="video.url" />
-          </FormItem>
-
-          <FormItem label="视频时长" prop="duration">
-            <template v-slot:label>视频时长</template>
-            <input-duration v-model="video.duration"></input-duration>
-          </FormItem>
-
-          <FormItem label="试看时长" prop="free_seconds">
-            <template v-slot:label>试看时长</template>
-            <input-duration v-model="video.free_seconds"></input-duration>
-          </FormItem>
+          <Row :space="10">
+            <Cell :width="12">
+              <FormItem label="视频时长" prop="duration">
+                <input-duration v-model="video.duration"></input-duration>
+              </FormItem>
+            </Cell>
+            <Cell :width="12">
+              <FormItem label="试看时长" prop="free_seconds">
+                <input-duration v-model="video.free_seconds"></input-duration>
+              </FormItem>
+            </Cell>
+          </Row>
 
           <Row :space="10">
             <Cell :width="6">
@@ -138,8 +160,8 @@
             </Cell>
           </Row>
 
-          <FormItem>
-            <Button color="primary" @click="create">添加</Button>
+          <FormItem label="Slug" prop="slug">
+            <input type="text" v-model="video.slug" placeholder="可选" />
           </FormItem>
         </Form>
       </div>
@@ -147,11 +169,10 @@
   </div>
 </template>
 <script>
+import HelpIcon from '../common/help-icon.vue';
 import TinymceEditor from '../common/tinymce';
 import AliyunVideo from '../common/video/aliyun/aliyun';
 import TencentVideo from '../common/video/tencent/tencent';
-
-import Video from 'model/Video';
 
 export default {
   components: {
@@ -161,11 +182,32 @@ export default {
   },
   data() {
     return {
-      video: Video.parse({ duration: 0, free_seconds: 0 }),
+      video: {
+        course_id: null,
+        title: '',
+        slug: '',
+        charge: 0,
+        short_description: '',
+        description: '',
+        seo_keywords: '',
+        seo_description: '',
+        published_at: '',
+        is_show: 1,
+        aliyun_video_id: '',
+        tencent_video_id: '',
+        url: '',
+        duration: 0,
+        is_ban_sell: 1,
+        comment_status: 2,
+        ban_drag: 0,
+        free_seconds: 0,
+        player_pc: 'xg',
+        player_h5: 'xg'
+      },
       courses: [],
       chapters: [],
-      tabs: ['阿里云', '腾讯云', '直链'],
-      tab: '阿里云',
+      tabs: ['阿里云点播', '腾讯云点播', 'URL地址'],
+      tab: '阿里云点播',
       commentStatus: [
         {
           title: '禁止评论',
@@ -209,21 +251,7 @@ export default {
         }
       ],
       rules: {
-        required: [
-          'course_id',
-          'title',
-          'charge',
-          'short_description',
-          'published_at',
-          'is_show',
-          'is_ban_sell',
-          'ban_drag',
-          'player_pc',
-          'duration',
-          'player_h5',
-          'free_seconds',
-          'comment_status'
-        ]
+        required: ['course_id', 'title', 'charge', 'published_at', 'is_show', 'is_ban_sell', 'ban_drag', 'duration']
       }
     };
   },
@@ -232,14 +260,6 @@ export default {
   },
   methods: {
     init() {
-      this.video.is_show = 0;
-      this.video.is_ban_sell = 0;
-      this.video.ban_drag = 0;
-      this.video.comment_status = 0;
-      this.video.player_pc = 'xg';
-      this.video.player_h5 = 'xg';
-
-      // 读取创建所需要的参数
       R.Video.Create().then(resp => {
         this.courses = resp.data.courses;
       });
@@ -258,6 +278,14 @@ export default {
       R.CourseChapter.List({ course_id: course.id }).then(resp => {
         this.chapters = resp.data.chapters;
       });
+    },
+    switchTab(item) {
+      if (this.video.aliyun_video_id || this.video.tencent_video_id || this.video.url) {
+        // 禁止切换
+        HeyUI.$Message.warn('如需切换视频上传方式，请先清空已上传文件或者链接');
+        return;
+      }
+      this.tab = item;
     }
   }
 };

@@ -19,13 +19,7 @@
             </Cell>
             <Cell :width="6">
               <FormItem label="商品类型">
-                <Select
-                  v-model="filter.type"
-                  :filterable="true"
-                  :datas="types"
-                  keyName="value"
-                  titleName="name"
-                ></Select>
+                <Select v-model="filter.type" :filterable="true" :datas="types" keyName="value" titleName="name"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -37,75 +31,43 @@
       </div>
 
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="addons.TuanGou.goods.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.TuanGou.goods.store" text="添加" @click="create()"></p-button>
 
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.TuanGou.orders"
-          text="订单"
-          @click="showOrdersPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="addons.TuanGou.orders" text="订单" @click="showOrdersPage()"></p-button>
 
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.TuanGou.refund"
-          text="退款"
-          @click="showRefundPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="addons.TuanGou.refund" text="退款" @click="showRefundPage()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas">
         <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem prop="other_id" title="GID" :width="80"></TableItem>
+        <TableItem prop="other_id" title="商品ID" :width="80"></TableItem>
         <TableItem prop="goods_type_text" title="类型" :width="80"></TableItem>
         <TableItem prop="goods_title" title="商品"></TableItem>
         <TableItem title="价格" :width="150">
           <template slot-scope="{ data }">
-            <span>￥{{data.charge}}</span>
+            <span>￥{{ data.charge }}</span>
             /
-            <span class="original-charge">￥{{data.original_charge}}</span>
+            <span class="original-charge">￥{{ data.original_charge }}</span>
           </template>
         </TableItem>
         <TableItem prop="people_num" title="人数" unit="人" :width="80"></TableItem>
         <TableItem title="时间" :width="200">
           <template slot-scope="{ data }">
-            <span>{{data.started_at}}</span>
+            <span>{{ data.started_at }}</span>
             -
-            <span>{{data.ended_at}}</span>
+            <span>{{ data.ended_at }}</span>
           </template>
         </TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <p-del-button permission="addons.TuanGou.goods.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.TuanGou.goods.edit"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.TuanGou.goods.edit" text="编辑" @click="edit(data)"></p-button>
 
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.TuanGou.goods.items"
-              text="团列表"
-              @click="showItems(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.TuanGou.goods.items" text="团列表" @click="showItems(data)"></p-button>
           </template>
         </TableItem>
       </Table>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>

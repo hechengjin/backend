@@ -1,7 +1,10 @@
 <template>
-  <div class="h-panel w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">章节</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="mb-10">

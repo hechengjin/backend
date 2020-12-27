@@ -2,16 +2,13 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="paper"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="paper">
         <Row :space="10">
           <Cell :width="18">
             <FormItem label="标题" prop="title">
@@ -21,13 +18,7 @@
 
           <Cell :width="6">
             <FormItem label="分类" prop="category_id">
-              <Select
-                v-model="paper.category_id"
-                :datas="categories"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="paper.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
             </FormItem>
           </Cell>
 
@@ -68,13 +59,7 @@
           </Cell>
           <Cell :width="18" v-if="paper.is_random === 1">
             <FormItem label="试题随机范围" prop="random_category_id">
-              <Select
-                v-model="paper.random_category_id"
-                :datas="questionCategories"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="paper.random_category_id" :datas="questionCategories" keyName="id" titleName="name" :filterable="true"></Select>
               <warn text="试题随机的话，将会按照试卷的总分随机抽出一定的试题。"></warn>
             </FormItem>
           </Cell>
@@ -113,22 +98,11 @@
           <Cell :width="6">
             <FormItem label="必须购买课程" prop="required_courses">
               <template v-slot:label>必须购买课程</template>
-              <Select
-                v-model="paper.required_courses"
-                :datas="courses"
-                :multiple="true"
-                keyName="id"
-                titleName="title"
-                :filterable="true"
-              ></Select>
+              <Select v-model="paper.required_courses" :datas="courses" :multiple="true" keyName="id" titleName="title" :filterable="true"></Select>
               <warn text="购买其中一门课程即可参与考试"></warn>
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">添加</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

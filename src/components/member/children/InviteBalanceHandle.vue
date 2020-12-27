@@ -1,21 +1,27 @@
 <template>
-  <div style="padding: 15px;">
-    <Form ref="form" :validOnChange="true" :showErrorTip="true" mode="block" :rules="rules" :model="form">
-      <FormItem label="状态" prop="status">
-        <Select v-model="form.status" :datas="statusRows" keyName="id" titleName="name"></Select>
-      </FormItem>
-      <FormItem label="备注" prop="remark">
-        <textarea v-model="form.remark"></textarea>
-      </FormItem>
-      <FormItem>
-        <Button color="primary" @click="confirm">确定</Button>
-        <Button color="default" @click="cancel">取消</Button>
-      </FormItem>
-    </Form>
+  <div class="h-panel w-800">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">提现处理</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="confirm">确认</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
+    </div>
+    <div class="h-panel-body">
+      <Form ref="form" :validOnChange="true" :showErrorTip="true" mode="block" :rules="rules" :model="form">
+        <FormItem label="状态" prop="status">
+          <Select v-model="form.status" :datas="statusRows" keyName="id" titleName="name"></Select>
+        </FormItem>
+        <FormItem label="备注" prop="remark">
+          <textarea v-model="form.remark"></textarea>
+        </FormItem>
+      </Form>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  props: ['ids'],
   data() {
     return {
       form: {
@@ -43,17 +49,10 @@ export default {
       if (!validResult.result) {
         return;
       }
-      this.$emit('success', {
-        status: this.form.status,
-        remark: this.form.remark
+      R.Member.CreateInviteBalanceWithdrawOrder({ ids: this.ids, status: this.form.status, remark: this.form.remark }).then(resp => {
+        HeyUI.$Message.success('处理成功');
+        this.$emit('success');
       });
-      this.close();
-    },
-    cancel() {
-      this.close();
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };

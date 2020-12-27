@@ -41,15 +41,15 @@
 <template>
   <div class="duration">
     <div class="hour">
-      <input type="number" v-model="hour" min="0" placeholder="时" />
+      <input type="text" v-model="hour" min="0" placeholder="时" />
     </div>
     <div class="unit">时</div>
     <div class="minute">
-      <input type="number" v-model="minute" min="0" placeholder="分" />
+      <input type="text" v-model="minute" min="0" placeholder="分" />
     </div>
     <div class="unit">分</div>
     <div class="second">
-      <input type="number" v-model="second" min="0" placeholder="秒" />
+      <input type="text" v-model="second" min="0" placeholder="秒" />
     </div>
     <div class="unit">秒</div>
   </div>

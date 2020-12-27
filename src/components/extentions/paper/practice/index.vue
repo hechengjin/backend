@@ -35,13 +35,7 @@
           @click="showCategoriesPage()"
         ></p-button>
 
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          icon="h-icon-plus"
-          permission="addons.Paper.practice.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary h-btn-s" permission="addons.Paper.practice.store" text="添加" @click="create()"></p-button>
 
         <p-del-button permission="addons.Paper.practice.delete" text="批量删除" @click="deleteSubmit()"></p-del-button>
       </div>

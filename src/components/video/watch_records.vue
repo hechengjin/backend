@@ -2,9 +2,12 @@
   <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">观看记录</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <div class="mb-10">
+      <div class="float-box mb-10">
         <Form>
           <Row :space="10">
             <Cell :width="6">
@@ -26,55 +29,59 @@
           </Row>
         </Form>
       </div>
-      <Table :loading="loading" :datas="list">
-        <TableItem title="VID" prop="video_id" :width="80"></TableItem>
-        <TableItem title="UID" prop="user_id" :width="80"></TableItem>
-        <TableItem title="用户" :width="120">
-          <template slot-scope="{ data }">
-            <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].nick_name }}</span>
-            <span v-else class="red">已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="手机号" :width="120">
-          <template slot-scope="{ data }">
-            <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].mobile }}</span>
-            <span v-else class="red">已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="视频">
-          <template slot-scope="{ data }">
-            <span v-if="typeof videos[data.video_id] !== 'undefined'">{{ videos[data.video_id].title }}</span>
-            <span v-else class="red">已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="时长" :width="100">
-          <template slot-scope="{ data }">
-            <span v-if="typeof videos[data.video_id] !== 'undefined'">
-              <duration-text :seconds="videos[data.video_id].duration" />
-            </span>
-            <span v-else class="red">已删除</span>
-          </template>
-        </TableItem>
-        <TableItem title="已观看" :width="100">
-          <template slot-scope="{ data }">
-            <duration-text :seconds="data.watch_seconds" />
-          </template>
-        </TableItem>
-        <TableItem title="开始时间">
-          <template slot-scope="{ data }">
-            <span>{{ data.created_at }}</span>
-          </template>
-        </TableItem>
-        <TableItem title="看完时间">
-          <template slot-scope="{ data }">
-            <span v-if="data.watched_at">{{ data.watched_at }}</span>
-            <span v-else class="red">未看完</span>
-          </template>
-        </TableItem>
-      </Table>
 
-      <div class="mt-10">
-        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="list">
+          <TableItem title="视频ID" prop="video_id" :width="80"></TableItem>
+          <TableItem title="用户ID" prop="user_id" :width="80"></TableItem>
+          <TableItem title="用户" :width="120">
+            <template slot-scope="{ data }">
+              <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].nick_name }}</span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="手机号" :width="120">
+            <template slot-scope="{ data }">
+              <span v-if="typeof users[data.user_id] !== 'undefined'">{{ users[data.user_id].mobile }}</span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="视频">
+            <template slot-scope="{ data }">
+              <span v-if="typeof videos[data.video_id] !== 'undefined'">{{ videos[data.video_id].title }}</span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="时长" :width="100">
+            <template slot-scope="{ data }">
+              <span v-if="typeof videos[data.video_id] !== 'undefined'">
+                <duration-text :seconds="videos[data.video_id].duration" />
+              </span>
+              <span v-else class="red">已删除</span>
+            </template>
+          </TableItem>
+          <TableItem title="已观看" :width="100">
+            <template slot-scope="{ data }">
+              <duration-text :seconds="data.watch_seconds" />
+            </template>
+          </TableItem>
+
+          <TableItem title="开始时间" :width="120">
+            <template slot-scope="{ data }">
+              <date-text :date="data.created_at"></date-text>
+            </template>
+          </TableItem>
+
+          <TableItem title="看完时间" :width="120">
+            <template slot-scope="{ data }">
+              <date-text :date="data.watched_at"></date-text>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
+
+      <div class="float-box mt-10">
+        <Pagination align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

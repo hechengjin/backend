@@ -24,7 +24,7 @@
 
       <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas">
-          <TableItem title="UID" prop="user_id" :width="80"></TableItem>
+          <TableItem title="用户ID" prop="user_id" :width="80"></TableItem>
           <TableItem title="用户">
             <template slot-scope="{ data }">
               <span v-if="data.user">{{ data.user.nick_name }}</span>

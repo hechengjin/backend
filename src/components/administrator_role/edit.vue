@@ -37,6 +37,10 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="save">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="role">
@@ -69,10 +73,6 @@
             </div>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="save">保存</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

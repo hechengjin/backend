@@ -1,8 +1,12 @@
 <style lang="less"></style>
 <template>
-  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="course">
@@ -52,7 +56,7 @@
         </FormItem>
 
         <FormItem label="课程封面" prop="thumb">
-          <image-upload v-model="course.thumb" name="课程封面"></image-upload>
+          <image-upload v-model="course.thumb" name="课程封面" help="长宽比4:3，建议尺寸：400x300像素"></image-upload>
         </FormItem>
 
         <FormItem label="简短介绍" prop="short_description">
@@ -68,10 +72,6 @@
         </FormItem>
         <FormItem label="SEO关键字" prop="seo_keywords">
           <textarea v-model="course.seo_keywords" rows="1"></textarea>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

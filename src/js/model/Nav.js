@@ -4,5 +4,6 @@ export default new Model({
   url: '',
   active_routes: null,
   parent_id: null,
-  platform: null
+  platform: null,
+  blank: 0
 });

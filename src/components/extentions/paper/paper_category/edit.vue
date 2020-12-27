@@ -2,26 +2,17 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="category"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="category">
         <Row :space="10">
           <Cell :width="8">
             <FormItem label="父级" prop="parent_id">
-              <Select
-                v-model="category.parent_id"
-                :datas="categories"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="category.parent_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
             </FormItem>
           </Cell>
           <Cell :width="8">
@@ -35,10 +26,6 @@
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

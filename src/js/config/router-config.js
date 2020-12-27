@@ -200,10 +200,10 @@ const initRouter = () => {
         component: (resolve) => require(['components/extentions/singlePage/page/index'], resolve),
         meta: { title: '单页' }
       }, {
-        path: '/TemplateOneTag',
-        name: 'TemplateOneTag',
-        component: (resolve) => require(['components/extentions/templateOne/tag/index'], resolve),
-        meta: { title: '立春模板标签' }
+        path: '/TemplateOneSlider',
+        name: 'TemplateOneSlider',
+        component: (resolve) => require(['components/extentions/templateOne/slider/index'], resolve),
+        meta: { title: '立春模板幻灯片' }
       }, {
         path: '/TemplateOneNav',
         name: 'TemplateOneNav',

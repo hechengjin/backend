@@ -2,24 +2,18 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="announcement"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="announcement">
         <FormItem label="标题" prop="title">
           <input type="text" v-model="announcement.title" />
         </FormItem>
-        <FormItem label="内容" prop="content">
+        <FormItem label="内容" prop="announcement">
           <tinymce-editor v-model="announcement.announcement"></tinymce-editor>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

@@ -18,7 +18,20 @@ import PDelButton from './components/common/del-button';
 import CopyText from './components/common/copytext';
 import InputDuration from './components/common/duration';
 import UserFilter from './components/common/user-filter/index';
+import DateText from './components/common/datetext';
+import HelpIcon from './components/common/help-icon';
 
+Vue.component('ImageUpload', ImageUpload);
+Vue.component('Warn', Warn);
+Vue.component('PButton', PButton);
+Vue.component('PDelButton', PDelButton);
+Vue.component('copytext', CopyText);
+Vue.component('InputDuration', InputDuration);
+Vue.component('UserFilter', UserFilter);
+Vue.component('DateText', DateText);
+Vue.component('HelpIcon', HelpIcon);
+
+// markdown编辑器
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
 Vue.use(mavonEditor);
@@ -33,14 +46,6 @@ require('./css/app.less');
 
 heyuiConfig();
 Vue.use(HeyUI);
-
-Vue.component('ImageUpload', ImageUpload);
-Vue.component('Warn', Warn);
-Vue.component('PButton', PButton);
-Vue.component('PDelButton', PDelButton);
-Vue.component('copytext', CopyText);
-Vue.component('InputDuration', InputDuration);
-Vue.component('UserFilter', UserFilter);
 
 const router = routerConfig();
 

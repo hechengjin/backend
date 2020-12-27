@@ -8,30 +8,16 @@
         <Form>
           <Row :space="10">
             <Cell :width="6">
-              <FormItem label="UID">
-                <input type="text" v-model="filter.user_id" placeholder="UID" />
-              </FormItem>
+              <FormItem label="用户ID"> <input type="text" v-model="filter.user_id" placeholder="用户ID" /> </FormItem>
             </Cell>
             <Cell :width="6">
               <FormItem label="分类">
-                <Select
-                  v-model="filter.category_id"
-                  :datas="categories"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="filter.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
               <FormItem label="状态">
-                <Select
-                  v-model="filter.status"
-                  :datas="statusOptions"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="filter.status" :datas="statusOptions" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">
@@ -45,12 +31,7 @@
       </div>
 
       <div class="float-box mb-10">
-        <p-button
-          glass="h-btn h-btn-s h-btn-primary"
-          permission="addons.Wenda.category.list"
-          text="分类管理"
-          @click="showCategoryPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.Wenda.category.list" text="分类管理" @click="showCategoryPage()"></p-button>
 
         <p-del-button permission="addons.Wenda.question.delete" text="批量删除" @click="deleteSubmit()"></p-del-button>
       </div>
@@ -58,15 +39,15 @@
       <div class="float-box mb-10">
         <Table ref="table" :checkbox="true" :loading="loading" :datas="datas">
           <TableItem prop="id" title="ID" :width="80"></TableItem>
-          <TableItem prop="user_id" title="UID" :width="80"></TableItem>
+          <TableItem prop="user_id" title="用户ID" :width="80"></TableItem>
           <TableItem title="分类" align="center" :width="80">
             <template slot-scope="{ data }">
-              <span>{{data.category.name}}</span>
+              <span>{{ data.category.name }}</span>
             </template>
           </TableItem>
           <TableItem title="用户" align="center" :width="100">
             <template slot-scope="{ data }">
-              <span>{{data.user.nick_name}}</span>
+              <span>{{ data.user.nick_name }}</span>
             </template>
           </TableItem>
           <TableItem prop="title" title="标题"></TableItem>
@@ -94,13 +75,7 @@
       </div>
 
       <div class="float-box mb-10">
-        <Pagination
-          class="mt-10"
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+        <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

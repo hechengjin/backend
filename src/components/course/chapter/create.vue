@@ -1,18 +1,15 @@
 <template>
   <div>
-    <div class="h-panel w-400">
+    <div class="h-panel w-800">
       <div class="h-panel-bar">
         <span class="h-panel-title">添加</span>
+        <div class="h-panel-right">
+          <Button color="primary" @click="create">添加</Button>
+          <Button @click="$emit('close')" :text="true">取消</Button>
+        </div>
       </div>
       <div class="h-panel-body">
-        <Form
-          ref="form"
-          mode="block"
-          :validOnChange="true"
-          :showErrorTip="true"
-          :rules="rules"
-          :model="chapter"
-        >
+        <Form ref="form" mode="block" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="chapter">
           <FormItem label="章节名" prop="title">
             <template v-slot:label>章节名</template>
             <input type="text" v-model="chapter.title" />
@@ -20,9 +17,6 @@
           <FormItem label="升序" prop="sort">
             <template v-slot:label>升序</template>
             <input type="number" v-model="chapter.sort" min="0" />
-          </FormItem>
-          <FormItem>
-            <Button color="primary" @click="create">添加</Button>
           </FormItem>
         </Form>
       </div>

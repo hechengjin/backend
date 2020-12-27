@@ -27,24 +27,19 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">参与用户</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
-        <Form mode="block">
+        <Form>
           <FormItem label="添加用户">
             <textarea v-model="mobiles" placeholder="一行一个手机号"></textarea>
           </FormItem>
           <FormItem>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.Paper.paper.users.add"
-              text="添加"
-              @click="userAdd()"
-            ></p-button>
-            <a
-              :href="'/backend/addons/Paper/paper/'+id+'/user/export?token='+token"
-              target="_blank"
-            >导出学生成绩</a>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.Paper.paper.users.add" text="添加" @click="userAdd()"></p-button>
+            <a :href="'/backend/addons/Paper/paper/' + id + '/user/export?token=' + token" target="_blank">导出学生成绩</a>
           </FormItem>
         </Form>
       </div>
@@ -54,43 +49,43 @@
           <Cell :width="3">
             <div class="banner">
               <div class="title">最低分</div>
-              <div class="value">{{stat.min}}分</div>
+              <div class="value">{{ stat.min }}分</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">最高分</div>
-              <div class="value">{{stat.max}}分</div>
+              <div class="value">{{ stat.max }}分</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">平均分</div>
-              <div class="value">{{stat.average}}分</div>
+              <div class="value">{{ stat.average }}分</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">及格分</div>
-              <div class="value">{{passScore}}分</div>
+              <div class="value">{{ passScore }}分</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">及格率</div>
-              <div class="value">{{stat.pass_rate*100}}%</div>
+              <div class="value">{{ stat.pass_rate * 100 }}%</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">及格人数</div>
-              <div class="value">{{stat.pass_count}}人</div>
+              <div class="value">{{ stat.pass_count }}人</div>
             </div>
           </Cell>
           <Cell :width="3">
             <div class="banner">
               <div class="title">总人数</div>
-              <div class="value">{{pagination.total}}人</div>
+              <div class="value">{{ pagination.total }}人</div>
             </div>
           </Cell>
         </Row>
@@ -99,22 +94,22 @@
         <Table ref="table" :loading="loading" :datas="datas">
           <TableItem title="用户" :width="120">
             <template slot-scope="{ data }">
-              <span v-if="data.user">{{data.user.nick_name}}</span>
+              <span v-if="data.user">{{ data.user.nick_name }}</span>
               <span v-else class="red">已删除</span>
             </template>
           </TableItem>
           <TableItem title="时间" :width="120">
-            <template slot-scope="{ data }">{{data.created_at}}</template>
+            <template slot-scope="{ data }">{{ data.created_at }}</template>
           </TableItem>
           <TableItem title="分数" :width="100">
             <template slot-scope="{ data }">
-              <span>{{typeof userScores[data.user.id] === 'undefined' ? 0 : userScores[data.user.id]}}分</span>
+              <span>{{ typeof userScores[data.user.id] === 'undefined' ? 0 : userScores[data.user.id] }}分</span>
             </template>
           </TableItem>
           <TableItem title="及格" :width="80">
             <template slot-scope="{ data }">
               <span v-if="typeof userScores[data.user.id] === 'undefined'">否</span>
-              <span v-else>{{userScores[data.user.id] >= passScore ? '是' : '否' }}</span>
+              <span v-else>{{ userScores[data.user.id] >= passScore ? '是' : '否' }}</span>
             </template>
           </TableItem>
           <TableItem title="操作" align="center" :width="200">
@@ -128,13 +123,7 @@
       </div>
 
       <div class="float-box mb-10">
-        <Pagination
-          class="mt-10"
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+        <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

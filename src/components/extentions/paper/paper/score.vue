@@ -115,77 +115,74 @@ p {
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">详情</span>
+      <div class="h-panel-right">
+        <p-button
+          v-if="userPaper.status === 3"
+          glass="h-btn h-btn-primary"
+          permission="addons.Paper.paper.userPaper.submit"
+          text="提交阅卷结果"
+          @click="submitPaper()"
+        ></p-button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
         <h2>
-          {{userPaper.status_text}}
-          <span v-if="userPaper.status === 2">- {{userPaper.score}}分</span>
+          {{ userPaper.status_text }}
+          <span v-if="userPaper.status === 2">- {{ userPaper.score }}分</span>
         </h2>
       </div>
       <div class="float-box mb-10">
         <div class="question-item" v-for="item in questions" :key="item.id">
-          <div class="title">
-            <span>{{item.question.type_text}}</span>
-            <span>({{item.question.score}}分)</span>
-            <span>{{item.question.level_text}}</span>
-          </div>
-          <div class="content">
-            <div class="mb-10" v-html="item.question.content"></div>
-            <div class="option" v-if="item.question.type === 1 || item.question.type === 2">
-              <template v-for="i in optionLength">
-                <div
-                  class="option-item"
-                  :class="{'active':selectIsActive('option' + i, item.question.answer), 'user-active':selectIsActive('option' + i, item.answer_content)}"
-                  v-if="item.question['option'+i]"
-                  :key="i"
-                  v-html="item.question['option' + i]"
-                ></div>
+          <template v-if="item.question">
+            <div class="title">
+              <span>{{ item.question.type_text }}</span>
+              <span>({{ item.question.score }}分)</span>
+              <span>{{ item.question.level_text }}</span>
+            </div>
+            <div class="content">
+              <div class="mb-10" v-html="item.question.content"></div>
+              <div class="option" v-if="item.question.type === 1 || item.question.type === 2">
+                <template v-for="i in optionLength">
+                  <div
+                    class="option-item"
+                    :class="{
+                      active: selectIsActive('option' + i, item.question.answer),
+                      'user-active': selectIsActive('option' + i, item.answer_content)
+                    }"
+                    v-if="item.question['option' + i]"
+                    :key="i"
+                    v-html="item.question['option' + i]"
+                  ></div>
+                </template>
+              </div>
+            </div>
+            <div class="answer">
+              <p v-if="item.question.type !== 1 && item.question.type !== 2">回答：{{ userAnswer(item) }}</p>
+              <template v-if="item.thumbs_rows.length > 0">
+                <img
+                  v-for="(img, index) in item.thumbs_rows"
+                  :key="index"
+                  :src="img"
+                  width="70"
+                  height="70"
+                  @click="imagePreview(index, item.thumbs_rows)"
+                />
               </template>
             </div>
-          </div>
-          <div class="answer">
-            <p v-if="item.question.type !== 1 && item.question.type !== 2">回答：{{userAnswer(item)}}</p>
-            <template v-if="item.thumbs_rows.length > 0">
-              <img
-                v-for="(img, index) in item.thumbs_rows"
-                :key="index"
-                :src="img"
-                width="70"
-                height="70"
-                @click="imagePreview(index, item.thumbs_rows)"
-              />
-            </template>
-          </div>
-          <div class="result" v-if="item.question.type !== 4">
-            <p
-              :class="item.is_correct ? 'green' : 'red'"
-            >{{item.is_correct ? '正确' : '错误'}} | 本题得分：{{item.score}}分</p>
-          </div>
-          <div class="remark" v-if="item.question.remark">
-            <p>解析：</p>
-            <p v-html="item.question.remark"></p>
-          </div>
-          <div class="score" v-if="userPaper.status === 3 && item.question.type === 4">
-            <p>请打分：</p>
-            <Select
-              v-model="item.score"
-              :datas="scoreList(item.question.score)"
-              keyName="id"
-              titleName="text"
-            ></Select>
-          </div>
-        </div>
-      </div>
-      <div class="float-box mb-10">
-        <div class="operator">
-          <p-button
-            v-if="userPaper.status === 3"
-            glass="h-btn h-btn-primary"
-            permission="addons.Paper.paper.userPaper.submit"
-            text="提交阅卷结果"
-            @click="submitPaper()"
-          ></p-button>
+            <div class="result" v-if="item.question.type !== 4">
+              <p :class="item.is_correct ? 'green' : 'red'">{{ item.is_correct ? '正确' : '错误' }} | 本题得分：{{ item.score }}分</p>
+            </div>
+            <div class="remark" v-if="item.question.remark">
+              <p>解析：</p>
+              <p v-html="item.question.remark"></p>
+            </div>
+            <div class="score" v-if="userPaper.status === 3 && item.question.type === 4">
+              <p>请打分：</p>
+              <Select v-model="item.score" :datas="scoreList(item.question.score)" keyName="id" titleName="text"></Select>
+            </div>
+          </template>
         </div>
       </div>
     </div>

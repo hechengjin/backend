@@ -1,59 +1,70 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
-      <span class="h-panel-title">编辑电子书</span>
+      <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="update">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="book"
-      >
-        <FormItem label="分类" prop="cid">
-          <template v-slot:label>分类</template>
-          <Select v-model="book.cid" :datas="categories" keyName="id" titleName="name"></Select>
-        </FormItem>
-        <FormItem label="名字" prop="name">
-          <template v-slot:label>名字</template>
-          <input type="text" v-model="book.name" />
-        </FormItem>
-        <FormItem label="封面" prop="thumb">
-          <template v-slot:label>封面</template>
-          <image-upload v-model="book.thumb" name="封面"></image-upload>
-        </FormItem>
-        <FormItem label="价格" prop="charge">
-          <template v-slot:label>价格</template>
-          <div class="h-input-group" v-width="200">
-            <input type="text" v-model="book.charge" />
-            <span class="h-input-addon">元</span>
-          </div>
-        </FormItem>
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="book">
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="分类" prop="cid">
+              <Select v-model="book.cid" :datas="categories" keyName="id" titleName="name"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="18">
+            <FormItem label="书名" prop="name">
+              <input type="text" v-model="book.name" />
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="封面" prop="thumb">
+              <image-upload v-model="book.thumb" name="封面"></image-upload>
+            </FormItem>
+          </Cell>
+        </Row>
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <div class="h-input-group">
+                <input type="text" v-model="book.charge" />
+                <span class="h-input-addon">元</span>
+              </div>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="订阅人数" prop="user_count">
+              <div class="h-input-group">
+                <input type="text" v-model="book.user_count" />
+                <span class="h-input-addon">人</span>
+              </div>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="上架时间" prop="published_at">
+              <DatePicker v-model="book.published_at" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="3">
+            <FormItem label="显示" prop="is_show">
+              <h-switch v-model="book.is_show"></h-switch>
+            </FormItem>
+          </Cell>
+          <Cell :width="3">
+            <FormItem label="会员免费" prop="is_vip_free">
+              <h-switch v-model="book.is_vip_free"></h-switch>
+            </FormItem>
+          </Cell>
+        </Row>
+
         <FormItem label="简短介绍" prop="short_desc">
           <template v-slot:label>简短介绍</template>
           <textarea v-model="book.short_desc"></textarea>
         </FormItem>
-        <FormItem label="订阅人数" prop="user_count">
-          <template v-slot:label>订阅人数</template>
-          <div class="h-input-group" v-width="200">
-            <input type="text" v-model="book.user_count" />
-            <span class="h-input-addon">人</span>
-          </div>
-        </FormItem>
-        <FormItem label="显示" prop="is_show">
-          <template v-slot:label>显示</template>
-          <h-switch v-model="book.is_show"></h-switch>
-        </FormItem>
-        <FormItem label="会员免费" prop="is_vip_free">
-          <template v-slot:label>会员免费</template>
-          <h-switch v-model="book.is_vip_free"></h-switch>
-        </FormItem>
-        <FormItem label="上架时间" prop="published_at">
-          <template v-slot:label>上架时间</template>
-          <DatePicker v-model="book.published_at" v-width="200" type="datetime"></DatePicker>
-        </FormItem>
+
         <FormItem label="详情介绍" prop="original_desc">
           <template v-slot:label>详情介绍</template>
           <tinymce-editor v-model="book.original_desc"></tinymce-editor>
@@ -66,10 +77,6 @@
         <FormItem label="SEO关键字" prop="seo_keywords">
           <template v-slot:label>SEO关键字</template>
           <textarea v-model="book.seo_keywords"></textarea>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="update">保存</Button>
         </FormItem>
       </Form>
     </div>

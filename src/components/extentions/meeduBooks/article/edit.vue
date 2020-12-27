@@ -2,6 +2,10 @@
   <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="article">
@@ -42,10 +46,6 @@
         <FormItem label="内容" prop="original_content">
           <template v-slot:label>内容</template>
           <mk-editor v-model="article.original_content"></mk-editor>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

@@ -1,7 +1,5 @@
 <template>
-  <Poptip content="确认操作？" @confirm="$emit('click')" v-if="inPermission">
-    <Button class="h-btn h-btn-s h-btn-red" :class="glass">{{text || '删除'}}</Button>
-  </Poptip>
+  <Button v-if="inPermission" class="h-btn h-btn-s h-btn-red" @click="run" :class="glass">{{ text || '删除' }}</Button>
 </template>
 <script>
 export default {
@@ -13,6 +11,13 @@ export default {
       }
       let permissions = this.$store.state.User.permissions;
       return typeof permissions[this.permission] !== 'undefined';
+    }
+  },
+  methods: {
+    run() {
+      this.$Confirm('确认操作？', '警告').then(() => {
+        this.$emit('click');
+      });
     }
   }
 };

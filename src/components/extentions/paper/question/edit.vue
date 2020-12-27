@@ -1,28 +1,20 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel" style="width: 800px">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
-      <span class="h-panel-title">编辑试题</span>
+      <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button v-if="question.type === 1 || question.type === 2" color="primary" @click="addOption()">增加选项</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="question"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="question">
         <Row :space="10">
           <Cell width="6">
             <FormItem label="分类" prop="category_id">
               <template v-slot:label>分类</template>
-              <Select
-                v-model="question.category_id"
-                :datas="categories"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="question.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
             </FormItem>
           </Cell>
           <Cell width="6">
@@ -53,27 +45,14 @@
         <template v-if="question.type === 1 || question.type === 2">
           <FormItem label="答案">
             <template v-slot:label>答案</template>
-            <Select
-              v-if="question.type === 2"
-              v-model="choiceAnswer"
-              :datas="choiceAnswers"
-              :multiple="true"
-              keyName="key"
-              titleName="title"
-            >
-              <template slot-scope="{item}" slot="item">
-                <div>{{item.title}}</div>
+            <Select v-if="question.type === 2" v-model="choiceAnswer" :datas="choiceAnswers" :multiple="true" keyName="key" titleName="title">
+              <template slot-scope="{ item }" slot="item">
+                <div>{{ item.title }}</div>
               </template>
             </Select>
-            <Select
-              v-else
-              v-model="question.answer"
-              :datas="choiceAnswers"
-              keyName="key"
-              titleName="title"
-            >
-              <template slot-scope="{item}" slot="item">
-                <div>{{item.title}}</div>
+            <Select v-else v-model="question.answer" :datas="choiceAnswers" keyName="key" titleName="title">
+              <template slot-scope="{ item }" slot="item">
+                <div>{{ item.title }}</div>
               </template>
             </Select>
           </FormItem>
@@ -98,19 +77,15 @@
         </FormItem>
 
         <template v-if="question.type === 1 || question.type === 2">
-          <FormItem :prop="'option'+i" v-for="i in optionLength" :key="i">
-            <template v-slot:label>选项{{i}}</template>
+          <FormItem :prop="'option' + i" v-for="i in optionLength" :key="i">
+            <template v-slot:label>选项{{ i }}</template>
             <wang-editor v-model="question['option' + i]"></wang-editor>
           </FormItem>
         </template>
 
         <FormItem>
           <Button color="primary" @click="create">保存</Button>
-          <Button
-            v-if="question.type === 1 || question.type === 2"
-            color="primary"
-            @click="addOption()"
-          >增加选项</Button>
+          <Button v-if="question.type === 1 || question.type === 2" color="primary" @click="addOption()">增加选项</Button>
         </FormItem>
       </Form>
     </div>

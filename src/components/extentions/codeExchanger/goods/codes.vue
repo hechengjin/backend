@@ -1,7 +1,10 @@
 <template>
-  <div class="h-panel w-1000">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">兑换码</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box">

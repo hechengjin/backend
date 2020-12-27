@@ -45,17 +45,22 @@
         </Form>
       </div>
       <div class="float-box mb-10">
-        <p-button glass="h-btn h-btn-primary h-btn-s" icon="h-icon-plus" permission="member.store" text="添加" @click="create()"></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="member.store" text="添加" @click="create()"></p-button>
       </div>
       <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas" @sort="sortEvt">
-          <TableItem title="用户" :width="240">
+          <TableItem title="用户ID" prop="id" :sort="true" :width="120"></TableItem>
+          <TableItem title="昵称" prop="nick_name" :width="120"></TableItem>
+          <TableItem title="手机号" prop="mobile" :width="120"></TableItem>
+          <TableItem title="注册时间" :sort="true" :width="120">
             <template slot-scope="{ data }">
-              <copytext :copytext="data.id" />
-              <span class="grey">/</span>
-              <copytext :copytext="data.nick_name" />
-              <span class="grey">/</span>
-              <copytext :copytext="data.mobile" />
+              <date-text :date="data.created_at"></date-text>
+            </template>
+          </TableItem>
+          <TableItem title="积分" prop="credit1" :sort="true" :width="100"></TableItem>
+          <TableItem title="VIP" :width="150">
+            <template slot-scope="{ data }">
+              <template v-if="data.role">{{ data.role.name }}</template>
             </template>
           </TableItem>
           <TableItem title="标签" :width="200">
@@ -65,12 +70,6 @@
               </span>
             </template>
           </TableItem>
-          <TableItem prop="created_at" title="注册时间" :sort="true" :width="120"></TableItem>
-          <TableItem title="VIP" :width="100">
-            <template slot-scope="{ data }">
-              <template v-if="data.role">{{ data.role.name }}</template>
-            </template>
-          </TableItem>
           <TableItem title="备注" :width="200">
             <template slot-scope="{ data }">
               <template v-if="typeof userRemarks[data.id] !== 'undefined'">
@@ -78,12 +77,14 @@
               </template>
             </template>
           </TableItem>
-          <TableItem title="操作" align="center" :width="240">
+          <TableItem title="操作" align="center" :width="240" fixed="right">
             <template slot-scope="{ data }">
-              <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.edit" text="编辑" @click="edit(data)"></p-button>
-              <p-button glass="h-btn h-btn-s" permission="member.detail" text="详情" @click="detail(data)"></p-button>
-              <p-button glass="h-btn h-btn-s" permission="member.tags" text="标签" @click="showTags(data)"></p-button>
-              <p-button glass="h-btn h-btn-s" permission="member.remark" text="备注" @click="showRemark(data)"></p-button>
+              <ButtonGroup>
+                <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.detail" text="详情" @click="detail(data)"></p-button>
+                <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.edit" text="编辑" @click="edit(data)"></p-button>
+                <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.tags" text="标签" @click="showTags(data)"></p-button>
+                <p-button glass="h-btn h-btn-s h-btn-primary" permission="member.remark" text="备注" @click="showRemark(data)"></p-button>
+              </ButtonGroup>
             </template>
           </TableItem>
         </Table>

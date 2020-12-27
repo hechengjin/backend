@@ -4,52 +4,46 @@
       <span class="h-panel-title">路径步骤</span>
     </div>
     <div class="h-panel-body">
-      <Form mode="block">
-        <FormItem label="学习路径" prop="path_id">
-          <template v-slot:label>学习路径</template>
-          <Select
-            v-model="filter.path_id"
-            :datas="paths"
-            keyName="id"
-            titleName="name"
-            :filterable="true"
-          ></Select>
-        </FormItem>
-        <FormItem>
-          <Button color="primary" @click="getData()">过滤</Button>
+      <div class="float-box mb-10">
+        <Form>
+          <Row :space="10">
+            <Cell :width="12">
+              <FormItem label="学习路径" prop="path_id">
+                <template v-slot:label>学习路径</template>
+                <Select v-model="filter.path_id" :datas="paths" keyName="id" titleName="name" :filterable="true"></Select>
+              </FormItem>
+            </Cell>
+            <Cell :width="12">
+              <FormItem>
+                <Button color="primary" @click="getData()">过滤</Button>
+              </FormItem>
+            </Cell>
+          </Row>
+        </Form>
+      </div>
+      <div class="float-box mb-10">
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.learnPaths.step.store" text="添加" @click="create()"></p-button>
+      </div>
+      <div class="float-box mb-10">
+        <Table :loading="loading" :datas="datas">
+          <TableItem prop="sort" title="升序"></TableItem>
+          <TableItem prop="name" title="步骤名"></TableItem>
+          <TableItem prop="desc" title="简述"></TableItem>
+          <TableItem title="操作" align="center" :width="200">
+            <template slot-scope="{ data }">
+              <p-del-button permission="addons.learnPaths.step.delete" @click="remove(datas, data)"></p-del-button>
+              <p-button glass="h-btn h-btn-primary h-btn-s" permission="addons.learnPaths.step.update" text="编辑" @click="edit(data)"></p-button>
 
-          <p-button
-            glass="h-btn h-btn-primary"
-            icon="h-icon-plus"
-            permission="addons.learnPaths.step.store"
-            text="添加"
-            @click="create()"
-          ></p-button>
-        </FormItem>
-      </Form>
-      <Table :loading="loading" :datas="datas">
-        <TableItem prop="sort" title="升序"></TableItem>
-        <TableItem prop="name" title="步骤名"></TableItem>
-        <TableItem prop="desc" title="简述"></TableItem>
-        <TableItem title="操作" align="center" :width="200">
-          <template slot-scope="{ data }">
-            <p-del-button permission="addons.learnPaths.step.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-primary h-btn-s"
-              permission="addons.learnPaths.step.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
-
-            <p-button
-              glass="h-btn h-btn-default h-btn-s"
-              permission="addons.learnPaths.relation.list"
-              text="关联"
-              @click="showRelationPage(data)"
-            ></p-button>
-          </template>
-        </TableItem>
-      </Table>
+              <p-button
+                glass="h-btn h-btn-default h-btn-s"
+                permission="addons.learnPaths.relation.list"
+                text="关联"
+                @click="showRelationPage(data)"
+              ></p-button>
+            </template>
+          </TableItem>
+        </Table>
+      </div>
     </div>
   </div>
 </template>

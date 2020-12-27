@@ -2,10 +2,13 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">分类</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
-        <Button color="h-btn h-btn-primary" icon="h-icon-plus" @click="create()">添加</Button>
+        <Button color="h-btn h-btn-primary" @click="create()">添加</Button>
       </div>
       <div class="float-box mb-10">
         <Table ref="table" :loading="loading" :datas="datas">
@@ -45,7 +48,9 @@ export default {
       R.Extentions.paper.PaperCategory.List(this.pagination).then(resp => {
         this.datas = resp.data.data.data;
         this.loading = false;
-        this.$refs.table.expandAll();
+        setTimeout(() => {
+          this.$refs.table.expandAll();
+        }, 500);
       });
     },
     create() {

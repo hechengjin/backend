@@ -1,9 +1,10 @@
-<style lang="less" scoped>
-</style>
 <template>
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">试题管理</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
@@ -26,7 +27,6 @@
       <div class="float-box mb-10">
         <p-button
           glass="h-btn h-btn-primary h-btn-s"
-          icon="h-icon-plus"
           permission="addons.Paper.practice_chapter.questions.store"
           text="添加"
           @click="create()"
@@ -65,7 +65,7 @@
       </div>
 
       <div class="float-box mb-10">
-        <Pagination class="mt-10" v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+        <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

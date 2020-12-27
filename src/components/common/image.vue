@@ -40,6 +40,23 @@
     }
   }
 }
+.image-upload-text {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #999999;
+  padding-left: 5px;
+}
+.image-uploaded-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 5px;
+  padding-left: 5px;
+  background-color: rgba(0, 0, 0, 0.02);
+}
 </style>
 <template>
   <div>
@@ -48,25 +65,15 @@
         <input type="text" placeholder="您也可以手动输入图片URL地址" v-model="image" />
       </div>
       <div class="buttons">
-        <button
-          @click="selectImage"
-          :class="{'image-download-button': image === null || image.length === 0, 'last': !image}"
-        >
+        <button @click="selectImage" class="last">
           <i class="h-icon-upload"></i>
           本地上传
         </button>
-        <button
-          @click="downloadImage"
-          class="image-download-button"
-          :class="{'last' : image}"
-          v-if="image"
-        >
-          <i class="h-icon-inbox"></i> 下载到本地
-        </button>
       </div>
     </div>
-    <div style="background-color: #f2f2f2">
-      <img :src="image" width="200px" v-if="image" style="margin-top: 10px;" />
+    <div class="image-upload-text" v-if="help">{{ help }}</div>
+    <div class="image-uploaded-box">
+      <img :src="image" width="150px" v-if="image" />
       <input type="file" v-show="false" @change="change" ref="file" />
     </div>
   </div>
@@ -82,6 +89,10 @@ export default {
     name: {
       type: String,
       default: '选择图片'
+    },
+    help: {
+      type: String,
+      default: ''
     }
   },
   data() {

@@ -1,17 +1,14 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加单页</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="page"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="page">
         <FormItem label="唯一标识" prop="sign">
           <template v-slot:label>唯一标识</template>
           <input type="text" v-model="page.sign" />
@@ -35,10 +32,6 @@
         <FormItem label="继承布局" prop="is_show">
           <template v-slot:label>继承布局</template>
           <h-switch v-model="page.is_inherit"></h-switch>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">添加</Button>
         </FormItem>
       </Form>
     </div>

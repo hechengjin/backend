@@ -1,7 +1,11 @@
 <template>
-  <div class="h-panel w-1000">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
-      <span class="h-panel-title">编辑文章</span>
+      <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="topic">
@@ -54,10 +58,6 @@
         </FormItem>
         <FormItem label="文章内容" prop="original_content">
           <markdown v-model="topic.original_content" uid="_topic_original_content"></markdown>
-        </FormItem>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
         </FormItem>
       </Form>
     </div>

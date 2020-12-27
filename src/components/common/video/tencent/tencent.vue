@@ -1,13 +1,25 @@
+<style lang="less" scoped>
+.alert-info {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #999999;
+}
+</style>
+
 <template>
   <div>
     <div class="h-input-group">
-      <input type="text" v-model="vid" />
-      <Button color="primary" @click="selectVideo"><i class="h-icon-upload"></i> 选择视频</Button>
+      <input type="text" v-model="vid" placeholder="请点击右侧的上传按钮或者直接输入视频文件fileId" />
+      <Button color="primary" @click="selectVideo">
+        <i class="h-icon-upload"></i> 上传视频<span v-show="process">，进度：{{ process }}</span>
+      </Button>
     </div>
+    <div class="alert-info">请上传MP4格式视频</div>
     <input type="file" ref="tencentfile" v-show="false" @change="fileChange" />
-    <p v-show="process">
-      上传进度：<span>{{ process }}</span>
-    </p>
   </div>
 </template>
 
@@ -25,7 +37,8 @@ export default {
     return {
       vid: this.value,
       process: '',
-      uploader: null
+      uploader: null,
+      status: false
     };
   },
   methods: {
@@ -34,6 +47,7 @@ export default {
       if (files.length === 0) {
         return;
       }
+      this.status = true;
       this.uploadFile(files[0]);
     },
     uploadFile(videoFile) {
@@ -52,7 +66,7 @@ export default {
         mediaFile: videoFile
       });
       uploader.on('media_progress', info => {
-        this.process = info.percent * 100 + '%';
+        this.process = parseInt(info.percent * 100) + '%';
       });
 
       // 回调结果说明
@@ -71,6 +85,7 @@ export default {
           console.log(doneResult);
           this.process = '上传成功';
           this.vid = doneResult.fileId;
+          this.status = false;
         })
         .catch(function (err) {
           console.log(err);
@@ -78,6 +93,9 @@ export default {
         });
     },
     selectVideo() {
+      if (this.status) {
+        return;
+      }
       this.$refs.tencentfile.click();
     }
   },

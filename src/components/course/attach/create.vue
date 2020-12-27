@@ -1,20 +1,16 @@
 <style lang="less"></style>
 <template>
   <div>
-    <div class="h-panel">
+    <div class="h-panel w-800">
       <div class="h-panel-bar">
-        <span class="h-panel-title">添加附件</span>
+        <span class="h-panel-title">添加</span>
+        <div class="h-panel-right">
+          <Button color="primary" @click="create">添加</Button>
+          <Button @click="$emit('close')" :text="true">取消</Button>
+        </div>
       </div>
       <div class="h-panel-body">
-        <Form
-          v-width="400"
-          ref="form"
-          :validOnChange="true"
-          :showErrorTip="true"
-          :labelWidth="110"
-          :rules="rules"
-          :model="attach"
-        >
+        <Form ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="attach">
           <FormItem label="附件名" prop="name">
             <template v-slot:label>附件名</template>
             <input type="text" v-model="attach.name" />
@@ -23,9 +19,6 @@
             <template v-slot:label>附件</template>
             <input type="file" ref="file" />
             <warn :text="'仅支持' + extention + '格式文件'"></warn>
-          </FormItem>
-          <FormItem>
-            <Button color="primary" @click="create">添加</Button>
           </FormItem>
         </Form>
       </div>

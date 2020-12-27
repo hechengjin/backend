@@ -7,32 +7,35 @@
 }
 </style>
 <template>
-  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-1000">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">团列表</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID" :width="80"></TableItem>
-        <TableItem title="团长">
+        <TableItem prop="id" title="ID" :width="100"></TableItem>
+        <TableItem title="团长" :wdith="150">
           <template slot-scope="{ data }">
-            <span>{{data.create_user_name}}</span>
+            <span>{{ data.create_user_name }}</span>
           </template>
         </TableItem>
-        <TableItem title="成员">
+        <TableItem title="成员" :width="100">
           <template slot-scope="{ data }">
-            <span>{{data.users.length}}人</span>
+            <span>{{ data.users.length }}人</span>
           </template>
         </TableItem>
         <TableItem prop="status_text" title="状态" :width="80"></TableItem>
         <TableItem title="人数" :width="200">
           <template slot-scope="{ data }">
-            <span>{{data.people_num - data.over_people_num}}</span>
+            <span>{{ data.people_num - data.over_people_num }}</span>
             /
-            <span>{{data.people_num}}</span>
+            <span>{{ data.people_num }}</span>
           </template>
         </TableItem>
-        <TableItem prop="expired_at" title="过期" :width="120"></TableItem>
+        <TableItem prop="expired_at" title="过期" :width="300"></TableItem>
         <TableItem title="操作" align="center" :width="100">
           <template slot-scope="{ data }">
             <p-del-button
@@ -45,13 +48,7 @@
         </TableItem>
       </Table>
 
-      <Pagination
-        class="mt-10"
-        v-if="pagination.total > 0"
-        align="right"
-        v-model="pagination"
-        @change="changePage"
-      />
+      <Pagination class="mt-10" align="right" v-model="pagination" @change="changePage" />
     </div>
   </div>
 </template>

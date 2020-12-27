@@ -1,17 +1,14 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="goods"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="goods">
         <Row :space="10">
           <Cell :width="6">
             <FormItem prop="goods_title" label="商品名">
@@ -76,10 +73,6 @@
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

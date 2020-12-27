@@ -3,20 +3,17 @@
   <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">会员每日销售数量</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
         <Form :labelWidth="110">
           <Row :space="10">
-            <Cell :width="6">
+            <Cell :width="12">
               <FormItem label="会员">
-                <Select
-                  v-model="role_id"
-                  :datas="roles"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                ></Select>
+                <Select v-model="role_id" :datas="roles" keyName="id" titleName="name" :filterable="true"></Select>
               </FormItem>
             </Cell>
             <Cell :width="6">

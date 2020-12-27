@@ -5,13 +5,7 @@
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="administrator_role.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="administrator_role.store" text="添加" @click="create()"></p-button>
       </div>
       <div class="float-box mb-10">
         <Table :loading="loading" :datas="datas">
@@ -19,27 +13,16 @@
           <TableItem prop="display_name" title="角色名" :width="150"></TableItem>
           <TableItem prop="slug" title="Slug" :width="120"></TableItem>
           <TableItem prop="description" title="描述"></TableItem>
-          <TableItem prop="created_at" title="创建时间" :width="120"></TableItem>
           <TableItem title="操作" align="center" :width="200">
             <template slot-scope="{ data }">
               <p-del-button permission="administrator_role.destroy" @click="remove(datas, data)"></p-del-button>
-              <p-button
-                glass="h-btn h-btn-s h-btn-primary"
-                permission="administrator_role.edit"
-                text="编辑"
-                @click="edit(data)"
-              ></p-button>
+              <p-button glass="h-btn h-btn-s h-btn-primary" permission="administrator_role.edit" text="编辑" @click="edit(data)"></p-button>
             </template>
           </TableItem>
         </Table>
       </div>
       <div class="float-box mb-10">
-        <Pagination
-          v-if="pagination.total > 0"
-          align="right"
-          v-model="pagination"
-          @change="changePage"
-        />
+        <Pagination align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>

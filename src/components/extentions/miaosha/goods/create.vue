@@ -1,39 +1,23 @@
 <template>
-  <div class="table-basic-vue frame-page h-panel h-panel-margin-0 w-800">
+  <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">添加</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="goods"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="goods">
         <Row :space="10">
           <Cell :width="6">
             <FormItem prop="goods_type" label="类型">
-              <Select
-                v-model="goods.goods_type"
-                :datas="types"
-                :filterable="true"
-                keyName="value"
-                titleName="name"
-              ></Select>
+              <Select v-model="goods.goods_type" :datas="types" :filterable="true" keyName="value" titleName="name"></Select>
             </FormItem>
           </Cell>
           <Cell :width="6">
             <FormItem prop="goods_id" label="商品">
-              <Select
-                v-model="goods.goods_id"
-                :datas="goodsList"
-                :filterable="true"
-                keyName="id"
-                titleName="title"
-                @change="goodsChange"
-              ></Select>
+              <Select v-model="goods.goods_id" :datas="goodsList" :filterable="true" keyName="id" titleName="title" @change="goodsChange"></Select>
             </FormItem>
           </Cell>
           <Cell :width="6">
@@ -95,10 +79,6 @@
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">添加</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

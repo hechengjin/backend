@@ -1,91 +1,81 @@
-<style lang="less"></style>
 <template>
-  <div class>
-    <div class="table-basic-vue frame-page h-panel">
-      <div class="h-panel-bar">
-        <span class="h-panel-title">添加课程</span>
+  <div class="h-panel w-1200">
+    <div class="h-panel-bar">
+      <span class="h-panel-title">添加</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">添加</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
       </div>
-      <div class="h-panel-body">
-        <Form
-          mode="block"
-          ref="form"
-          :validOnChange="true"
-          :showErrorTip="true"
-          :rules="rules"
-          :model="course"
-        >
-          <FormItem label="类型" prop="type">
-            <template v-slot:label>类型</template>
-            <Select v-model="course.type" :datas="courseTypes" keyName="id" titleName="name"></Select>
-          </FormItem>
-          <FormItem label="上限人数" prop="max_people_num">
-            <template v-slot:label>上限人数</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="course.max_people_num" disabled />
-              <span class="h-input-addon">人</span>
-            </div>
-            <warn text="小班课推荐最多6人，大班课推荐最多50人，填写0表示不限制"></warn>
-          </FormItem>
-          <FormItem label="分类" prop="category_id">
-            <template v-slot:label>分类</template>
-            <Select
-              v-model="course.category_id"
-              :datas="categories"
-              keyName="id"
-              titleName="name"
-              :filterable="true"
-            ></Select>
-          </FormItem>
-          <FormItem label="老师" prop="teacher_ids">
-            <template v-slot:label>老师</template>
-            <Select
-              v-model="course.teacher_ids"
-              :datas="teachers"
-              :multiple="true"
-              keyName="id"
-              titleName="name"
-              :filterable="true"
-            ></Select>
-          </FormItem>
-          <FormItem label="课程标题" prop="title">
-            <template v-slot:label>课程标题</template>
-            <input type="text" v-model="course.title" />
-          </FormItem>
-          <FormItem label="开课时间" prop="start_at">
-            <template v-slot:label>开课时间</template>
-            <DatePicker v-model="course.start_at" type="datetime"></DatePicker>
-          </FormItem>
-          <FormItem label="课程封面" prop="thumb">
-            <template v-slot:label>课程封面</template>
-            <image-upload v-model="course.thumb" name="课程封面"></image-upload>
-          </FormItem>
-          <FormItem label="价格" prop="charge">
-            <template v-slot:label>价格</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="course.charge" />
-              <span class="h-input-addon">元</span>
-            </div>
-          </FormItem>
-          <FormItem label="原价" prop="original_charge">
-            <template v-slot:label>原价</template>
-            <div class="h-input-group" v-width="200">
-              <input type="text" v-model="course.original_charge" />
-              <span class="h-input-addon">元</span>
-            </div>
-          </FormItem>
-          <FormItem label="简短介绍" prop="short_desc">
-            <template v-slot:label>简短介绍</template>
-            <textarea v-model="course.short_desc"></textarea>
-          </FormItem>
-          <FormItem label="详细介绍" prop="description">
-            <template v-slot:label>详细介绍</template>
-            <tinymce-editor v-model="course.original_desc"></tinymce-editor>
-          </FormItem>
-          <FormItem>
-            <Button color="primary" @click="create">添加</Button>
-          </FormItem>
-        </Form>
-      </div>
+    </div>
+    <div class="h-panel-body">
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="course">
+        <Row :space="10">
+          <Cell :width="6">
+            <FormItem label="类型" prop="type">
+              <Select v-model="course.type" :datas="courseTypes" keyName="id" titleName="name"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="上限人数" prop="max_people_num">
+              <div class="h-input-group">
+                <input type="text" v-model="course.max_people_num" disabled />
+                <span class="h-input-addon">人</span>
+              </div>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="分类" prop="category_id">
+              <Select v-model="course.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="老师" prop="teacher_ids">
+              <Select v-model="course.teacher_ids" :datas="teachers" :multiple="true" keyName="id" titleName="name" :filterable="true"></Select>
+            </FormItem>
+          </Cell>
+          <Cell :width="18">
+            <FormItem label="课程标题" prop="title">
+              <input type="text" v-model="course.title" />
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="开课时间" prop="start_at">
+              <DatePicker v-model="course.start_at" type="datetime"></DatePicker>
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="课程封面" prop="thumb">
+              <image-upload v-model="course.thumb" name="课程封面"></image-upload>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="价格" prop="charge">
+              <div class="h-input-group">
+                <input type="text" v-model="course.charge" />
+                <span class="h-input-addon">元</span>
+              </div>
+            </FormItem>
+          </Cell>
+          <Cell :width="6">
+            <FormItem label="原价" prop="original_charge">
+              <div class="h-input-group">
+                <input type="text" v-model="course.original_charge" />
+                <span class="h-input-addon">元</span>
+              </div>
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="简短介绍" prop="short_desc">
+              <textarea v-model="course.short_desc"></textarea>
+            </FormItem>
+          </Cell>
+          <Cell :width="24">
+            <FormItem label="详细介绍" prop="description">
+              <tinymce-editor v-model="course.original_desc"></tinymce-editor>
+            </FormItem>
+          </Cell>
+        </Row>
+      </Form>
     </div>
   </div>
 </template>

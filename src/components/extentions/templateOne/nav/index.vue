@@ -5,26 +5,13 @@
     </div>
     <div class="h-panel-body">
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="addons.TemplateOne.nav.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
-
-        <p-button
-          glass="h-btn h-btn-primary"
-          permission="addons.TemplateOne.slider.list"
-          text="幻灯片"
-          @click="showSliderPage()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" icon="h-icon-plus" permission="addons.TemplateOne.nav.store" text="添加" @click="create()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem prop="sort" title="升序"></TableItem>
-        <TableItem prop="name" title="导航名"></TableItem>
-        <TableItem title="图标">
+        <TableItem prop="id" title="ID" :width="120"></TableItem>
+        <TableItem prop="sort" title="升序" :width="120"></TableItem>
+        <TableItem prop="name" title="导航名" :width="300"></TableItem>
+        <TableItem title="图标" :width="120">
           <template slot-scope="{ data }">
             <img :src="data.icon" width="30" height="30" />
           </template>
@@ -33,12 +20,7 @@
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <p-del-button permission="addons.TemplateOne.nav.delete" @click="remove(datas, data)"></p-del-button>
-            <p-button
-              glass="h-btn h-btn-s h-btn-primary"
-              permission="addons.TemplateOne.nav.update"
-              text="编辑"
-              @click="edit(data)"
-            ></p-button>
+            <p-button glass="h-btn h-btn-s h-btn-primary" permission="addons.TemplateOne.nav.update" text="编辑" @click="edit(data)"></p-button>
           </template>
         </TableItem>
       </Table>
@@ -115,17 +97,6 @@ export default {
               HeyUI.$Message.success('成功');
               this.getData(true);
             });
-          }
-        }
-      });
-    },
-    showSliderPage() {
-      this.$Modal({
-        hasCloseIcon: true,
-        closeOnMask: false,
-        component: {
-          vue: resolve => {
-            require(['../slider/index'], resolve);
           }
         }
       });

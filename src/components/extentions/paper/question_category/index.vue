@@ -2,6 +2,9 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">试题分类</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
@@ -54,7 +57,9 @@ export default {
       R.Extentions.paper.QuestionCategory.List().then(resp => {
         this.datas = resp.data.data.data;
         this.loading = false;
-        this.$refs.table.expandAll();
+        setTimeout(() => {
+          this.$refs.table.expandAll();
+        }, 500);
       });
     },
     create() {

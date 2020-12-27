@@ -1,27 +1,18 @@
 <template>
-  <div class="h-panel w-1000">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="create">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :rules="rules"
-        :model="practice"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :rules="rules" :model="practice">
         <Row :space="10">
           <Cell :width="6">
             <FormItem label="分类" prop="category_id">
-              <Select
-                v-model="practice.category_id"
-                :datas="categories"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="practice.category_id" :datas="categories" keyName="id" titleName="name" :filterable="true"></Select>
             </FormItem>
           </Cell>
           <Cell :width="18">
@@ -56,10 +47,6 @@
             </FormItem>
           </Cell>
         </Row>
-
-        <FormItem>
-          <Button color="primary" @click="create">保存</Button>
-        </FormItem>
       </Form>
     </div>
   </div>

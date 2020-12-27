@@ -38,22 +38,23 @@
         </Form>
       </div>
       <div class="flaot-box mb-10">
-        <p-del-button permission="video.destroy.multi" text="批量删除" @click="deleteSubmit()"></p-del-button>
-        <p-button glass="h-btn h-btn-primary h-btn-s" icon="h-icon-plus" permission="video.store" text="添加" @click="create()"></p-button>
+        <ButtonGroup>
+          <p-del-button permission="video.destroy.multi" text="批量删除" @click="deleteSubmit()"></p-del-button>
+          <p-button glass="h-btn h-btn-primary h-btn-s" permission="video.store" text="添加" @click="create()"></p-button>
+          <p-button glass="h-btn h-btn-primary h-btn-s" permission="video.import" text="视频批量导入" @click="showVideosImport()"></p-button>
 
-        <p-button glass="h-btn h-btn-primary h-btn-s" permission="video.aliyun_hls.list" text="阿里云视频HLS转码" @click="showHlsPage()"></p-button>
-        <p-button
-          glass="h-btn h-btn-primary h-btn-s"
-          permission="addons.TencentCloudHls.videos"
-          text="腾讯云视频HLS转码"
-          @click="showTencentHlsPage()"
-        ></p-button>
-
-        <p-button glass="h-btn h-btn-primary h-btn-s" permission="video.import" text="视频批量导入" @click="showVideosImport()"></p-button>
+          <p-button glass="h-btn h-btn-primary h-btn-s" permission="video.aliyun_hls.list" text="阿里云视频HLS转码" @click="showHlsPage()"></p-button>
+          <p-button
+            glass="h-btn h-btn-primary h-btn-s"
+            permission="addons.TencentCloudHls.videos"
+            text="腾讯云视频HLS转码"
+            @click="showTencentHlsPage()"
+          ></p-button>
+        </ButtonGroup>
       </div>
       <div class="float-box mb-10">
         <Table :loading="loading" :checkbox="true" :datas="datas" ref="table" @sort="sortEvt">
-          <TableItem prop="id" title="VID" :sort="true" :width="80"></TableItem>
+          <TableItem prop="id" title="视频ID" :sort="true" :width="120"></TableItem>
           <TableItem title="视频">
             <template slot-scope="{ data }">
               <span class="course-title">{{ data.course.title }}</span>
@@ -61,25 +62,37 @@
               <span class="video-title">{{ data.title }}</span>
             </template>
           </TableItem>
-          <TableItem title="价格" :width="80">
+          <TableItem title="价格" :width="120">
             <template slot-scope="{ data }">￥{{ data.charge }}</template>
           </TableItem>
-          <TableItem title="时长" :width="90">
+          <TableItem title="时长" :width="120">
             <template slot-scope="{ data }">
               <duration-text :seconds="data.duration" />
             </template>
           </TableItem>
-          <TableItem title="操作" align="center" :width="200">
+          <TableItem title="操作" align="center" :width="300">
             <template slot-scope="{ data }">
-              <p-button glass="h-btn h-btn-s h-btn-primary" permission="video.edit" text="编辑" @click="edit(data)"></p-button>
-              <p-button glass="h-btn h-btn-s" permission="video.subscribes" text="订阅" @click="showSubscribePage(data)"></p-button>
-              <p-button glass="h-btn h-btn-s" permission="video.watch.records" text="观看记录" @click="showWatchRecords(data)"></p-button>
+              <ButtonGroup>
+                <p-button glass="h-btn h-btn-s h-btn-primary" permission="video.edit" text="编辑" @click="edit(data)"></p-button>
+                <p-button
+                  glass="h-btn h-btn-s h-btn-primary"
+                  permission="video.subscribes"
+                  text="销售记录"
+                  @click="showSubscribePage(data)"
+                ></p-button>
+                <p-button
+                  glass="h-btn h-btn-s h-btn-primary"
+                  permission="video.watch.records"
+                  text="用户观看"
+                  @click="showWatchRecords(data)"
+                ></p-button>
+              </ButtonGroup>
             </template>
           </TableItem>
         </Table>
       </div>
       <div class="float-box mb-10">
-        <Pagination v-if="pagination.total > 0" align="right" v-model="pagination" @change="changePage" />
+        <Pagination align="right" v-model="pagination" @change="changePage" />
       </div>
     </div>
   </div>
@@ -100,7 +113,7 @@ export default {
       },
       cond: {
         keywords: '',
-        sort: 'created_at',
+        sort: 'id',
         order: 'desc',
         course_id: null,
         id: null

@@ -2,17 +2,13 @@
   <div class="h-panel w-800">
     <div class="h-panel-bar">
       <span class="h-panel-title">编辑</span>
+      <div class="h-panel-right">
+        <Button color="primary" @click="update">保存</Button>
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
-      <Form
-        mode="block"
-        ref="form"
-        :validOnChange="true"
-        :showErrorTip="true"
-        :labelWidth="110"
-        :rules="rules"
-        :model="user"
-      >
+      <Form mode="block" ref="form" :validOnChange="true" :showErrorTip="true" :labelWidth="110" :rules="rules" :model="user">
         <Row :space="10">
           <Cell :width="24">
             <FormItem label="头像" prop="avatar">
@@ -52,13 +48,7 @@
         <Row :space="10">
           <Cell :width="6">
             <FormItem label="VIP" prop="role_id">
-              <Select
-                v-model="user.role_id"
-                :datas="roles"
-                keyName="id"
-                titleName="name"
-                :filterable="true"
-              ></Select>
+              <Select v-model="user.role_id" :datas="roles" keyName="id" titleName="name" :filterable="true"></Select>
             </FormItem>
           </Cell>
           <Cell :width="4">
@@ -67,24 +57,23 @@
             </FormItem>
           </Cell>
         </Row>
-        <Row :space="10">
-          <Cell :width="24">
-            <FormItem>
-              <Button color="primary" @click="update">编辑</Button>
-            </FormItem>
-          </Cell>
-        </Row>
       </Form>
     </div>
   </div>
 </template>
 <script>
-import User from 'model/User';
 export default {
   props: ['id'],
   data() {
     return {
-      user: User.parse({}),
+      user: {
+        avatar: '',
+        mobile: '',
+        nick_name: '',
+        password: '',
+        role_id: 0,
+        role_expired_at: ''
+      },
       rules: {
         required: ['avatar', 'mobile', 'nick_name']
       },

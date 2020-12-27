@@ -109,17 +109,20 @@
   <div class="h-panel w-1000">
     <div class="h-panel-bar">
       <span class="h-panel-title">指定试题</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="float-box mb-10">
         <Row>
           <Cell :width="12" class="banner">
             <div class="title">总分</div>
-            <div class="value">{{totalScore}}分</div>
+            <div class="value">{{ totalScore }}分</div>
           </Cell>
           <Cell :width="12" class="banner">
             <div class="title">试题</div>
-            <div class="value">{{data.length}}道</div>
+            <div class="value">{{ data.length }}道</div>
           </Cell>
         </Row>
       </div>
@@ -127,16 +130,9 @@
         <Row :space="30">
           <Cell :width="12">
             <div class="paper-quesiton">
-              <div class="title">已选择{{data.length}}试题(点击试题可删除)</div>
-              <div
-                class="paper-item"
-                @click="deleteQuestion(question)"
-                v-for="question in data"
-                :key="question.id"
-              >
-                <div
-                  class="info"
-                >ID:{{question.id}}|{{question.type_text}}|{{question.level_text}}|{{question.score}}分</div>
+              <div class="title">已选择{{ data.length }}试题(点击试题可删除)</div>
+              <div class="paper-item" @click="deleteQuestion(question)" v-for="question in data" :key="question.id">
+                <div class="info">ID:{{ question.id }}|{{ question.type_text }}|{{ question.level_text }}|{{ question.score }}分</div>
                 <div class="content" v-html="question.content"></div>
               </div>
             </div>
@@ -144,25 +140,11 @@
           <Cell :width="12">
             <div class="question-box">
               <div class="filter-box">
-                <Select
-                  v-model="category_id"
-                  :datas="categories"
-                  keyName="id"
-                  titleName="name"
-                  :filterable="true"
-                  @change="categoryChange"
-                ></Select>
+                <Select v-model="category_id" :datas="categories" keyName="id" titleName="name" :filterable="true" @change="categoryChange"></Select>
               </div>
               <div class="body">
-                <div
-                  class="paper-item"
-                  @click="addQuestion(question)"
-                  v-for="question in questions"
-                  :key="question.id"
-                >
-                  <div
-                    class="info"
-                  >ID:{{question.id}}|{{question.type_text}}|{{question.level_text}}|{{question.score}}分</div>
+                <div class="paper-item" @click="addQuestion(question)" v-for="question in questions" :key="question.id">
+                  <div class="info">ID:{{ question.id }}|{{ question.type_text }}|{{ question.level_text }}|{{ question.score }}分</div>
                   <div class="content" v-html="question.content"></div>
                 </div>
               </div>

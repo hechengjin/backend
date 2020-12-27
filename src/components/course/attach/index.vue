@@ -1,23 +1,20 @@
 <template>
-  <div class="h-panel">
+  <div class="h-panel w-1200">
     <div class="h-panel-bar">
       <span class="h-panel-title">课程附件</span>
+      <div class="h-panel-right">
+        <Button @click="$emit('close')" :text="true">取消</Button>
+      </div>
     </div>
     <div class="h-panel-body">
       <div class="mb-10">
-        <p-button
-          glass="h-btn h-btn-primary"
-          icon="h-icon-plus"
-          permission="course_attach.store"
-          text="添加"
-          @click="create()"
-        ></p-button>
+        <p-button glass="h-btn h-btn-primary" permission="course_attach.store" text="添加" @click="create()"></p-button>
       </div>
       <Table :loading="loading" :datas="datas">
-        <TableItem prop="id" title="ID"></TableItem>
-        <TableItem prop="name" title="附件名"></TableItem>
+        <TableItem prop="id" title="ID" :wdith="120"></TableItem>
+        <TableItem prop="name" title="附件名" :width="300"></TableItem>
         <TableItem prop="path" title="路径"></TableItem>
-        <TableItem prop="download_times" title="下载次数"></TableItem>
+        <TableItem prop="download_times" title="下载次数" unit="次" :width="100"></TableItem>
         <TableItem title="操作" align="center" :width="200">
           <template slot-scope="{ data }">
             <p-del-button permission="course_attach.destroy" @click="remove(datas, data)"></p-del-button>
